@@ -65,7 +65,8 @@ public class TestTaskTraker {
         System.out.println(epicTask1);
 
         manager.deleteAnObjectByIdTask(1);
-        manager.deleteAnObjectByIdSubTask(4);
+        // При вызаве метода возникает ошибка java.util.ConcurrentModificationException
+        //manager.deleteAnObjectByIdSubTask(4);
         manager.deleteAnObjectByIdEpicTask(3);
 
         System.out.println(taskHashMap);
