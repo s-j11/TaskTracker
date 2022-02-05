@@ -44,7 +44,6 @@ public class Menu {
                 int button = scanner.nextInt();
                 switch (button) {
                     case 1:
-//                        manager.deleteAllTasks(taskMap);
                         manager.deleteAllTasks();
                         System.out.println("Список задач удален");
                         break;
@@ -136,7 +135,6 @@ public class Menu {
                 manager.getallSubTaskInEpic(id);
             } else if (command == 8) {
                 testTaskTraker.testEpicTask();
-                System.out.println(toString());
             } else if (command == 9) {
                 System.out.println("Выход");
                 break;

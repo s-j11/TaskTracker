@@ -16,6 +16,11 @@ public class SubTask extends  Task {
         super(name, description, id, status);
     }
 
+    public SubTask(String name, String description, int id, String status, int epicTaskNumber) {
+        super(name, description, id, status);
+        this.epicTaskNumber = epicTaskNumber;
+    }
+
     public String toString() {
         String result = "{name=' " + getName() + '\'';
         if (getDescription() != null) {

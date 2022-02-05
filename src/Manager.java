@@ -12,8 +12,6 @@ public class Manager {
     public Manager() {
     }
 
-
-
     //Получение списка всех задач Task.
     public  List<Object> getListTasks(HashMap<Integer, Task> mapObjects) {
         List<Object> keysObjects = new ArrayList<>();
@@ -106,7 +104,7 @@ public class Manager {
     }
 
     //Создание задачи Task
-    public void maikingTask(String name, String description){
+    public Task maikingTask(String name, String description){
         Task task = new Task();
         task.setName(name);
         task.setDescription(description);
@@ -114,10 +112,11 @@ public class Manager {
         task.setStatus("NEW");
         taskMap.put(task.getId(), task);
         System.out.println("Номер вашей задачи " + task.getId() + "\n");
+        return task;
     }
 
     //Создание задачи EpicTask
-    public void maikingEpic(String name, String description){
+    public EpicTask maikingEpic(String name, String description){
         EpicTask epicTask = new EpicTask();
         epicTask.setName(name);
         epicTask.setDescription(description);
@@ -125,10 +124,11 @@ public class Manager {
         epicTask.setStatus("NEW");
         epicTaskMap.put(epicTask.getId(), epicTask);
         System.out.println("Номер вашей Эпик задачи " + epicTask.getId() + "\n");
+        return epicTask;
     }
 
     //Создание задачи SubTask
-    public void maikingSubTask(String name, String description, int id){
+    public SubTask maikingSubTask(String name, String description, int id){
         SubTask subTask = new SubTask();
         subTask.setName(name);
         subTask.setDescription(description);
@@ -148,9 +148,11 @@ public class Manager {
         subTaskMap.put(subTask.getId(), subTask);
         System.out.println("Номер вашей подзадачи " + subTask.getId() + "\n"
                 + "Она входит в Эпик задачу " + subTask.epicTaskNumber + "\n");
+
                 }
             }
         }
+        return subTask;
     }
 
     //Удаление задачи Task по идентификатору.
@@ -227,10 +229,10 @@ public class Manager {
                         }
                     }
         }
-        }
+    }
 
     //Обнавление задачи Task
-    public void updatingAnObjectByIdTask (Task taskUpdate) {
+    public HashMap<Integer, Task> updatingAnObjectByIdTask (Task taskUpdate) {
         Set<Integer> setKeysTask = taskMap.keySet();
         if(setKeysTask.size()==0){
             System.out.println("Tакого id в списке задач - нет");
@@ -244,7 +246,7 @@ public class Manager {
                     System.out.println("Задача обновлена");
                 }
             }
-        }
+        }return taskMap;
     }
 
     //Обнавление задачи EpicTask
