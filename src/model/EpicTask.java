@@ -1,10 +1,12 @@
+package model;
+
 import java.util.ArrayList;
 
 
 public class EpicTask extends Task{
-        ArrayList<Integer> listSubtask = new ArrayList<>();
+        private ArrayList<Integer> listSubtask = new ArrayList<>();
 
-        void addSubTask(int subTask){
+        public void addSubTask(int subTask){
                 listSubtask.add(subTask);
         }
 

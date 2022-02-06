@@ -1,11 +1,18 @@
+package test;
+
+import manager.Manager;
+import model.EpicTask;
+import model.SubTask;
+import model.Task;
+
 import java.util.HashMap;
 
 public class TestTaskTraker {
 
     Manager manager = new Manager();
-    HashMap<Integer,Task> taskHashMap = manager.taskMap;
-    HashMap<Integer,EpicTask> epicTaskMap = manager.epicTaskMap;
-    HashMap<Integer,SubTask> subTaskMap= manager.subTaskMap;
+    private HashMap<Integer, Task> taskHashMap = manager.getTaskMap();
+    private HashMap<Integer, EpicTask> epicTaskMap = manager.getEpicTaskMap();
+    private HashMap<Integer,SubTask> subTaskMap= manager.getSubTaskMap();
 
     public TestTaskTraker() {
     }

@@ -1,3 +1,5 @@
+package model;
+
 public class SubTask extends  Task {
     int epicTaskNumber;
 
@@ -20,6 +22,8 @@ public class SubTask extends  Task {
         super(name, description, id, status);
         this.epicTaskNumber = epicTaskNumber;
     }
+
+
 
     public String toString() {
         String result = "{name=' " + getName() + '\'';

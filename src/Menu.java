@@ -1,12 +1,18 @@
+import manager.Manager;
+import model.EpicTask;
+import model.SubTask;
+import model.Task;
+import test.TestTaskTraker;
+
 import java.util.HashMap;
 import java.util.Scanner;
 
 public class Menu {
     Scanner scanner = new Scanner(System.in);
     Manager manager = new Manager();
-    HashMap<Integer,Task> taskMap = manager.taskMap;
-    HashMap<Integer,EpicTask> epicTaskMap = manager.epicTaskMap;
-    HashMap<Integer,SubTask> subTaskMap = manager.subTaskMap;
+    HashMap<Integer, Task> taskMap = manager.getTaskMap();
+    HashMap<Integer,EpicTask> epicTaskMap = manager.getEpicTaskMap();
+    HashMap<Integer,SubTask> subTaskMap = manager.getSubTaskMap();
     TestTaskTraker testTaskTraker = new TestTaskTraker();
 
     @Override
