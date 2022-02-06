@@ -31,6 +31,7 @@ public class Menu {
             System.out.println("9 - Выйти из приложения");
 
             int command = scanner.nextInt();
+
             if (command == 1) {
                 System.out.println("Список всех задач: ");
                         System.out.println("Список задач: " + manager.getListTasks(taskMap));
@@ -120,9 +121,8 @@ public class Menu {
                 SubTask subTask = new SubTask(name,descriptions,id,status);
                 EpicTask epicTask = new EpicTask(name, descriptions, id);
                 manager.updatingAnObjectByIdTask(task);
-                manager.updatingAnObjectByIdSubTask(subTask);
                 manager.updatingAnObjectByIdEpicTask(epicTask);
-
+                manager.updatingAnObjectByIdSubTask(subTask);
             } else if (command == 6) {
                 System.out.println("Введите id задачи, которую хотите удалить: ");
                 int id = scanner.nextInt();
