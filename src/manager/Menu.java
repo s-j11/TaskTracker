@@ -1,3 +1,5 @@
+package manager;
+
 import manager.Manager;
 import model.EpicTask;
 import model.SubTask;
@@ -51,7 +53,7 @@ public class Menu {
                 int button = scanner.nextInt();
                 switch (button) {
                     case 1:
-                        manager.deleteAllTasks();
+                        manager.deleteAllTask();
                         System.out.println("Список задач удален");
                         break;
                     case 2:
@@ -68,9 +70,9 @@ public class Menu {
             } else if (command == 3) {
                 System.out.println("Введите id задачи, которую хотите найти: ");
                 int id = scanner.nextInt();
-                manager.getingAnObjectByIdTask(id);
-                manager.getingAnObjectByIdEpicTask(id);
-                manager.getingAnObjectByIdSubTask(id);
+                manager.getTaskById(id);
+                manager.getEpicTaskById(id);
+                manager.getSubTaskById(id);
             } else if (command == 4) {
                 System.out.println("Введите название задачи");
                 String name = scanner.next();
@@ -83,15 +85,15 @@ public class Menu {
                 int button = scanner.nextInt();
                 switch (button){
                     case 1:
-                        manager.maikingTask(name,descriptions);
+                        manager.makeTask(name,descriptions);
                         break;
                     case 2:
-                        manager.maikingEpic(name,descriptions);
+                        manager.makeEpic(name,descriptions);
                         break;
                     case 3:
                         System.out.println("Введите номер эпик задачи");
                         int id = scanner.nextInt();
-                        manager.maikingSubTask(name,descriptions,id);
+                        manager.makeSubTask(name,descriptions,id);
                         break;
                         default:
                             System.out.println("Такого номера типа задачи нет введите от 1 до 3");
@@ -126,19 +128,19 @@ public class Menu {
                 Task task = new Task(name, descriptions, id, status);
                 SubTask subTask = new SubTask(name,descriptions,id,status);
                 EpicTask epicTask = new EpicTask(name, descriptions, id);
-                manager.updatingAnObjectByIdTask(task);
-                manager.updatingAnObjectByIdEpicTask(epicTask);
-                manager.updatingAnObjectByIdSubTask(subTask);
+                manager.updateTaskById(task);
+                manager.updateEpicTaskById(epicTask);
+                manager.updateSubTaskById(subTask);
             } else if (command == 6) {
                 System.out.println("Введите id задачи, которую хотите удалить: ");
                 int id = scanner.nextInt();
-                manager.deleteAnObjectByIdTask(id);
-                manager.deleteAnObjectByIdEpicTask(id);
-                manager.deleteAnObjectByIdSubTask(id);
+                manager.deleteTaskById(id);
+                manager.deleteEpicTaskById(id);
+                manager.deleteSubTaskById(id);
             } else if (command == 7) {
                 System.out.println("Введите id Эпик задачи, в которой хотите просмотреть все подзадачи: ");
                 int id = scanner.nextInt();
-                manager.getallSubTaskInEpic(id);
+                manager.getAllSubTaskInEpic(id);
             } else if (command == 8) {
                 testTaskTraker.testEpicTask();
             } else if (command == 9) {
