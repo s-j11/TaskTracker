@@ -1,4 +1,4 @@
-import manager.Menu;
+import interactive_menu.Menu;
 
 public class TaskTraker {
     public static void main(String[] args) {

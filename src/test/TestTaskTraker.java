@@ -1,6 +1,6 @@
 package test;
 
-import manager.Manager;
+import bussinesslogic.Manager;
 import model.EpicTask;
 import model.SubTask;
 import model.Task;

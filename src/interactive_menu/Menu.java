@@ -1,6 +1,6 @@
-package manager;
+package interactive_menu;
 
-import manager.Manager;
+import bussinesslogic.Manager;
 import model.EpicTask;
 import model.SubTask;
 import model.Task;

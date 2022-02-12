@@ -1,4 +1,4 @@
-package manager;
+package bussinesslogic;
 
 import model.EpicTask;
 import model.SubTask;
