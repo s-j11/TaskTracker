@@ -1,6 +1,7 @@
 package interactive_menu;
 
 import bussinesslogic.Managers;
+import maketbussinesslogic.HistoryManager;
 import maketbussinesslogic.TaskManager;
 import model.EpicTask;
 import model.Status;
@@ -15,6 +16,7 @@ public class Menu {
     Scanner scanner = new Scanner(System.in);
     Managers managers = new Managers();
     TaskManager inMemoryTaskManager = managers.getDefault();
+    HistoryManager historyManager = managers.getDefaultHistory();
     HashMap<Integer, Task> taskMap = inMemoryTaskManager.getTaskMap();
     HashMap<Integer,EpicTask> epicTaskMap = inMemoryTaskManager.getEpicTaskMap();
     HashMap<Integer,SubTask> subTaskMap = inMemoryTaskManager.getSubTaskMap();
@@ -148,7 +150,7 @@ public class Menu {
             } else if (command == 8) {
                 testTaskTraker.testEpicTask();
             }else if (command == 9){
-              inMemoryTaskManager.history();
+                historyManager.getHistory();
             } else if (command == 10) {
                 System.out.println("Выход");
                 break;

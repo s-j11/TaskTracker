@@ -75,11 +75,4 @@ public interface TaskManager {
     //Получение всех задач Эпик задачи
     void getAllSubTaskInEpic(int key);
 
-    //Вывод содержания maps
-
-    //История последних 10 сообщений
-    void history();
-
-    //Очистка Истории после тестирования
-    void clearHistory();
 }

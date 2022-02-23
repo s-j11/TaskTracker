@@ -1,6 +1,7 @@
 package test;
 
 import bussinesslogic.Managers;
+import maketbussinesslogic.HistoryManager;
 import maketbussinesslogic.TaskManager;
 import model.EpicTask;
 import model.Status;
@@ -13,6 +14,7 @@ public class TestTaskTraker {
 
     Managers managers = new Managers();
     TaskManager inMemoryTaskManager = managers.getDefault();
+    HistoryManager historyManager = managers.getDefaultHistory();
     private HashMap<Integer, Task> taskHashMap;
     private HashMap<Integer, EpicTask> epicTaskMap;
     private HashMap<Integer, SubTask> subTaskMap;
@@ -40,28 +42,28 @@ public class TestTaskTraker {
         inMemoryTaskManager.getTaskById(1);
         inMemoryTaskManager.getEpicTaskById(2);
         inMemoryTaskManager.getEpicTaskById(3);
-        inMemoryTaskManager.history();
+        historyManager.getHistory();
         System.out.println();
         inMemoryTaskManager.getSubTaskById(4);
         inMemoryTaskManager.getSubTaskById(5);
         inMemoryTaskManager.getSubTaskById(6);
-        inMemoryTaskManager.history();
+        historyManager.getHistory();
         System.out.println();
         inMemoryTaskManager.getTaskById(1);
         inMemoryTaskManager.getEpicTaskById(2);
         inMemoryTaskManager.getEpicTaskById(3);
         inMemoryTaskManager.getSubTaskById(4);
-        inMemoryTaskManager.history();
+        historyManager.getHistory();
         System.out.println();
         inMemoryTaskManager.getSubTaskById(1);
         inMemoryTaskManager.getSubTaskById(2);
         inMemoryTaskManager.getSubTaskById(3);
-        inMemoryTaskManager.history();
+        historyManager.getHistory();
         System.out.println();
         inMemoryTaskManager.getSubTaskById(4);
         inMemoryTaskManager.getSubTaskById(5);
         inMemoryTaskManager.getSubTaskById(6);
-        inMemoryTaskManager.history();
+        historyManager.getHistory();
         System.out.println("=======================================================================================");
         System.out.println("Изменение статусов");
         task = new Task("Планирование 2", "Разработака плана2", task.getId(), Status.IN_PROGRESS);
@@ -119,7 +121,7 @@ public class TestTaskTraker {
         taskHashMap.clear();
         epicTaskMap.clear();
         subTaskMap.clear();
-        inMemoryTaskManager.clearHistory();
+        historyManager.clearHistory();
         System.out.println();
     }
 

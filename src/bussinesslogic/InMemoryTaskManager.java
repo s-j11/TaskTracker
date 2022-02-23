@@ -1,5 +1,6 @@
 package bussinesslogic;
 
+import maketbussinesslogic.HistoryManager;
 import maketbussinesslogic.TaskManager;
 import model.EpicTask;
 import model.Status;
@@ -11,18 +12,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-public class InMemoryTaskManager implements TaskManager {
+public class InMemoryTaskManager implements TaskManager{
     private Integer counterID = 1;
     private HashMap<Integer, Task> taskMap = new HashMap<>();
     private HashMap<Integer, EpicTask> epicTaskMap = new HashMap<>();
     private HashMap<Integer, SubTask> subTaskMap = new HashMap<>();
-    private static List<Task> history = new ArrayList<>();
+    private HistoryManager historyManager = new InMemoryHistoryManager();
 
     public InMemoryTaskManager() {
-    }
-
-    public static List<Task> getHistory() {
-        return history;
     }
 
     //Получение map Tasks
@@ -111,7 +108,7 @@ public class InMemoryTaskManager implements TaskManager {
             System.out.println("Tакого id в списке задач - нет");
         } else {
             System.out.println(taskMap.get(key));
-            historyList(taskMap.get(key));
+            historyManager.add(taskMap.get(key));
         }
     }
 
@@ -125,7 +122,7 @@ public class InMemoryTaskManager implements TaskManager {
             System.out.println("Tакого id в списке эпик задач - нет");
         } else {
             System.out.println(epicTaskMap.get(key));
-            historyList(epicTaskMap.get(key));
+            historyManager.add(epicTaskMap.get(key));
         }
     }
 
@@ -138,7 +135,7 @@ public class InMemoryTaskManager implements TaskManager {
             System.out.println("Tакого id в списке подзадач задач - нет");
         } else {
             System.out.println(subTaskMap.get(key));
-            historyList(subTaskMap.get(key));
+            historyManager.add(subTaskMap.get(key));
         }
     }
 
@@ -346,30 +343,4 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-    // Отслеживание вызовов getTask, getEpicTask, getSubTask
-    public static void historyList(Task task) {
-        if (history.isEmpty()) {
-            history.add(task);
-        }else if(history.size() < 10){
-            history.add(task);
-        } else {
-            history.remove(0);
-            history.add(task);
-        }
-    }
-
-    //История последних 10 сообщений
-    @Override
-    public void history(){
-        int count = 1;
-        for(Task task :history){
-            System.out.println(count + " " + " "+ task);
-            count++;
-        }
-    }
-
-    @Override
-    public void clearHistory() {
-        history.clear();
-    }
 }
