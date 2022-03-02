@@ -2,15 +2,19 @@ package maketbussinesslogic;
 
 import model.Task;
 
-import java.util.Collection;
+import java.util.List;
 
 public interface HistoryManager {
 
     //Добоыление задачи в историю
    void  add(Task task);
 
-   //История последних 10 сообщений
-     Collection getHistory();
+   //Удаление задачи
+   void remove(int id);
 
+   //История последних 10 сообщений
+     List<Task> getHistory();
+
+     //Очистка истории
      void clearHistory();
 }

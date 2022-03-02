@@ -4,11 +4,20 @@ import maketbussinesslogic.HistoryManager;
 import model.Task;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
+import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private static LinkedList<Task> history = new LinkedList<>();
+    private static ArrayList<Task> history = new ArrayList<Task>();
+
+    void linkLast(){
+
+    }
+    Task getTask(){
+        Task task  = new Task();
+        return task;
+    }
+
+
 
     //Добоыление задачи в историю
     @Override
@@ -23,13 +32,18 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
     }
 
+    @Override
+    public void remove(int id) {
+
+    }
+
     //История последних 10 сообщений
     @Override
-    public Collection getHistory() {
-        Collection listHistory = new ArrayList<>();
+    public List<Task> getHistory() {
+        List<Task> listHistory = new ArrayList<>();
         int count = 1;
         for (Task task : history) {
-            listHistory.add(count + " " + " " + task);
+            listHistory.add(task);
             count++;
         }return listHistory;
     }
