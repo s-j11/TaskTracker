@@ -7,16 +7,13 @@ import model.Status;
 import model.SubTask;
 import model.Task;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager{
     private Integer counterID = 1;
-    private HashMap<Integer, Task> taskMap = new HashMap<>();
-    private HashMap<Integer, EpicTask> epicTaskMap = new HashMap<>();
-    private HashMap<Integer, SubTask> subTaskMap = new HashMap<>();
+    private Map<Integer, Task> taskMap = new HashMap<>();
+    private Map<Integer, EpicTask> epicTaskMap = new HashMap<>();
+    private Map<Integer, SubTask> subTaskMap = new HashMap<>();
     private HistoryManager historyManager = new InMemoryHistoryManager();
 
     public InMemoryTaskManager() {
@@ -24,25 +21,25 @@ public class InMemoryTaskManager implements TaskManager{
 
     //Получение map Tasks
     @Override
-    public HashMap<Integer, Task> getTaskMap() {
+    public Map<Integer, Task> getTaskMap() {
         return taskMap;
     }
 
     //Получение map EpicTasks
     @Override
-    public HashMap<Integer, EpicTask> getEpicTaskMap() {
+    public Map<Integer, EpicTask> getEpicTaskMap() {
         return epicTaskMap;
     }
     //Получение map SubTasks
     @Override
-    public HashMap<Integer, SubTask> getSubTaskMap() {
+    public Map<Integer, SubTask> getSubTaskMap() {
         return subTaskMap;
     }
 
     //Получение списка всех задач model.Task.
     @Override
-    public List<Task> getListTasks(HashMap<Integer, Task> mapTask) {
-        List<Task> listTask = new ArrayList<>();
+    public Collection getListTasks(Map<Integer, Task> mapTask) {
+        Collection listTask = new ArrayList<>();
         Set<Integer> setKeys = mapTask.keySet();
         for (int i : setKeys) {
             Task task = mapTask.get(i);
@@ -53,8 +50,8 @@ public class InMemoryTaskManager implements TaskManager{
 
     //Получение списка всех Эпик задач model.EpicTask.
     @Override
-    public List<EpicTask> getListEpicTasks(HashMap<Integer, EpicTask> mapEpicTask) {
-        List<EpicTask> listEpicTask = new ArrayList<>();
+    public Collection getListEpicTasks(Map<Integer, EpicTask> mapEpicTask) {
+        Collection listEpicTask = new ArrayList<>();
         Set<Integer> setKeys = mapEpicTask.keySet();
         for (int i : setKeys) {
             EpicTask epicTask = mapEpicTask.get(i);
@@ -65,8 +62,8 @@ public class InMemoryTaskManager implements TaskManager{
 
     //Получение списка всех подзадач model.SubTask.
     @Override
-    public List<SubTask> getListSubTasks(HashMap<Integer, SubTask> mapSubTask) {
-        List<SubTask> listSubTask = new ArrayList<>();
+    public Collection getListSubTasks(Map<Integer, SubTask> mapSubTask) {
+        Collection listSubTask = new ArrayList<>();
         Set<Integer> setKeys = mapSubTask.keySet();
         for (int i : setKeys) {
             SubTask subTask = mapSubTask.get(i);
@@ -216,8 +213,8 @@ public class InMemoryTaskManager implements TaskManager{
             System.out.println("Tакого id в списке эпик задач - нет");
         } else {
             EpicTask epicTask = epicTaskMap.get(key);
-            ArrayList<Integer> listSubTask = epicTask.getListSubtask();
-            for (int i : listSubTask) {
+            Collection listSubTask = epicTask.getListSubtask();
+            for (Object i : listSubTask) {
                 subTaskMap.remove(i);
             }
             epicTaskMap.remove(key);
@@ -235,19 +232,19 @@ public class InMemoryTaskManager implements TaskManager{
         } else {
             subTaskMap.remove(key);
             System.out.println("Подзадача удалена");
-            ArrayList<Integer> numberOfSubTask;
+            List<Integer> idSubTasks;
             Set<Integer> setKeys = epicTaskMap.keySet();
             for (int k : setKeys) {
                 EpicTask epicTask = epicTaskMap.get(k);
-                numberOfSubTask = epicTask.getListSubtask();
-                if (numberOfSubTask.size() == 0) {
+                idSubTasks = epicTask.getListSubtask();
+                if (idSubTasks.size() == 0) {
                     continue;
                 } else {
-                    for (int j = 0; j < numberOfSubTask.size(); j++) {
-                        int idSubTask = numberOfSubTask.get(j);
+                    for (int j = 0; j < idSubTasks.size(); j++) {
+                        int idSubTask = idSubTasks.get(j);
                         if (key == idSubTask) {
-                            numberOfSubTask.remove(j);
-                            epicTask.setListSubtask(numberOfSubTask);
+                            idSubTasks.remove(j);
+                            epicTask.setListSubtask(idSubTasks);
                             break;
                         }
                     }
@@ -258,7 +255,7 @@ public class InMemoryTaskManager implements TaskManager{
 
     //Обнавление задачи model.Task
     @Override
-    public HashMap<Integer, Task> updateTaskById(Task taskUpdate) {
+    public Map<Integer, Task> updateTaskById(Task taskUpdate) {
         if (taskMap.isEmpty()) {
             System.out.println("Tакого id в списке задач - нет");
         } else if (!taskMap.containsKey(taskUpdate.getId())) {
@@ -303,8 +300,8 @@ public class InMemoryTaskManager implements TaskManager{
             int counterInProcess = 0;
             int counterDone = 0;
             EpicTask epicTask = epicTaskMap.get(numberOfEpicTask);
-            ArrayList<Integer> listSubTask = epicTask.getListSubtask();
-            for (int j : listSubTask) {
+            Collection listSubTask = epicTask.getListSubtask();
+            for (Object j : listSubTask) {
                 SubTask subTask1 = subTaskMap.get(j);
                 Status status = subTask1.getStatus();
                 if (status == Status.NEW) {
@@ -334,7 +331,7 @@ public class InMemoryTaskManager implements TaskManager{
             System.out.println("Tакого id в списке эпик задач - нет");
         } else {
             EpicTask epicTask = epicTaskMap.get(key);
-            ArrayList<Integer> listSubTask = epicTask.getListSubtask();
+            Collection listSubTask = epicTask.getListSubtask();
             if (listSubTask.size() == 0) {
                 System.out.println("У Эпик задачи нет подзадач");
             } else {

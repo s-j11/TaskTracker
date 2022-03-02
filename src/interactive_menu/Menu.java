@@ -10,6 +10,7 @@ import model.Task;
 import test.TestTaskTraker;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Menu {
@@ -17,9 +18,9 @@ public class Menu {
     Managers managers = new Managers();
     TaskManager inMemoryTaskManager = managers.getDefault();
     HistoryManager historyManager = managers.getDefaultHistory();
-    HashMap<Integer, Task> taskMap = inMemoryTaskManager.getTaskMap();
-    HashMap<Integer,EpicTask> epicTaskMap = inMemoryTaskManager.getEpicTaskMap();
-    HashMap<Integer,SubTask> subTaskMap = inMemoryTaskManager.getSubTaskMap();
+    Map<Integer, Task> taskMap = inMemoryTaskManager.getTaskMap();
+    Map<Integer, EpicTask> epicTaskMap = inMemoryTaskManager.getEpicTaskMap();
+    Map<Integer, SubTask> subTaskMap = inMemoryTaskManager.getSubTaskMap();
     TestTaskTraker testTaskTraker = new TestTaskTraker(taskMap, epicTaskMap, subTaskMap);
 
     @Override
@@ -150,7 +151,7 @@ public class Menu {
             } else if (command == 8) {
                 testTaskTraker.testEpicTask();
             }else if (command == 9){
-                historyManager.getHistory();
+                System.out.println(historyManager.getHistory());
             } else if (command == 10) {
                 System.out.println("Выход");
                 break;

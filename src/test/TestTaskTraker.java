@@ -8,19 +8,19 @@ import model.Status;
 import model.SubTask;
 import model.Task;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class TestTaskTraker {
 
     Managers managers = new Managers();
     TaskManager inMemoryTaskManager = managers.getDefault();
     HistoryManager historyManager = managers.getDefaultHistory();
-    private HashMap<Integer, Task> taskHashMap;
-    private HashMap<Integer, EpicTask> epicTaskMap;
-    private HashMap<Integer, SubTask> subTaskMap;
+    private Map<Integer, Task> taskHashMap;
+    private Map<Integer, EpicTask> epicTaskMap;
+    private Map<Integer, SubTask> subTaskMap;
 
-    public TestTaskTraker(HashMap<Integer, Task> taskHashMap, HashMap<Integer, EpicTask> epicTaskMap,
-                          HashMap<Integer, SubTask> subTaskMap) {
+    public TestTaskTraker(Map<Integer, Task> taskHashMap, Map<Integer, EpicTask> epicTaskMap,
+                          Map<Integer, SubTask> subTaskMap) {
         this.taskHashMap = taskHashMap;
         this.epicTaskMap = epicTaskMap;
         this.subTaskMap = subTaskMap;

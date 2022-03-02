@@ -4,28 +4,28 @@ import model.EpicTask;
 import model.SubTask;
 import model.Task;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.Collection;
+import java.util.Map;
 
 public interface TaskManager {
 
     //Получение map Tasks
-    HashMap<Integer, Task> getTaskMap();
+    Map<Integer, Task> getTaskMap();
 
     //Получение map EpicTasks
-    HashMap<Integer, EpicTask> getEpicTaskMap();
+    Map<Integer, EpicTask> getEpicTaskMap();
 
     //Получение map SubTasks
-    HashMap<Integer, SubTask> getSubTaskMap();
+    Map<Integer, SubTask> getSubTaskMap();
 
     //Получение списка всех задач model.Task.
-    List<Task> getListTasks(HashMap<Integer, Task> mapTask);
+    Collection getListTasks(Map<Integer, Task> mapTask);
 
     //Получение списка всех Эпик задач model.EpicTask.
-    List<EpicTask> getListEpicTasks(HashMap<Integer, EpicTask> mapEpicTask);
+    Collection getListEpicTasks(Map<Integer, EpicTask> mapEpicTask);
 
     //Получение списка всех подзадач model.SubTask.
-    List<SubTask> getListSubTasks(HashMap<Integer, SubTask> mapSubTask);
+    Collection getListSubTasks(Map<Integer, SubTask> mapSubTask);
 
     //Удаление всех задач model.Task.
     void deleteAllTask();
@@ -64,7 +64,7 @@ public interface TaskManager {
     void deleteSubTaskById(int key);
 
     //Обнавление задачи model.Task
-    HashMap<Integer, Task> updateTaskById(Task taskUpdate);
+    Map<Integer, Task> updateTaskById(Task taskUpdate);
 
     //Обнавление задачи model.EpicTask
     void updateEpicTaskById(EpicTask taskUpdate);
