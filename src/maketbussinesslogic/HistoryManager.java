@@ -1,5 +1,6 @@
 package maketbussinesslogic;
 
+import model.Node;
 import model.Task;
 
 import java.util.List;
@@ -10,9 +11,9 @@ public interface HistoryManager {
    void  add(Task task);
 
    //Удаление задачи
-   void remove(int id);
+   Node<Task> remove(Node node);
 
-   //История последних 10 сообщений
+   //История последних сообщений
      List<Task> getHistory();
 
      //Очистка истории

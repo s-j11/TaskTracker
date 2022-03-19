@@ -184,7 +184,6 @@ public class InMemoryTaskManager implements TaskManager{
                     subTaskMap.put(subTask.getId(), subTask);
                     System.out.println("Номер вашей подзадачи " + subTask.getId() + "\n"
                             + "Она входит в Эпик задачу " + subTask.getEpicTaskNumber() + "\n");
-
                 }
             }
         }

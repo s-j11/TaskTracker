@@ -1,51 +1,87 @@
 package bussinesslogic;
 
 import maketbussinesslogic.HistoryManager;
+import model.Node;
 import model.Task;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private static ArrayList<Task> history = new ArrayList<Task>();
+    private  static List<Node> history = new ArrayList<>();
+    private  static Map<Integer, Node> indexMap = new HashMap<Integer, Node>();
+    private  static Node<Task> head;
+    private  static Node<Task> tail;
 
-    void linkLast(){
-
+    public Node<Task> linkLast(Task task){
+         Node<Task> lastNode = tail;
+         Node<Task> newNode = new Node( tail, task, null);
+        if (lastNode == null){
+            head = newNode;
+            tail = newNode;
+            newNode.prev = null;
+            newNode.next = null;
+            history.add(newNode);
+        }else{
+            lastNode.next = newNode;
+            newNode.prev = lastNode;
+            tail = newNode;
+            history.add(newNode);
+        }return newNode;
     }
-    Task getTask(){
-        Task task  = new Task();
-        return task;
-    }
-
-
 
     //Добоыление задачи в историю
     @Override
     public void add(Task task) {
-        if (history.isEmpty()) {
-            history.add(task);
-        }else if(history.size() < 10){
-            history.add(task);
-        } else {
-            history.remove(0);
-            history.add(task);
+        Node node = new Node(task);
+        if (indexMap.isEmpty()) {
+            node = linkLast(task);
+            indexMap.put(task.getId(),node);
+        }else if(!indexMap.containsKey(task.getId())){
+            indexMap.put(task.getId(),linkLast(task));
+        }else{
+            remove(indexMap.get(task.getId()));
+            indexMap.put(task.getId(),linkLast(task));
         }
     }
 
+    //Удаление объекта
     @Override
-    public void remove(int id) {
+    public Node<Task> remove(Node node) {
+        node = indexMap.get(((Task) node.data).getId());
+        if (node.prev == null && node.next == null) {
+            history.remove(indexMap.get(((Task) node.data).getId()));
+            indexMap.remove(((Task) node.data).getId());
+        }else if (node.prev == null && node.next != null) {
+                Node nextNode = node.next;
+                nextNode.prev = null;
+                head = nextNode;
+                history.remove(indexMap.get(((Task) node.data).getId()));
+                indexMap.remove(((Task) node.data).getId());
+            } else if (node.prev != null && node.next != null) {
+                Node prevNode = node.prev;
+                Node nextNode = node.next;
+                prevNode.next = nextNode;
+                nextNode.prev = prevNode;
+                history.remove(indexMap.get(((Task) node.data).getId()));
+                indexMap.remove(((Task) node.data).getId());
+            } else if (node.prev != null & node.next == null) {
+                Node prevNode = node.prev;
+                node.prev = node.prev.prev;
+                prevNode.next = null;
+                tail = prevNode;
+                history.remove(indexMap.get(((Task) node.data).getId()));
+                indexMap.remove(((Task) node.data).getId());
+            } return node;
+        }
 
-    }
-
-    //История последних 10 сообщений
+    //История
     @Override
     public List<Task> getHistory() {
         List<Task> listHistory = new ArrayList<>();
-        int count = 1;
-        for (Task task : history) {
-            listHistory.add(task);
-            count++;
-        }return listHistory;
+        Node<Task> node = head;
+        while ((node != null)){
+            listHistory.add(node.data);
+            node = node.next;
+        } return listHistory;
     }
 
     //Очистка списка истории.
@@ -53,6 +89,6 @@ public class InMemoryHistoryManager implements HistoryManager {
     public void clearHistory() {
         history.clear();
     }
-
-
 }
+
+
