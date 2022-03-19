@@ -6,7 +6,7 @@ import model.Task;
 import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private  static List<Node> history = new ArrayList<>();
+    private  List<Node> history = new ArrayList<>();
     private  static Map<Integer, Node> indexMap = new HashMap<Integer, Node>();
     private  static Node<Task> head;
     private  static Node<Task> tail;
@@ -50,6 +50,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         if (node.prev == null && node.next == null) {
             history.remove(indexMap.get(((Task) node.data).getId()));
             indexMap.remove(((Task) node.data).getId());
+            head = null;
         }else if (node.prev == null && node.next != null) {
                 Node nextNode = node.next;
                 nextNode.prev = null;

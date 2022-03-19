@@ -69,6 +69,15 @@ public class TestTaskTraker {
         node = new Node(epicTask);
         historyManager.remove(node);
         System.out.println(historyManager.getHistory());
+        node = new Node(subTask);
+        historyManager.remove(node);
+        System.out.println(historyManager.getHistory());
+        node = new Node(subTask1);
+        historyManager.remove(node);
+        System.out.println(historyManager.getHistory());
+        node = new Node(subTask2);
+        historyManager.remove(node);
+        System.out.println(historyManager.getHistory());
         System.out.println();
     }
 }
