@@ -11,46 +11,6 @@ import java.util.*;
     private  Node<Task> head = null;
     private  Node<Task> tail = null;
 
-
-//    @Override
-//    public List<Node> getHistoryList() {
-//        return historyList;
-//    }
-//
-//    @Override
-//    public void setHistoryList(List<Node> historyList) {
-//        this.historyList = historyList;
-//    }
-//
-//        @Override
-//    public Map<Integer, Node> getIndexMap() {
-//        return indexMap;
-//    }
-//
-//        @Override
-//        public void setIndexMap(Map<Integer, Node> indexMap) {
-//            this.indexMap = indexMap;
-//        }
-//
-//        @Override
-//    public Node<Task> getHead() {
-//        return head;
-//    }
-//        @Override
-//        public void setHead(Node<Task> head) {
-//            this.head = head;
-//        }
-//
-//        @Override
-//        public void setTail(Node<Task> tail) {
-//            this.tail = tail;
-//        }
-//
-//        @Override
-//        public Node<Task> getTail() {
-//            return tail;
-//        }
-
         public Node<Task> linkLast(Task task){
          Node<Task> lastNode = tail;
          Node<Task> newNode = new Node( tail, task, null);

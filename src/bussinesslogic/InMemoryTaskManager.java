@@ -41,7 +41,6 @@ public class InMemoryTaskManager implements TaskManager{
         return historyManager;
     }
 
-
     //Получение списка всех задач model.Task.
     @Override
     public Collection getListTasks(Map<Integer, Task> mapTask) {
@@ -345,5 +344,4 @@ public class InMemoryTaskManager implements TaskManager{
             }
         }
     }
-
 }

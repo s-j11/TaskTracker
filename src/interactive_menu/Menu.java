@@ -1,8 +1,6 @@
 package interactive_menu;
 
-import bussinesslogic.InMemoryHistoryManager;
 import bussinesslogic.Managers;
-import maketbussinesslogic.HistoryManager;
 import maketbussinesslogic.TaskManager;
 import model.*;
 import test.TestTaskTraker;
@@ -13,14 +11,11 @@ public class Menu {
     private Scanner scanner = new Scanner(System.in);
     private Managers managers = new Managers();
     private TaskManager inMemoryTaskManager = managers.getDefault();
-//    private HistoryManager inMemoryHistoryManager = managers.getDefaultHistory();
     private Map<Integer, Task> taskMap = inMemoryTaskManager.getTaskMap();
     private Map<Integer, EpicTask> epicTaskMap = inMemoryTaskManager.getEpicTaskMap();
     private Map<Integer, SubTask> subTaskMap = inMemoryTaskManager.getSubTaskMap();
-//    List<Node> history = inMemoryHistoryManager.getHistoryList();
-//    Map<Integer, Node> indexMap = inMemoryHistoryManager.getIndexMap();
-//    Node<Task> head = inMemoryHistoryManager.getHead();
-    TestTaskTraker testTaskTraker = new TestTaskTraker(taskMap, epicTaskMap, subTaskMap);
+    private TestTaskTraker testTaskTraker = new TestTaskTraker(taskMap, epicTaskMap, subTaskMap);
+
     @Override
     public String toString() {
         return "{"

@@ -22,7 +22,6 @@ public class TestTaskTraker {
     private List<Node> history = new ArrayList<Node>();
     private Map<Integer, Node> indexMap = new HashMap<Integer, Node>() ;
 
-
     public TestTaskTraker(Map<Integer, Task> taskHashMap, Map<Integer, EpicTask> epicTaskMap, Map<Integer, SubTask> subTaskMap) {
         this.taskHashMap = taskHashMap;
         this.epicTaskMap = epicTaskMap;
