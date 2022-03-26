@@ -1,28 +1,26 @@
 package interactive_menu;
 
+import bussinesslogic.InMemoryHistoryManager;
 import bussinesslogic.Managers;
 import maketbussinesslogic.HistoryManager;
 import maketbussinesslogic.TaskManager;
-import model.EpicTask;
-import model.Status;
-import model.SubTask;
-import model.Task;
+import model.*;
 import test.TestTaskTraker;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class Menu {
-    Scanner scanner = new Scanner(System.in);
-    Managers managers = new Managers();
-    TaskManager inMemoryTaskManager = managers.getDefault();
-    HistoryManager historyManager = managers.getDefaultHistory();
-    Map<Integer, Task> taskMap = inMemoryTaskManager.getTaskMap();
-    Map<Integer, EpicTask> epicTaskMap = inMemoryTaskManager.getEpicTaskMap();
-    Map<Integer, SubTask> subTaskMap = inMemoryTaskManager.getSubTaskMap();
+    private Scanner scanner = new Scanner(System.in);
+    private Managers managers = new Managers();
+    private TaskManager inMemoryTaskManager = managers.getDefault();
+//    private HistoryManager inMemoryHistoryManager = managers.getDefaultHistory();
+    private Map<Integer, Task> taskMap = inMemoryTaskManager.getTaskMap();
+    private Map<Integer, EpicTask> epicTaskMap = inMemoryTaskManager.getEpicTaskMap();
+    private Map<Integer, SubTask> subTaskMap = inMemoryTaskManager.getSubTaskMap();
+//    List<Node> history = inMemoryHistoryManager.getHistoryList();
+//    Map<Integer, Node> indexMap = inMemoryHistoryManager.getIndexMap();
+//    Node<Task> head = inMemoryHistoryManager.getHead();
     TestTaskTraker testTaskTraker = new TestTaskTraker(taskMap, epicTaskMap, subTaskMap);
-
     @Override
     public String toString() {
         return "{"
@@ -151,7 +149,7 @@ public class Menu {
             } else if (command == 8) {
                 testTaskTraker.testEpicTask();
             }else if (command == 9){
-                System.out.println(historyManager.getHistory());
+                System.out.println(inMemoryTaskManager.getHistoryManager().getHistory());
             } else if (command == 10) {
                 System.out.println("Выход");
                 break;

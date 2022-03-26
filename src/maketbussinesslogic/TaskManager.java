@@ -27,6 +27,9 @@ public interface TaskManager {
     //Получение списка всех подзадач model.SubTask.
     Collection getListSubTasks(Map<Integer, SubTask> mapSubTask);
 
+    //Получение historyManagera
+    HistoryManager getHistoryManager();
+
     //Удаление всех задач model.Task.
     void deleteAllTask();
 
