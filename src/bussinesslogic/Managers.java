@@ -13,4 +13,9 @@ public class Managers {
         InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
         return inMemoryHistoryManager;
     }
+
+    public static FileBackedTasksManager getDefaultFileBackedManager() {
+        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("./src/store/store.csv");
+        return fileBackedTasksManager;
+    }
 }

@@ -1,0 +1,5 @@
+id,type,name,status,description,epic,subtasks
+1,TASK,fkj,NEW,kfj,0,0
+2,EPIC,kljf,NEW,klfj,0,[]
+3,SUBTASK,klfj,NEW,kljf,2,0
+4,TASK,hf,NEW,fhk,0,0
