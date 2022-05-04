@@ -4,6 +4,7 @@ import model.EpicTask;
 import model.SubTask;
 import model.Task;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
 
@@ -78,4 +79,6 @@ public interface TaskManager {
     //Получение всех задач Эпик задачи
     void getAllSubTaskInEpic(int key);
 
+    //Чтение данных из файла.
+    void fromFile() throws IOException;
 }

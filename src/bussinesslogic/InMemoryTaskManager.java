@@ -7,6 +7,7 @@ import model.Status;
 import model.SubTask;
 import model.Task;
 
+import java.io.IOException;
 import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager{
@@ -17,6 +18,18 @@ public class InMemoryTaskManager implements TaskManager{
     private HistoryManager historyManager = new InMemoryHistoryManager();
 
     public InMemoryTaskManager() {
+    }
+
+    public void setTaskMap(Map<Integer, Task> taskMap) {
+        this.taskMap = taskMap;
+    }
+
+    public void setEpicTaskMap(Map<Integer, EpicTask> epicTaskMap) {
+        this.epicTaskMap = epicTaskMap;
+    }
+
+    public void setSubTaskMap(Map<Integer, SubTask> subTaskMap) {
+        this.subTaskMap = subTaskMap;
     }
 
     //Получение map Tasks
@@ -343,5 +356,9 @@ public class InMemoryTaskManager implements TaskManager{
                 System.out.println("Список id подзадач " + listSubTask + " у Эпик задачи id " + epicTask.getId());
             }
         }
+    }
+
+    @Override
+    public void fromFile() throws IOException {
     }
 }
