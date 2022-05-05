@@ -301,44 +301,55 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         return task;
     }
 
-    public void fromFile() throws IOException{
-        Map<Integer,Task> map = getTaskMap();
-        Map<Integer,EpicTask> mapEpic = getEpicTaskMap();
-        Map<Integer,SubTask> mapSubTask = getSubTaskMap();
+    public void fromFile() throws IOException {
+        Map<Integer, Task> map = getTaskMap();
+        Map<Integer, EpicTask> mapEpic = getEpicTaskMap();
+        Map<Integer, SubTask> mapSubTask = getSubTaskMap();
         Integer conterId = getCounterID();
-        try(Reader reader = new FileReader(path)){
+        try (Reader reader = new FileReader(path)) {
             BufferedReader bf = new BufferedReader(reader);
-           bf.readLine();
+            bf.readLine();
             System.out.println("Задачи загруженные из файла *.csv");
-            while (bf.ready()){
+            while (bf.ready()) {
                 String line = bf.readLine();
-                if(bf.equals("")){
+                if (!line.isBlank()) {
+                    Task task = fromString(line);
+                    if (task.getClass().equals(Task.class)) {
+                        System.out.println("Task" + task);
+                        map.put(task.getId(), task);
+                    } else if (task.getClass().equals(EpicTask.class)) {
+                        System.out.println("Epic" + task);
+                        mapEpic.put(task.getId(), (EpicTask) task);
+                    } else if (task.getClass().equals(SubTask.class)) {
+                        System.out.println("SubTask" + task);
+                        mapSubTask.put(task.getId(), (SubTask) task);
+                    }
+                    setCounterID(++conterId);
+                } else {
                     System.out.println("Пустая строка");
                     break;
-                }else{
-                Task task =  fromString(line);
-                if (task.getClass().equals(Task.class)) {
-                    System.out.println("Task" + task);
-                    map.put(task.getId(), task);
-                } else if (task.getClass().equals(EpicTask.class)) {
-                    System.out.println("Epic" + task);
-                    mapEpic.put(task.getId(),(EpicTask)task);
-                } else if (task.getClass().equals(SubTask.class)) {
-                    System.out.println("SubTask" + task);
-                    mapSubTask.put(task.getId(), (SubTask) task);
-                    }
                 }
-                setCounterID(++conterId);
             }
-            bf.readLine();
-            HistoryManager historyManager = fromFile(bf.readLine());
-            setHistoryManager(historyManager);
-            bf.close();
-            System.out.println();
-        }catch (FileNotFoundException e){
-            System.out.println("Файл с даннмым не обноружен \n");
+            if (!bf.ready()) {
+                bf.close();
+                System.out.println("В файле отсутвует запись о historyManager");
+                return;
+            } else {
+                String string = bf.readLine();
+                if (string.isBlank()) {
+                    System.out.println("Просмотра задач еще не было");
+                } else {
+                    HistoryManager historyManager = fromFile(string);
+                    setHistoryManager(historyManager);
+                }
+                bf.close();
+                System.out.println();
+                }
+            } catch(FileNotFoundException e){
+                System.out.println("Файл с даннмым не обноружен \n");
+            }
         }
-    }
+
 
     public  String toString(HistoryManager historyManager) {
         Collection<Task> list = historyManager.getHistory();
@@ -367,10 +378,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         Collection<Integer> list= new ArrayList();
         Integer id = null;
             for (String str : split) {
-                if (str.equals("Просмотра задач еще не было")) {
-                    return historyManager = new InMemoryHistoryManager();
-                } else {
+                if (!str.equals("Просмотра задач еще не было")) {
                     list.add(Integer.parseInt(str));
+                } else {
+                    return historyManager = new InMemoryHistoryManager();
                 }
             }
                 for (int i : list){

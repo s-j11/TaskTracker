@@ -1,9 +1,0 @@
-id,type,name,status,description,epic,subtasks
-1,TASK,kljf,NEW,lkfj,no,no
-7,TASK,kf,NEW,flk,no,no
-2,EPIC,kjlf,NEW,kljf,no,[4]
-3,EPIC,lfkj,NEW,flkj,no,[5; 6]
-8,EPIC,kfj,NEW,kflj,no,no
-4,SUBTASK,kljf,NEW,lfkj,2,no
-5,SUBTASK,ljf,NEW,lfjk,3,no
-6,SUBTASK,fkjl,NEW,klfj,3,no
