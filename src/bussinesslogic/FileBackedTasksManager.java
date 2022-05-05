@@ -90,16 +90,31 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     @Override
     public void getTaskById(int key) {
         super.getTaskById(key);
+        try {
+            saveToFile();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void getEpicTaskById(int key) {
         super.getEpicTaskById(key);
+        try {
+            saveToFile();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void getSubTaskById(int key) {
         super.getSubTaskById(key);
+        try {
+            saveToFile();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -205,7 +220,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     public String toString(Task task) {
         TypeTask typeTask = null;
         String numberEpic = "no";
-//        Collection listSubtasks = null;
         String listSubtasks = "no";
         if (task.getClass() == Task.class) {
             typeTask = TypeTask.TASK;
@@ -301,7 +315,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                 if(bf.equals("")){
                     System.out.println("Пустая строка");
                     break;
-                }else {
+                }else{
                 Task task =  fromString(line);
                 if (task.getClass().equals(Task.class)) {
                     System.out.println("Task" + task);
@@ -316,6 +330,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                 }
                 setCounterID(++conterId);
             }
+            bf.readLine();
+            HistoryManager historyManager = fromFile(bf.readLine());
+            setHistoryManager(historyManager);
             bf.close();
             System.out.println();
         }catch (FileNotFoundException e){
@@ -323,19 +340,59 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         }
     }
 
-    public static  String toString(HistoryManager historyManager){
+    public  String toString(HistoryManager historyManager) {
+        Collection<Task> list = historyManager.getHistory();
+        Collection<Integer> number = new ArrayList<>();
+        String string = null;
+        if (list.size() == 0) {
+            return string = "Просмотра задач еще не было";
+        }else{
+                for (Task task : list) {
+                    Integer id = task.getId();
+                    number.add(id);
+                }
+                string = number.toString();
+                string = string.substring(1, string.length() - 1);
+                return string;
+            }
+        }
 
-        return null;
-    }
 
-//    public static List<Integer> fromString(String value){
-//    return null;
-//    }
+    public HistoryManager fromFile(String value){
+        HistoryManager historyManager = getHistoryManager();
+        Map<Integer,Task> map = getTaskMap();
+        Map<Integer,EpicTask> mapEpic = getEpicTaskMap();
+        Map<Integer,SubTask> mapSubTask = getSubTaskMap();
+        String[] split = value.split(", ");
+        Collection<Integer> list= new ArrayList();
+        Integer id = null;
+            for (String str : split) {
+                if (str.equals("Просмотра задач еще не было")) {
+                    return historyManager = new InMemoryHistoryManager();
+                } else {
+                    list.add(Integer.parseInt(str));
+                }
+            }
+                for (int i : list){
+                    if (map.containsKey(i)){
+                        System.out.println("Задача добавлена в historyManager" + map.get(i));
+                        historyManager.add(map.get(i));
+                    } else if (mapEpic.containsKey(i)) {
+                        System.out.println("Epic добавлена в historyManager" + mapEpic.get(i));
+                        historyManager.add(mapEpic.get(i));
+                    } else if (mapSubTask.containsKey(i)) {
+                        System.out.println("SubTask добавлена в historyManager" + mapSubTask.get(i));
+                        historyManager.add(mapSubTask.get(i));
+                    }
+                }return historyManager;
+            }
+
 
 
 
     public void saveToFile() throws IOException, RuntimeException {
             String sting;
+            String historyManager = toString(getHistoryManager());
         try {
             Path pathToFile = Paths.get(path).toAbsolutePath();
             if (!Files.exists(pathToFile)) {
@@ -353,7 +410,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                     sting = toString((SubTask) entry.getValue());
                     writer.write(sting + "\n");
                 }
-//                    writer.write( "\n");
+                    writer.write( "\n");
+                writer.write(historyManager);
                 writer.close();
             } else if (Files.exists(pathToFile)) {
                 Writer writer = new FileWriter(pathToFile.toString());
@@ -370,13 +428,15 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                     sting = toString((SubTask) entry.getValue());
                     writer.write(sting + "\n");
                 }
-//                writer.write( "\n");
+                writer.write( "\n");
+                writer.write(historyManager);
                 writer.close();
             }
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
         } catch (RuntimeException e) {
             System.out.println(e.getMessage());
+            System.out.println("Ошибка записи");
         }
     }
 }

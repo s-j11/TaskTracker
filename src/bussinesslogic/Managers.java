@@ -15,7 +15,7 @@ public class Managers {
     }
 
     public static FileBackedTasksManager getDefaultFileBackedManager() {
-        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("./src/store/store.csv");
+        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("src/store/store.csv");//Была ./src/store/store.csv
         return fileBackedTasksManager;
     }
 }

@@ -29,6 +29,10 @@ public class InMemoryTaskManager implements TaskManager{
         this.counterID = counterID;
     }
 
+    public void setHistoryManager(HistoryManager historyManager) {
+        this.historyManager = historyManager;
+    }
+
     //Получение map Tasks
     @Override
     public Map<Integer, Task> getTaskMap() {
