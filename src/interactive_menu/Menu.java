@@ -47,6 +47,7 @@ public class Menu {
                 System.out.println("Список задач: " + fileBackedTasksManager.getListTasks(taskMap));
                 System.out.println("Список Эпик задач: " + fileBackedTasksManager.getListEpicTasks(epicTaskMap));
                 System.out.println("Список подзадач: " + fileBackedTasksManager.getListSubTasks(subTaskMap));
+                System.out.println();
             } else if (command == 2) {
                 System.out.println("Введите номер списка задач, который хотите удалить:\n"
                         + "1 - Список задач\n"
@@ -75,6 +76,7 @@ public class Menu {
                 fileBackedTasksManager.getTaskById(id);
                 fileBackedTasksManager.getEpicTaskById(id);
                 fileBackedTasksManager.getSubTaskById(id);
+                System.out.println();
             } else if (command == 4) {
                 System.out.println("Введите название задачи");
                 String name = scanner.next();

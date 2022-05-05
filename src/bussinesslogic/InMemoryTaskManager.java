@@ -20,6 +20,7 @@ public class InMemoryTaskManager implements TaskManager{
     public InMemoryTaskManager() {
     }
 
+
     public void setTaskMap(Map<Integer, Task> taskMap) {
         this.taskMap = taskMap;
     }

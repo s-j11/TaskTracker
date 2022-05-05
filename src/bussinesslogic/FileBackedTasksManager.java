@@ -23,39 +23,48 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     }
 
     @Override
+    public void setTaskMap(Map<Integer, Task> taskMap) {
+        super.setTaskMap(taskMap);
+    }
+
+    @Override
+    public void setEpicTaskMap(Map<Integer, EpicTask> epicTaskMap) {
+        super.setEpicTaskMap(epicTaskMap);
+    }
+
+    @Override
+    public void setSubTaskMap(Map<Integer, SubTask> subTaskMap) {
+        super.setSubTaskMap(subTaskMap);
+    }
+
+    @Override
     public Map<Integer, Task> getTaskMap() {
-       Map map = super.getTaskMap();
-        return map;
+        return super.getTaskMap();
     }
 
     @Override
     public Map<Integer, EpicTask> getEpicTaskMap() {
-        Map map = super.getEpicTaskMap();
-        return map;
+        return super.getEpicTaskMap();
     }
 
     @Override
     public Map<Integer, SubTask> getSubTaskMap() {
-        Map map = super.getSubTaskMap();
-        return map;
+        return super.getSubTaskMap();
     }
 
     @Override
     public Collection getListTasks(Map<Integer, Task> mapTask) {
-        Collection listTasks = super.getListTasks(mapTask);
-        return listTasks;
+        return super.getListTasks(mapTask);
     }
 
     @Override
     public Collection getListEpicTasks(Map<Integer, EpicTask> mapEpicTask) {
-        Collection listEpicTask = super.getListEpicTasks(mapEpicTask);
-        return listEpicTask;
+        return super.getListEpicTasks(mapEpicTask);
     }
 
     @Override
     public Collection getListSubTasks(Map<Integer, SubTask> mapSubTask) {
-        Collection listSubTasks = super.getListSubTasks(mapSubTask);
-        return listSubTasks;
+        return super.getListSubTasks(mapSubTask);
     }
 
     @Override
@@ -219,7 +228,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
             typeTask = TypeTask.EPIC;
             Collection list = ((EpicTask) task).getListSubtask();
             if(!list.isEmpty()) {
-                listSubtasks = ((EpicTask) task).getListSubtask().toString();
+                listSubtasks = ((EpicTask) task).getListSubtask().toString().replace(",",";");
             }
         } else if (task.getClass() == SubTask.class) {
             typeTask = TypeTask.SUBTASK;
@@ -274,17 +283,24 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
 
         if (typeTask.equals(TypeTask.TASK)) {
             task = new Task(name, description, id, status);
+        }   else if (typeTask.equals(TypeTask.SUBTASK)) {
+            epicTask = Integer.parseInt(split[5].trim());
+            task = new SubTask(name, description, id, status, epicTask);
         } else if (typeTask.equals(TypeTask.EPIC)) {
-            String subString = split[6].trim().substring(1, split[6].length() - 1);
-            String[] subStringNumbers = subString.split(", ");
+            if (split[6].length() == 1) {
+                String subString = split[6].trim().substring(1, split[6].length() - 1);
+            } else if(split[6].length() > 1){
+                String subString = split[6].trim().substring(1, split[6].length() - 1);
+                String[] subStringNumbers = subString.split(";");
             for (String str : subStringNumbers) {
                 list.add(Integer.parseInt(str.trim()));
             }
             task = new EpicTask(name, description, id, status, list);
-        } else if (typeTask.equals(TypeTask.SUBTASK)) {
-            epicTask = Integer.parseInt(split[5].trim());
-            task = new SubTask(name, description, id, status, epicTask);
         }
+//            else if (typeTask.equals(TypeTask.SUBTASK)) {
+//            epicTask = Integer.parseInt(split[5].trim());
+//            task = new SubTask(name, description, id, status, epicTask);
+//        }
 
 //        epicTask = Integer.parseInt(split[5].trim());
 
@@ -294,19 +310,21 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
 //
 //        for (String str : subStringNumbers) {
 //            list.add(Integer.parseInt(str.trim()));
-//        }
+        }
 
 
         return task;
     }
 
     public void fromFile() throws IOException{
-        Map<Integer,Task> map =new  HashMap<>();
-        Map<Integer,EpicTask> mapEpic = new HashMap<>();
-        Map<Integer,SubTask> mapSubTask = new HashMap<>();
+        Map<Integer,Task> map = getTaskMap();
+        Map<Integer,EpicTask> mapEpic = getEpicTaskMap();
+        Map<Integer,SubTask> mapSubTask = getSubTaskMap();
+
         try(Reader reader = new FileReader(path)){
             BufferedReader bf = new BufferedReader(reader);
            bf.readLine();
+            System.out.println("Задачи загруженные из файла *.csv");
             while (bf.ready()){
                 String line = bf.readLine();
                 if(bf.equals("")){
@@ -317,19 +335,20 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                 if (task.getClass().equals(Task.class)) {
                     System.out.println("Task" + task);
                     map.put(task.getId(), task);
-                    super.setTaskMap(map);
+                    setTaskMap(map);
                 } else if (task.getClass().equals(EpicTask.class)) {
                     System.out.println("Epic" + task);
                     mapEpic.put(task.getId(),(EpicTask)task);
-                    super.setEpicTaskMap(mapEpic);
+                    setEpicTaskMap(mapEpic);
                 } else if (task.getClass().equals(SubTask.class)) {
                     System.out.println("SubTask" + task);
                     mapSubTask.put(task.getId(), (SubTask) task);
-                    super.setSubTaskMap(mapSubTask);
+                    setSubTaskMap(mapSubTask);
                     }
                 }
             }
             bf.close();
+            System.out.println();
         }catch (FileNotFoundException e){
             System.out.println("Файл с даннмым не обноружен \n");
         }
