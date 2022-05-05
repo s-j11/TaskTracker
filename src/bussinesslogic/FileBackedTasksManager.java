@@ -23,21 +23,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     }
 
     @Override
-    public void setTaskMap(Map<Integer, Task> taskMap) {
-        super.setTaskMap(taskMap);
-    }
-
-    @Override
-    public void setEpicTaskMap(Map<Integer, EpicTask> epicTaskMap) {
-        super.setEpicTaskMap(epicTaskMap);
-    }
-
-    @Override
-    public void setSubTaskMap(Map<Integer, SubTask> subTaskMap) {
-        super.setSubTaskMap(subTaskMap);
-    }
-
-    @Override
     public Map<Integer, Task> getTaskMap() {
         return super.getTaskMap();
     }
@@ -287,10 +272,16 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
             epicTask = Integer.parseInt(split[5].trim());
             task = new SubTask(name, description, id, status, epicTask);
         } else if (typeTask.equals(TypeTask.EPIC)) {
-            if (split[6].length() == 1) {
+//            if(split[6].length() == 0) {
+//                String subString = null;
+//            }else if (split[6].length() == 1) {
                 String subString = split[6].trim().substring(1, split[6].length() - 1);
-            } else if(split[6].length() > 1){
-                String subString = split[6].trim().substring(1, split[6].length() - 1);
+//            } else if(split[6].length() > 1){
+//                String subString = split[6].trim().substring(1, split[6].length() - 1);
+                if(subString.equals("")){
+                    list =new ArrayList<>();
+                    task = new EpicTask(name, description, id, status, list);
+                }else{
                 String[] subStringNumbers = subString.split(";");
             for (String str : subStringNumbers) {
                 list.add(Integer.parseInt(str.trim()));
@@ -320,7 +311,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         Map<Integer,Task> map = getTaskMap();
         Map<Integer,EpicTask> mapEpic = getEpicTaskMap();
         Map<Integer,SubTask> mapSubTask = getSubTaskMap();
-
+        Integer conterId = getCounterID();
         try(Reader reader = new FileReader(path)){
             BufferedReader bf = new BufferedReader(reader);
            bf.readLine();
@@ -335,17 +326,15 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                 if (task.getClass().equals(Task.class)) {
                     System.out.println("Task" + task);
                     map.put(task.getId(), task);
-                    setTaskMap(map);
                 } else if (task.getClass().equals(EpicTask.class)) {
                     System.out.println("Epic" + task);
                     mapEpic.put(task.getId(),(EpicTask)task);
-                    setEpicTaskMap(mapEpic);
                 } else if (task.getClass().equals(SubTask.class)) {
                     System.out.println("SubTask" + task);
                     mapSubTask.put(task.getId(), (SubTask) task);
-                    setSubTaskMap(mapSubTask);
                     }
                 }
+                setCounterID(++conterId);
             }
             bf.close();
             System.out.println();

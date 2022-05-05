@@ -20,17 +20,13 @@ public class InMemoryTaskManager implements TaskManager{
     public InMemoryTaskManager() {
     }
 
-
-    public void setTaskMap(Map<Integer, Task> taskMap) {
-        this.taskMap = taskMap;
+    //Получение значение счетчика
+    public Integer getCounterID() {
+        return counterID;
     }
 
-    public void setEpicTaskMap(Map<Integer, EpicTask> epicTaskMap) {
-        this.epicTaskMap = epicTaskMap;
-    }
-
-    public void setSubTaskMap(Map<Integer, SubTask> subTaskMap) {
-        this.subTaskMap = subTaskMap;
+    public void setCounterID(Integer counterID) {
+        this.counterID = counterID;
     }
 
     //Получение map Tasks
