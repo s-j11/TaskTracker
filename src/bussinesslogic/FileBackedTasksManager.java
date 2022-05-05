@@ -272,12 +272,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
             epicTask = Integer.parseInt(split[5].trim());
             task = new SubTask(name, description, id, status, epicTask);
         } else if (typeTask.equals(TypeTask.EPIC)) {
-//            if(split[6].length() == 0) {
-//                String subString = null;
-//            }else if (split[6].length() == 1) {
                 String subString = split[6].trim().substring(1, split[6].length() - 1);
-//            } else if(split[6].length() > 1){
-//                String subString = split[6].trim().substring(1, split[6].length() - 1);
                 if(subString.equals("")){
                     list =new ArrayList<>();
                     task = new EpicTask(name, description, id, status, list);
@@ -287,23 +282,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                 list.add(Integer.parseInt(str.trim()));
             }
             task = new EpicTask(name, description, id, status, list);
+            }
         }
-//            else if (typeTask.equals(TypeTask.SUBTASK)) {
-//            epicTask = Integer.parseInt(split[5].trim());
-//            task = new SubTask(name, description, id, status, epicTask);
-//        }
-
-//        epicTask = Integer.parseInt(split[5].trim());
-
-//        String subString = split[6].trim().substring(1, split[6].length() - 1);
-//
-//        String[] subStringNumbers = subString.split(", ");
-//
-//        for (String str : subStringNumbers) {
-//            list.add(Integer.parseInt(str.trim()));
-        }
-
-
         return task;
     }
 
