@@ -18,4 +18,7 @@ public interface HistoryManager {
 
      //Очистка истории
      void clearHistory();
+
+     //Удаление всей цепочки node
+    void removeAllNode();
 }

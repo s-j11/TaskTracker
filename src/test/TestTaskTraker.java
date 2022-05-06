@@ -6,10 +6,7 @@ import maketbussinesslogic.TaskManager;
 import model.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TestTaskTraker {
 
@@ -72,7 +69,8 @@ public class TestTaskTraker {
         inFileBackedTaksManager.getTaskMap().clear();
         inFileBackedTaksManager.getEpicTaskMap().clear();
         inFileBackedTaksManager.getSubTaskMap().clear();
-        inFileBackedTaksManager.getHistoryManager().clearHistory();
+        inFileBackedTaksManager.getHistoryManager().removeAllNode();
+
         System.out.println(inFileBackedTaksManager.getTaskMap());
         System.out.println(inFileBackedTaksManager.getEpicTaskMap());
         System.out.println(inFileBackedTaksManager.getSubTaskMap());

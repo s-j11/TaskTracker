@@ -326,7 +326,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                     }
                     setCounterID(++conterId);
                 } else {
-                    System.out.println("Пустая строка");
+                    System.out.println();
+                    System.out.println("Загрузка данных в HistoryManager");
                     break;
                 }
             }

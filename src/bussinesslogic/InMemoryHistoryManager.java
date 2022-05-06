@@ -11,6 +11,10 @@ import java.util.*;
     private  Node<Task> head = null;
     private  Node<Task> tail = null;
 
+        public Map<Integer, Node> getIndexMap() {
+            return indexMap;
+        }
+
         public Node<Task> linkLast(Task task){
          Node<Task> lastNode = tail;
          Node<Task> newNode = new Node( tail, task, null);
@@ -92,6 +96,20 @@ import java.util.*;
     public void clearHistory() {
         historyList.clear();
     }
-}
+
+
+    @Override
+    public void removeAllNode(){
+       Collection<Node> list = this.historyList;
+       for (int i =0; i < historyList.size(); i++){
+        Node node = historyList.get(i);
+        remove(node);
+        list.remove(node);
+        i--;
+       }
+
+        }
+    }
+
 
 
