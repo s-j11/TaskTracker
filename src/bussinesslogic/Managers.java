@@ -4,6 +4,7 @@ import maketbussinesslogic.HistoryManager;
 import maketbussinesslogic.TaskManager;
 
 public class Managers {
+    String path;
     public static TaskManager getDefault(){
         TaskManager inMemoryTaskManager = new InMemoryTaskManager();
         return inMemoryTaskManager;
@@ -14,8 +15,8 @@ public class Managers {
         return inMemoryHistoryManager;
     }
 
-    public static FileBackedTasksManager getDefaultFileBackedManager() {
-        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("src/store/store.csv");//Была ./src/store/store.csv
+    public static FileBackedTasksManager getDefaultFileBackedManager(String path) {
+        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(path);
         return fileBackedTasksManager;
     }
 }

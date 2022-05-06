@@ -11,7 +11,7 @@ import java.util.*;
 public class Menu {
     private Scanner scanner = new Scanner(System.in);
     private Managers managers = new Managers();
-    private TaskManager  fileBackedTasksManager = managers.getDefaultFileBackedManager();
+    private TaskManager  fileBackedTasksManager = managers.getDefaultFileBackedManager("src/store/store.csv");
     private Map<Integer, Task> taskMap = fileBackedTasksManager.getTaskMap();
     private Map<Integer, EpicTask> epicTaskMap = fileBackedTasksManager.getEpicTaskMap();
     private Map<Integer, SubTask> subTaskMap = fileBackedTasksManager.getSubTaskMap();
