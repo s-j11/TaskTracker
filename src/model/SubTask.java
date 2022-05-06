@@ -23,8 +23,6 @@ public class SubTask extends  Task {
         this.epicTaskNumber = epicTaskNumber;
     }
 
-
-
     public String toString() {
         String result = "{name=' " + getName() + '\'';
         if (getDescription() != null) {

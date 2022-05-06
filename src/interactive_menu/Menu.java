@@ -150,9 +150,9 @@ public class Menu {
             } else if (command == 9) {
                 System.out.println(fileBackedTasksManager.getHistoryManager().getHistory());
             }else if(command == 10) {
-//                taskMap.clear();
-//                epicTaskMap.clear();
-//                subTaskMap.clear();
+                taskMap.clear();
+                epicTaskMap.clear();
+                subTaskMap.clear();
             fileBackedTasksManager.fromFile();
             }else if (command == 11) {
                 System.out.println("Выход");

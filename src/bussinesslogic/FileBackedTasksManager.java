@@ -4,15 +4,11 @@ import maketbussinesslogic.HistoryManager;
 import maketbussinesslogic.TaskManager;
 import model.*;
 
-import java.awt.*;
-import java.awt.List;
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.concurrent.Callable;
 
 public class FileBackedTasksManager extends InMemoryTaskManager implements TaskManager {
 
@@ -216,7 +212,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         super.getAllSubTaskInEpic(key);
     }
 
-
     public String toString(Task task) {
         TypeTask typeTask = null;
         String numberEpic = "no";
@@ -351,7 +346,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
             }
         }
 
-
     public  String toString(HistoryManager historyManager) {
         Collection<Task> list = historyManager.getHistory();
         Collection<Integer> number = new ArrayList<>();
@@ -368,7 +362,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                 return string;
             }
         }
-
 
     public HistoryManager fromFile(String value){
         HistoryManager historyManager = getHistoryManager();
@@ -398,9 +391,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                     }
                 }return historyManager;
             }
-
-
-
 
     public void saveToFile() throws IOException, RuntimeException {
             String sting;

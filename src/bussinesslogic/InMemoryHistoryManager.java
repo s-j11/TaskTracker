@@ -97,7 +97,6 @@ import java.util.*;
         historyList.clear();
     }
 
-
     @Override
     public void removeAllNode(){
        Collection<Node> list = this.historyList;
@@ -107,7 +106,6 @@ import java.util.*;
         list.remove(node);
         i--;
        }
-
         }
     }
 

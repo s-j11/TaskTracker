@@ -1,10 +1,6 @@
 package model;
 
-
-import java.util.LinkedList;
-
 public class Node <T> {
-
 
     public Node<T> prev;
     public T data;

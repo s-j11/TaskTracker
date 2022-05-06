@@ -4,22 +4,16 @@ import bussinesslogic.Managers;
 import maketbussinesslogic.HistoryManager;
 import maketbussinesslogic.TaskManager;
 import model.*;
-
 import java.io.IOException;
 import java.util.*;
-
 public class TestTaskTraker {
 
     private Managers managers = new Managers();
     private TaskManager inFileBackedTaksManager = managers.getDefaultFileBackedManager("src/store/test.csv");
-    private HistoryManager historyManager = managers.getDefaultHistory();
+    private HistoryManager historyManager = inFileBackedTaksManager.getHistoryManager();
     private Map<Integer, Task> taskHashMap;
     private Map<Integer, EpicTask> epicTaskMap;
     private Map<Integer, SubTask> subTaskMap;
-    private Node node = null;
-    private List<Node> history = new ArrayList<Node>();
-    private Map<Integer, Node> indexMap = new HashMap<Integer, Node>() ;
-
     public TestTaskTraker(Map<Integer, Task> taskHashMap, Map<Integer, EpicTask> epicTaskMap,
                           Map<Integer, SubTask> subTaskMap) {
         this.taskHashMap = taskHashMap;
@@ -41,40 +35,39 @@ public class TestTaskTraker {
         System.out.println("Просмотр задач по ID и проверка функции history ");
         inFileBackedTaksManager.getEpicTaskById(1);
         inFileBackedTaksManager.getEpicTaskById(2);
-        System.out.println(inFileBackedTaksManager.getHistoryManager().getHistory());
+        System.out.println(historyManager.getHistory());
         System.out.println();
         inFileBackedTaksManager.getSubTaskById(3);
         inFileBackedTaksManager.getSubTaskById(4);
-        System.out.println(inFileBackedTaksManager.getHistoryManager().getHistory());
+        System.out.println(historyManager.getHistory());
         System.out.println();
         inFileBackedTaksManager.getEpicTaskById(2);
         inFileBackedTaksManager.getEpicTaskById(1);
         inFileBackedTaksManager.getSubTaskById(5);
-        System.out.println(inFileBackedTaksManager.getHistoryManager().getHistory());
+        System.out.println(historyManager.getHistory());
         System.out.println();
         inFileBackedTaksManager.getSubTaskById(4);
         inFileBackedTaksManager.getSubTaskById(3);
         inFileBackedTaksManager.getSubTaskById(5);
-        System.out.println(inFileBackedTaksManager.getHistoryManager().getHistory());
+        System.out.println(historyManager.getHistory());
         System.out.println();
         inFileBackedTaksManager.getSubTaskById(5);
         inFileBackedTaksManager.getSubTaskById(3);
-        System.out.println(inFileBackedTaksManager.getHistoryManager().getHistory());
+        System.out.println(historyManager.getHistory());
         System.out.println("=======================================================================================");
         System.out.println("Очикстра временной памяти ");
         System.out.println(inFileBackedTaksManager.getTaskMap());
         System.out.println(inFileBackedTaksManager.getEpicTaskMap());
         System.out.println(inFileBackedTaksManager.getSubTaskMap());
-        System.out.println(inFileBackedTaksManager.getHistoryManager().getHistory());
+        System.out.println(historyManager.getHistory());
         inFileBackedTaksManager.getTaskMap().clear();
         inFileBackedTaksManager.getEpicTaskMap().clear();
         inFileBackedTaksManager.getSubTaskMap().clear();
-        inFileBackedTaksManager.getHistoryManager().removeAllNode();
-
+        historyManager.removeAllNode();
         System.out.println(inFileBackedTaksManager.getTaskMap());
         System.out.println(inFileBackedTaksManager.getEpicTaskMap());
         System.out.println(inFileBackedTaksManager.getSubTaskMap());
-        System.out.println(inFileBackedTaksManager.getHistoryManager().getHistory());
+        System.out.println(historyManager.getHistory());
         System.out.println("=======================================================================================");
         System.out.println("Восстановление из файла ");
         try {
@@ -85,7 +78,7 @@ public class TestTaskTraker {
         System.out.println(inFileBackedTaksManager.getTaskMap());
         System.out.println(inFileBackedTaksManager.getEpicTaskMap());
         System.out.println(inFileBackedTaksManager.getSubTaskMap());
-        System.out.println(inFileBackedTaksManager.getHistoryManager().getHistory());
+        System.out.println(historyManager.getHistory());
         System.out.println();
     }
 }
