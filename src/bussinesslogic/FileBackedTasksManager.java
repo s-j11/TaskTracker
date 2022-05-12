@@ -377,8 +377,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                 writer.write(historyManager);
                 writer.close();
             }
-        } catch (FileNotFoundException e) {
-            System.out.println(e.getMessage());
         } catch (Exception e) {
             throw new ManagerSaveException(e.getMessage());
         }
