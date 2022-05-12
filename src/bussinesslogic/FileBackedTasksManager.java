@@ -1,5 +1,6 @@
 package bussinesslogic;
 
+import error.ManagerSaveException;
 import maketbussinesslogic.HistoryManager;
 import maketbussinesslogic.TaskManager;
 import model.*;
@@ -379,8 +380,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            System.out.println("Ошибка записи");
+            throw new ManagerSaveException(e.getMessage());
         }
     }
 }
