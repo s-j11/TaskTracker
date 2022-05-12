@@ -56,155 +56,95 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     @Override
     public void deleteAllTask() {
         super.deleteAllTask();
-        try {
             saveToFile();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override
     public void deleteAllEpic() {
         super.deleteAllEpic();
-        try {
             saveToFile();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override
     public void deleteAllSubTask() {
         super.deleteAllSubTask();
-        try {
             saveToFile();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override
     public void getTaskById(int key) {
         super.getTaskById(key);
-        try {
             saveToFile();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override
     public void getEpicTaskById(int key) {
         super.getEpicTaskById(key);
-        try {
             saveToFile();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override
     public void getSubTaskById(int key) {
         super.getSubTaskById(key);
-        try {
             saveToFile();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override
     public Task makeTask(String name, String description) {
         Task task = super.makeTask(name, description);
-        try {
             saveToFile();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
         return task;
     }
 
     @Override
     public EpicTask makeEpic(String name, String description) {
         EpicTask epicTask = super.makeEpic(name,description);
-        try {
             saveToFile();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
         return epicTask;
     }
 
     @Override
     public SubTask makeSubTask(String name, String description, int id) {
         SubTask subTask = super.makeSubTask(name,description,id);
-        try {
             saveToFile();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
         return subTask;
     }
 
     @Override
     public void deleteTaskById(int key) {
         super.deleteTaskById(key);
-        try {
             saveToFile();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override
     public void deleteEpicTaskById(int key) {
         super.deleteEpicTaskById(key);
-        try {
             saveToFile();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override
     public void deleteSubTaskById(int key) {
         super.deleteSubTaskById(key);
-        try {
             saveToFile();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override
     public Map<Integer, Task> updateTaskById(Task taskUpdate) {
         Map<Integer, Task> map = super.updateTaskById(taskUpdate);
-        try {
             saveToFile();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
         return map;
     }
 
     @Override
     public void updateEpicTaskById(EpicTask taskUpdate) {
     super.updateEpicTaskById(taskUpdate);
-        try {
             saveToFile();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override
     public void updateSubTaskById(SubTask taskUpdate) {
         super.updateSubTaskById(taskUpdate);
-        try {
             saveToFile();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override
@@ -301,7 +241,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         Map<Integer, EpicTask> mapEpic = getEpicTaskMap();
         Map<Integer, SubTask> mapSubTask = getSubTaskMap();
         Integer conterId = getCounterID();
-        try (Reader reader = new FileReader(path)) {
+        HistoryManager historyManager = this.getHistoryManager();
+        if(Paths.get(path).toFile().isFile()) {
+            Reader reader = new FileReader(path);
             BufferedReader bf = new BufferedReader(reader);
             bf.readLine();
             System.out.println("Задачи загруженные из файла *.csv");
@@ -335,18 +277,18 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                 if (string.isBlank()) {
                     System.out.println("Просмотра задач еще не было");
                 } else {
-                    HistoryManager historyManager = fromFile(string);
+                    historyManager = fromFile(string);
                     setHistoryManager(historyManager);
                 }
                 bf.close();
                 System.out.println();
-                }
-            } catch(FileNotFoundException e){
+            }
+        }else{
                 System.out.println("Файл с даннмым не обноружен \n");
             }
         }
 
-    public  String toString(HistoryManager historyManager) {
+    public String toString(HistoryManager historyManager) {
         Collection<Task> list = historyManager.getHistory();
         Collection<Integer> number = new ArrayList<>();
         String string = null;
@@ -392,7 +334,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                 }return historyManager;
             }
 
-    public void saveToFile() throws IOException, RuntimeException {
+    public void saveToFile() {
             String sting;
             String historyManager = toString(getHistoryManager());
         try {
@@ -436,7 +378,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
             }
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             System.out.println("Ошибка записи");
         }
