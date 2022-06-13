@@ -6,6 +6,7 @@ import model.Task;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 public interface TaskManager {
@@ -26,7 +27,7 @@ public interface TaskManager {
     Collection getListEpicTasks(Map<Integer, EpicTask> mapEpicTask);
 
     //Получение списка всех подзадач model.SubTask.
-    Collection getListSubTasks(Map<Integer, SubTask> mapSubTask);
+    List<SubTask> getListSubTasks(Map<Integer, SubTask> mapSubTask);
 
     //Получение historyManagera
     HistoryManager getHistoryManager();

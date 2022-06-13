@@ -45,7 +45,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     }
 
     @Override
-    public Collection getListSubTasks(Map<Integer, SubTask> mapSubTask) {
+    public List<SubTask> getListSubTasks(Map<Integer, SubTask> mapSubTask) {
         return super.getListSubTasks(mapSubTask);
     }
 

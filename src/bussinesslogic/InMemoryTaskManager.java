@@ -81,8 +81,8 @@ public class InMemoryTaskManager implements TaskManager{
 
     //Получение списка всех подзадач model.SubTask.
     @Override
-    public Collection getListSubTasks(Map<Integer, SubTask> mapSubTask) {
-        Collection listSubTask = new ArrayList<>();
+    public List<SubTask> getListSubTasks(Map<Integer, SubTask> mapSubTask) {
+        List<SubTask> listSubTask = new ArrayList<>();
         Set<Integer> setKeys = mapSubTask.keySet();
         for (int i : setKeys) {
             SubTask subTask = mapSubTask.get(i);
