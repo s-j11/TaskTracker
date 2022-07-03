@@ -8,13 +8,9 @@ import model.SubTask;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.util.*;
-import java.util.stream.Collectors;
-
 class EpicTaskTest {
     private Managers managers = new Managers();
     private TaskManager inFileBackedTaksManager = managers.getDefaultFileBackedManager("src/store/test.csv");
-
     @BeforeEach
     public void shouldPreparedTestEnvironment(){
         EpicTask epicTask = inFileBackedTaksManager.makeEpic("Тестирование", "Разработка тестирования");
@@ -24,65 +20,52 @@ class EpicTaskTest {
                 "Разработка класса логики", 1);
         SubTask subTask2 = inFileBackedTaksManager.makeSubTask("Класс тестирования",
                 "Разработка класа тестирования", 1);
-        SubTask subTask3 = inFileBackedTaksManager.makeSubTask("Класс тестирования",
-                "Разработка класа тестирования", 1);
-        SubTask subTask4 = inFileBackedTaksManager.makeSubTask("Класс тестирования",
-                "Разработка класа тестирования", 1);
-        SubTask subTask5 = inFileBackedTaksManager.makeSubTask("Класс тестирования",
-                "Разработка класа тестирования", 1);
-
-        subTask.setStatus(Status.DONE);
-        subTask2.setStatus(Status.IN_PROGRESS);
-        subTask3.setStatus(Status.DONE);
     }
-
     @Test
     public void shouldThrowEmptyListSubTask(){
-        EpicTask epicTask = new EpicTask();
-        Collection list = new ArrayList<>();
-        Assertions.assertEquals(list, epicTask.getListSubtask(), "Список подзадач не пуст");
+       inFileBackedTaksManager.deleteAllSubTask();
+       EpicTask eT = inFileBackedTaksManager.getEpicTaskMap().get(1);
+        Assertions.assertEquals(Status.NEW, eT.getStatus(), "Статус не NEW");
     }
-
     @Test
     public void shouldThrowAllNewSubTasks(){
-        List<SubTask> listSubtasks = inFileBackedTaksManager.getListSubTasks(inFileBackedTaksManager.getSubTaskMap());
-        List<SubTask> listSubtasksNew = listSubtasks.stream()
-                .filter(x -> x.getStatus().equals(Status.NEW))
-                .collect(Collectors.toList());
-
-        Assertions.assertEquals(3, listSubtasksNew.size(), "Колличество SubTask не соответвует заданным");
+        EpicTask eT = inFileBackedTaksManager.getEpicTaskMap().get(1);
+        Assertions.assertEquals(Status.NEW, eT.getStatus(), "Статус не NEW");
     }
-
     @Test
     public void shouldThrowAllDoneSubTasks(){
-        List<SubTask> listSubtasks = inFileBackedTaksManager.getListSubTasks(inFileBackedTaksManager.getSubTaskMap());
-        List<SubTask> listSubtasksNew = listSubtasks.stream()
-                .filter(x -> x.getStatus().equals(Status.DONE))
-                .collect(Collectors.toList());
-
-        Assertions.assertEquals(2, listSubtasksNew.size(),
-                "Колличество SubTask не соответвует заданным");
+        SubTask subTask = inFileBackedTaksManager.getSubTaskMap().get(2);
+        SubTask subTask1 = inFileBackedTaksManager.getSubTaskMap().get(3);
+        SubTask subTask2 = inFileBackedTaksManager.getSubTaskMap().get(4);
+        subTask.setStatus(Status.DONE);
+        subTask1.setStatus(Status.DONE);
+        subTask2.setStatus(Status.DONE);
+        inFileBackedTaksManager.updateSubTaskById(subTask);
+        inFileBackedTaksManager.updateSubTaskById(subTask1);
+        inFileBackedTaksManager.updateSubTaskById(subTask2);
+        EpicTask eT = inFileBackedTaksManager.getEpicTaskMap().get(1);
+        Assertions.assertEquals(Status.DONE, eT.getStatus(), "Статус не DONE");
     }
-
     @Test
-    public void shouldThrowAllNewAndDoneSubTasks(){
-        List<SubTask> listSubtasks = inFileBackedTaksManager.getListSubTasks(inFileBackedTaksManager.getSubTaskMap());
-        List<SubTask> listSubtasksNew = listSubtasks.stream()
-                .filter(x -> x.getStatus().equals(Status.NEW)|| x.getStatus().equals(Status.DONE))
-                .collect(Collectors.toList());
-
-        Assertions.assertEquals(5, listSubtasksNew.size(),
-                "Колличество SubTask не соответвует заданным");
+    public void shouldThrowNewAndDoneSubTasks(){
+        SubTask subTask = inFileBackedTaksManager.getSubTaskMap().get(2);
+        SubTask subTask1 = inFileBackedTaksManager.getSubTaskMap().get(3);
+        subTask.setStatus(Status.DONE);
+        subTask1.setStatus(Status.DONE);
+        inFileBackedTaksManager.updateSubTaskById(subTask);
+        inFileBackedTaksManager.updateSubTaskById(subTask1);
+        EpicTask eT = inFileBackedTaksManager.getEpicTaskMap().get(1);
+        Assertions.assertEquals(Status.NEW, eT.getStatus(), "Статус не DONE");
     }
-
     @Test
     public void shouldThrowAllInProgressSubTasks(){
-        List<SubTask> listSubtasks = inFileBackedTaksManager.getListSubTasks(inFileBackedTaksManager.getSubTaskMap());
-        List<SubTask> listSubtasksNew = listSubtasks.stream()
-                .filter(x -> x.getStatus().equals(Status.IN_PROGRESS))
-                .collect(Collectors.toList());
-
-        Assertions.assertEquals(1, listSubtasksNew.size(),
-                "Колличество SubTask не соответвует заданным");
+        SubTask subTask = inFileBackedTaksManager.getSubTaskMap().get(2);
+        SubTask subTask1 = inFileBackedTaksManager.getSubTaskMap().get(3);
+        subTask.setStatus(Status.IN_PROGRESS);
+        subTask1.setStatus(Status.DONE);
+        inFileBackedTaksManager.updateSubTaskById(subTask);
+        inFileBackedTaksManager.updateSubTaskById(subTask1);
+        EpicTask eT = inFileBackedTaksManager.getEpicTaskMap().get(1);
+        Assertions.assertEquals(Status.IN_PROGRESS, eT.getStatus(), "Статус не IN_PROGRESS");
     }
 }
