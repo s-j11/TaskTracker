@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class EpicTask extends Task{
         private List<Integer> listSubtask = new ArrayList<>();
@@ -16,6 +17,20 @@ public class EpicTask extends Task{
 
         public void setListSubtask(List<Integer> listSubtask) {
                 this.listSubtask = listSubtask;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+                if (this == o) return true;
+                if (o == null || getClass() != o.getClass()) return false;
+                if (!super.equals(o)) return false;
+                EpicTask epicTask = (EpicTask) o;
+                return Objects.equals(listSubtask, epicTask.listSubtask);
+        }
+
+        @Override
+        public int hashCode() {
+                return Objects.hash(super.hashCode(), listSubtask);
         }
 
         public EpicTask() {

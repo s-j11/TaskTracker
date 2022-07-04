@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 public class SubTask extends  Task {
     int epicTaskNumber;
 
@@ -21,6 +23,20 @@ public class SubTask extends  Task {
     public SubTask(String name, String description, int id, Status status, int epicTaskNumber) {
         super(name, description, id, status);
         this.epicTaskNumber = epicTaskNumber;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        SubTask subTask = (SubTask) o;
+        return epicTaskNumber == subTask.epicTaskNumber;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), epicTaskNumber);
     }
 
     public String toString() {
