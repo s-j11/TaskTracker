@@ -1,5 +1,6 @@
-package bussinesslogic;
+package test;
 
+import bussinesslogic.InMemoryTaskManager;
 import maketbussinesslogic.TaskManager;
 import model.EpicTask;
 import model.SubTask;
@@ -20,12 +21,6 @@ class InMemoryTaskManagerTest extends TaskManagerTest {
     @BeforeEach
     public void updateTaskManager(){
         super.updateTaskManager();
-    }
-
-
-    @BeforeEach
-    public void shouldPreparedTestEnvironment() {
-
         Task task =  taskManager.makeTask("Проектирование", "Проектирование ПО");
         EpicTask epicTask = taskManager.makeEpic("Тестирование", "Разработка тестирования");
         SubTask subTask =  taskManager.makeSubTask("Разработка меню",
@@ -34,6 +29,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest {
                 "Разработка класса логики", 2);
         SubTask subTask2 =  taskManager.makeSubTask("Класс тестирования",
                 "Разработка класа тестирования", 2);
+
     }
 
 
