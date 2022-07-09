@@ -1,5 +1,10 @@
 package bussinesslogic;
 
+import maketbussinesslogic.TaskManager;
+import model.EpicTask;
+import model.SubTask;
+import model.Task;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import test.TaskManagerTest;
@@ -8,9 +13,33 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryTaskManagerTest extends TaskManagerTest {
 
+    @Override
+    public TaskManager сreateTaskManager() {
+        return new InMemoryTaskManager();
+    }
+    @BeforeEach
+    public void updateTaskManager(){
+        super.updateTaskManager();
+    }
+
+
+    @BeforeEach
+    public void shouldPreparedTestEnvironment() {
+
+        Task task =  taskManager.makeTask("Проектирование", "Проектирование ПО");
+        EpicTask epicTask = taskManager.makeEpic("Тестирование", "Разработка тестирования");
+        SubTask subTask =  taskManager.makeSubTask("Разработка меню",
+                "Разработка класса меню", 2);
+        SubTask subTask1 =  taskManager.makeSubTask("Разработка логики",
+                "Разработка класса логики", 2);
+        SubTask subTask2 =  taskManager.makeSubTask("Класс тестирования",
+                "Разработка класа тестирования", 2);
+    }
+
+
     @Test
     public void shouldGetTaskMap() {
-    super.shouldGetTaskMap();
+        super.shouldGetTaskMap();
     }
 
     @Test
