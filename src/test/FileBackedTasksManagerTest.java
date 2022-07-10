@@ -27,128 +27,100 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
                 "Разработка класса логики", 2);
         SubTask subTask2 =  taskManager.makeSubTask("Класс тестирования",
                 "Разработка класа тестирования", 2);
-
     }
-
-
     @Test
     public void shouldGetTaskMap() {
         super.shouldGetTaskMap();
     }
-
     @Test
     public void shouldGetEpicTaskMap() {
         super.shouldGetEpicTaskMap();
     }
-
     @Test
-    void shouldgetSubTaskMap() {
+    public void shouldGetSubTaskMap() {
         super.shouldGetSubTaskMap();
     }
-
     @Test
-    void shouldgetHistoryManager() {
+    public void shouldGetHistoryManager() {
 
     }
-
     @Test
-    void getListTasks() {
+    public void shouldGetListTasks() {
         super.shouldGetListTasks();
     }
-
     @Test
-    void getListEpicTasks() {
+    public void shouldGetListEpicTasks() {
         super.shouldGetListEpicTasks();
     }
-
     @Test
-    void getListSubTasks() {
+    public void shouldGetListSubTasks() {
         super.shouldGetListSubTasks();
     }
-
     @Test
-    void deleteAllTask() {
+    public void shouldDeleteAllTask() {
         super.shouldDeleteAllTask();
     }
-
     @Test
-    void deleteAllEpic() {
+    void shouldDeleteAllEpic() {
         super.shouldDeleteAllEpicTask();
     }
-
     @Test
-    void deleteAllSubTask() {
+    public void shouldDeleteAllSubTask() {
         super.shouldDeleteAllSubTask();
     }
-
     @Test
-    void getTaskById() {
+    void shouldGetTaskById() {
         super.shouldGetTaskByID();
     }
-
     @Test
-    void getEpicTaskById() {
+    void shouldGetEpicTaskById() {
         super.shouldGetEpicTaskByID();
-
     }
-
     @Test
-    void getSubTaskById() {
+    void shouldGetSubTaskById() {
         super.shouldGetSubTaskByID();
     }
-
     @Test
-    void makeTask() {
+    public void shouldMakeTask() {
         super.shouldMakeTask();
     }
-
     @Test
-    void makeEpic() {
+    void shouldMakeEpic() {
         super.shouldMakeEpicTask();
     }
-
     @Test
-    void makeSubTask() {
+    public void shouldMakeSubTask() {
         super.shouldMakeSubTask();
     }
-
     @Test
-    void deleteTaskById() {
+    void shouldDeleteTaskById() {
         super.shouldDeleteTaskByID();
     }
-
     @Test
-    void deleteEpicTaskById() {
+    void shouldDeleteEpicTaskById() {
         super.shouldDeleteEpicTaskByID();
     }
-
     @Test
-    void deleteSubTaskById() {
+    void shouldDeleteSubTaskById() {
         super.shouldDeleteSubTaskByID();
     }
-
     @Test
-    void updateTaskById() {
+    public void shouldUpdateTaskById() {
         super.shouldUpdateTaskById();
     }
-
     @Test
-    void updateEpicTaskById() {
+    public void shouldUpdateEpicTaskById() {
         super.shouldUpdateEpicTaskById();
     }
-
     @Test
-    void updateSubTaskById() {
+    public void shouldUpdateSubTaskById() {
         super.shouldUpdateSubTaskById();
     }
-
     @Test
-    void getAllSubTaskInEpic() {
+    public void shouldGetAllSubTaskInEpic() {
         super.shouldGetAllSubTaskInEpic();
     }
-
     @Test
-    void fromFile() {
+    void shouldFromFile() {
     }
-
 }
