@@ -19,6 +19,7 @@ public class InMemoryTaskManager implements TaskManager{
     public InMemoryTaskManager() {
     }
 
+
     //Получение значение счетчика
     public Integer getCounterID() {
         return counterID;
