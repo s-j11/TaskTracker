@@ -1,5 +1,7 @@
 package test;
 
+import bussinesslogic.InMemoryHistoryManager;
+import maketbussinesslogic.HistoryManager;
 import maketbussinesslogic.TaskManager;
 import model.EpicTask;
 import model.Status;
@@ -127,6 +129,13 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
     @Test
     public void shouldGetHistoryManager(){
+        InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
+        Task task = new Task("Проектирование", "Проектирование ПО", 1, Status.NEW);
+        Assertions.assertEquals(inMemoryHistoryManager.getHistory(), taskManager.getHistoryManager().getHistory());
+        inMemoryHistoryManager.add(task);
+        taskManager.getTaskById(1);
+        Assertions.assertNotNull(taskManager.getHistoryManager().getHistory());
+        Assertions.assertEquals(inMemoryHistoryManager.getHistory(),taskManager.getHistoryManager().getHistory());
 
     };
     @Test

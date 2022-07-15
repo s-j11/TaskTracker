@@ -42,7 +42,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest {
     }
     @Test
     public void shouldGetHistoryManager() {
-
+    super.shouldGetHistoryManager();
     }
     @Test
     public void shouldGetListTasks() {

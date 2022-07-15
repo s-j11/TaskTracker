@@ -19,6 +19,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         this.path = path;
     }
 
+    public String getPath() {
+        return path;
+    }
+
     @Override
     public Map<Integer, Task> getTaskMap() {
         return super.getTaskMap();
