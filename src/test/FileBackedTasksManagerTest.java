@@ -1,6 +1,8 @@
 package test;
 
 import bussinesslogic.FileBackedTasksManager;
+import bussinesslogic.InMemoryHistoryManager;
+import maketbussinesslogic.HistoryManager;
 import maketbussinesslogic.TaskManager;
 import model.EpicTask;
 import model.Status;
@@ -162,8 +164,6 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
                 if (!line.isBlank()) {
 
                 } else {
-                    System.out.println();
-                    System.out.println("Загрузка данных в HistoryManager");
                     break;
                 }
             }
@@ -172,7 +172,6 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
                 return;
                 }
         }
-        System.out.println(listString);
             Task taskFromString = fileBackedTasksManager.fromString(listString.get(0));
             Task epicFromString = fileBackedTasksManager.fromString(listString.get(1));
             Task subTaskFromString = fileBackedTasksManager.fromString(listString.get(2));
@@ -215,4 +214,138 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
         Assertions.assertEquals(epicMap,taskManager.getEpicTaskMap());
         Assertions.assertEquals(subMap,taskManager.getSubTaskMap());
     }
+
+    @Test
+    void shouldToStringHistoryManager(){
+        String str = "2, 4, 5, 1, 3";
+        taskManager.getEpicTaskById(2);
+        taskManager.getSubTaskById(4);
+        taskManager.getSubTaskById(5);
+        taskManager.getTaskById(1);
+        taskManager.getSubTaskById(3);
+        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("src/store/test.csv");
+        String strHistoryMangager = fileBackedTasksManager.toString(taskManager.getHistoryManager());
+        Assertions.assertEquals(str,strHistoryMangager);
+    }
+
+    @Test
+    void shouldHistoryManagerFromFile() throws IOException{
+        HistoryManager historyManager = new InMemoryHistoryManager();
+        Task task = new Task("Проектирование", "Проектирование ПО", 1, Status.NEW);
+        List<Integer> list = new ArrayList<>();
+        list.add(3);
+        list.add(4);
+        list.add(5);
+        EpicTask epicTask = new EpicTask("Тестирование", "Разработка тестирования", 2, Status.NEW, list);
+        SubTask subTask = new SubTask("Разработка меню", "Разработка класса меню", 3, Status.NEW,
+                2);
+        SubTask subTask1 = new SubTask("Разработка логики", "Разработка класса логики", 4, Status.NEW,
+                2);
+        SubTask subTask2 = new SubTask("Класс тестирования", "Разработка класа тестирования", 5, Status.NEW,
+                2);
+        historyManager.add(epicTask);
+        historyManager.add(subTask1);
+        historyManager.add(subTask2);
+        historyManager.add(task);
+        historyManager.add(subTask);
+        taskManager.getEpicTaskById(2);
+        taskManager.getSubTaskById(4);
+        taskManager.getSubTaskById(5);
+        taskManager.getTaskById(1);
+        taskManager.getSubTaskById(3);
+        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("src/store/test.csv");
+        fileBackedTasksManager.fromFile();
+        List<String> listString = new ArrayList();
+        if(Paths.get(fileBackedTasksManager.getPath()).toFile().isFile()) {
+            Reader reader = new FileReader(fileBackedTasksManager.getPath());
+            BufferedReader bf = new BufferedReader(reader);
+            bf.readLine();
+            while (bf.ready()) {
+                String line = bf.readLine();
+                listString.add(line);
+                if (!line.isBlank()) {
+
+                } else {
+                    break;
+                }
+            }
+            if (!bf.ready()) {
+                bf.close();
+                return;
+            } else {
+            String string = bf.readLine();
+            if (string.isBlank()) {
+            } else {
+                listString.add(string);
+            }
+            bf.close();
+            System.out.println();
+        }
+        }
+        String str = listString.get(6);
+        HistoryManager historyManagerFromString = fileBackedTasksManager.fromFile(str);
+        Assertions.assertEquals(historyManager.getHistory(),historyManagerFromString.getHistory());
+    }
+
+    @Test
+    void shouldSaveToFile() throws IOException{
+        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("src/store/test.csv");
+        taskManager.getEpicTaskById(2);
+        taskManager.getSubTaskById(4);
+        taskManager.getSubTaskById(5);
+        taskManager.getTaskById(1);
+        taskManager.getSubTaskById(3);
+        fileBackedTasksManager.fromFile();
+        FileBackedTasksManager fileBackedTasksManager2 = new FileBackedTasksManager("src/store/test2.csv");
+        fileBackedTasksManager2.makeTask("Проектирование","Проектирование ПО");
+        fileBackedTasksManager2.makeEpic("Тестирование","Разработка тестирования");
+        fileBackedTasksManager2.makeSubTask("Разработка меню","Разработка класса меню",2);
+        fileBackedTasksManager2.makeSubTask("Разработка логики","Разработка класса логики",2);
+        fileBackedTasksManager2.makeSubTask("Класс тестирования","Разработка класа тестирования",2);
+        fileBackedTasksManager2.getEpicTaskById(2);
+        fileBackedTasksManager2.getSubTaskById(4);
+        fileBackedTasksManager2.getSubTaskById(5);
+        fileBackedTasksManager2.getTaskById(1);
+        fileBackedTasksManager2.getSubTaskById(3);
+        fileBackedTasksManager2.saveToFile();
+        fileBackedTasksManager2.fromFile();
+        Assertions.assertEquals(fileBackedTasksManager2.getTaskMap(),fileBackedTasksManager.getTaskMap());
+        Assertions.assertEquals(fileBackedTasksManager2.getEpicTaskMap(),fileBackedTasksManager.getEpicTaskMap());
+        Assertions.assertEquals(fileBackedTasksManager2.getSubTaskMap(),fileBackedTasksManager.getSubTaskMap());
+        Assertions.assertEquals(fileBackedTasksManager2.getHistoryManager().getHistory(),
+                fileBackedTasksManager.getHistoryManager().getHistory());
+    }
+
+    @Test
+    void shouldEmptyTaskList() throws IOException{
+        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("src/store/test.csv");
+        taskManager.getEpicTaskById(2);
+        taskManager.getSubTaskById(4);
+        taskManager.getSubTaskById(5);
+        taskManager.getTaskById(1);
+        taskManager.getSubTaskById(3);
+        taskManager.deleteAllTask();
+        fileBackedTasksManager.fromFile();
+        FileBackedTasksManager fileBackedTasksManager2 = new FileBackedTasksManager("src/store/test2.csv");
+        fileBackedTasksManager2.makeTask("Проектирование","Проектирование ПО");
+        fileBackedTasksManager2.makeEpic("Тестирование","Разработка тестирования");
+        fileBackedTasksManager2.makeSubTask("Разработка меню","Разработка класса меню",2);
+        fileBackedTasksManager2.makeSubTask("Разработка логики","Разработка класса логики",2);
+        fileBackedTasksManager2.makeSubTask("Класс тестирования","Разработка класа тестирования",2);
+        fileBackedTasksManager2.getEpicTaskById(2);
+        fileBackedTasksManager2.getSubTaskById(4);
+        fileBackedTasksManager2.getSubTaskById(5);
+        fileBackedTasksManager2.getTaskById(1);
+        fileBackedTasksManager2.getSubTaskById(3);
+        fileBackedTasksManager2.deleteAllTask();
+        fileBackedTasksManager2.fromFile();
+        Assertions.assertEquals(fileBackedTasksManager2.getTaskMap(),fileBackedTasksManager.getTaskMap());
+        Assertions.assertEquals(fileBackedTasksManager2.getEpicTaskMap(),fileBackedTasksManager.getEpicTaskMap());
+        Assertions.assertEquals(fileBackedTasksManager2.getSubTaskMap(),fileBackedTasksManager.getSubTaskMap());
+        Assertions.assertEquals(fileBackedTasksManager2.getHistoryManager().getHistory(),
+                fileBackedTasksManager.getHistoryManager().getHistory());
+    }
+
+
+
 }
