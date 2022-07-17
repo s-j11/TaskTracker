@@ -107,9 +107,9 @@ public class InMemoryTaskManager implements TaskManager{
     public void deleteAllEpic() {
         for (Map.Entry<Integer,EpicTask> entry: epicTaskMap.entrySet()) {
             Node task = new Node(entry.getValue());
-            if(!historyManager.getHistory().isEmpty()){
+            if(!historyManager.getHistory().isEmpty() && historyManager.getHistory().contains(task)){
                 List<Integer> numberSubtask = entry.getValue().getListSubtask();
-                for(int number :numberSubtask){
+                for(int number : numberSubtask){
                     Node subTask = new Node(subTaskMap.get(number));
                     historyManager.remove(subTask);
                 }
@@ -125,7 +125,7 @@ public class InMemoryTaskManager implements TaskManager{
     public void deleteAllSubTask() {
         for (Map.Entry<Integer,SubTask> entry: subTaskMap.entrySet()) {
             Node task = new Node(entry.getValue());
-            if(!historyManager.getHistory().isEmpty()) {
+            if(historyManager.getHistory().contains(task)) {
                 historyManager.remove(task);
             }
         }

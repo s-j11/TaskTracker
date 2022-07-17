@@ -130,7 +130,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
     }
 
     @Test
-    void shouldToString(){
+    public void shouldToString(){
         String task = "1,TASK,Проектирование,NEW,Проектирование ПО,no,no";
         String epic = "2,EPIC,Тестирование,NEW,Разработка тестирования,no,[3; 4; 5]";
         String subtask ="3,SUBTASK,Разработка меню,NEW,Разработка класса меню,2,no";
@@ -143,7 +143,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
         Assertions.assertEquals(subtask, subFromFile);
     }
     @Test
-    void shouldFromString()throws IOException {
+    public void shouldFromString()throws IOException {
         Task task = new Task("Проектирование", "Проектирование ПО", 1, Status.NEW);
         List<Integer> list = new ArrayList<>();
         list.add(3);
@@ -181,9 +181,8 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
             Assertions.assertEquals(subTask, subTaskFromString);
             Assertions.assertNotEquals(subTask,subTaskFromString1);
         }
-
     @Test
-    void shouldFromFile() {
+    public void shouldFromFile() {
         Map<Integer, Task> map = new HashMap<>();
         taskManager.getTaskMap().clear();
         taskManager.getEpicTaskMap().clear();
@@ -214,9 +213,8 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
         Assertions.assertEquals(epicMap,taskManager.getEpicTaskMap());
         Assertions.assertEquals(subMap,taskManager.getSubTaskMap());
     }
-
     @Test
-    void shouldToStringHistoryManager(){
+    public void shouldToStringHistoryManager(){
         String str = "2, 4, 5, 1, 3";
         taskManager.getEpicTaskById(2);
         taskManager.getSubTaskById(4);
@@ -227,9 +225,8 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
         String strHistoryMangager = fileBackedTasksManager.toString(taskManager.getHistoryManager());
         Assertions.assertEquals(str,strHistoryMangager);
     }
-
     @Test
-    void shouldHistoryManagerFromFile() throws IOException{
+    public void shouldHistoryManagerFromFile() throws IOException{
         HistoryManager historyManager = new InMemoryHistoryManager();
         Task task = new Task("Проектирование", "Проектирование ПО", 1, Status.NEW);
         List<Integer> list = new ArrayList<>();
@@ -286,9 +283,8 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
         HistoryManager historyManagerFromString = fileBackedTasksManager.fromFile(str);
         Assertions.assertEquals(historyManager.getHistory(),historyManagerFromString.getHistory());
     }
-
     @Test
-    void shouldSaveToFile() throws IOException{
+    public void shouldSaveToFile() throws IOException{
         FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("src/store/test.csv");
         taskManager.getEpicTaskById(2);
         taskManager.getSubTaskById(4);
@@ -315,9 +311,8 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
         Assertions.assertEquals(fileBackedTasksManager2.getHistoryManager().getHistory(),
                 fileBackedTasksManager.getHistoryManager().getHistory());
     }
-
     @Test
-    void shouldEmptyTaskList() throws IOException{
+    public void shouldEmptyTaskList() throws IOException{
         FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("src/store/test.csv");
         taskManager.getEpicTaskById(2);
         taskManager.getSubTaskById(4);
@@ -344,9 +339,44 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
         Assertions.assertEquals(fileBackedTasksManager2.getSubTaskMap(),fileBackedTasksManager.getSubTaskMap());
         Assertions.assertEquals(fileBackedTasksManager2.getHistoryManager().getHistory(),
                 fileBackedTasksManager.getHistoryManager().getHistory());
-
     }
 
+    @Test
+    public void shouldEpicTaskWithEmptyListTasks() throws IOException {
+    FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("src/store/test.csv");
+        taskManager.getEpicTaskById(2);
+        taskManager.getTaskById(1);
+        taskManager.deleteAllSubTask();
+        fileBackedTasksManager.fromFile();
+    FileBackedTasksManager fileBackedTasksManager2 = new FileBackedTasksManager("src/store/test2.csv");
+        fileBackedTasksManager2.makeTask("Проектирование","Проектирование ПО");
+        fileBackedTasksManager2.makeEpic("Тестирование","Разработка тестирования");
+        fileBackedTasksManager2.getEpicTaskById(2);
+        fileBackedTasksManager2.getTaskById(1);
+        fileBackedTasksManager2.fromFile();
+        Assertions.assertEquals(fileBackedTasksManager2.getTaskMap(),fileBackedTasksManager.getTaskMap());
+        Assertions.assertEquals(fileBackedTasksManager2.getEpicTaskMap(),fileBackedTasksManager.getEpicTaskMap());
+        Assertions.assertEquals(fileBackedTasksManager2.getSubTaskMap(),fileBackedTasksManager.getSubTaskMap());
+        Assertions.assertEquals(fileBackedTasksManager2.getHistoryManager().getHistory(),
+                fileBackedTasksManager.getHistoryManager().getHistory());
+}
 
+
+    @Test
+    public void shouldEmptyHistoryList() throws IOException {
+        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("src/store/test.csv");
+        fileBackedTasksManager.fromFile();
+        fileBackedTasksManager.deleteAllSubTask();
+        fileBackedTasksManager.getHistoryManager().removeAllNode();
+        FileBackedTasksManager fileBackedTasksManager2 = new FileBackedTasksManager("src/store/test2.csv");
+        fileBackedTasksManager2.makeTask("Проектирование","Проектирование ПО");
+        fileBackedTasksManager2.makeEpic("Тестирование","Разработка тестирования");
+        fileBackedTasksManager2.fromFile();
+        Assertions.assertEquals(fileBackedTasksManager2.getTaskMap(),fileBackedTasksManager.getTaskMap());
+        Assertions.assertEquals(fileBackedTasksManager2.getEpicTaskMap(),fileBackedTasksManager.getEpicTaskMap());
+        Assertions.assertEquals(fileBackedTasksManager2.getSubTaskMap(),fileBackedTasksManager.getSubTaskMap());
+        Assertions.assertEquals(fileBackedTasksManager2.getHistoryManager().getHistory(),
+                fileBackedTasksManager.getHistoryManager().getHistory());
+    }
 
 }
