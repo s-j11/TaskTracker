@@ -2,10 +2,8 @@ package bussinesslogic;
 
 import maketbussinesslogic.HistoryManager;
 import maketbussinesslogic.TaskManager;
-import model.EpicTask;
-import model.Status;
-import model.SubTask;
-import model.Task;
+import model.*;
+
 import java.io.IOException;
 import java.util.*;
 
@@ -95,19 +93,42 @@ public class InMemoryTaskManager implements TaskManager{
     //Удаление всех задач model.Task.
     @Override
     public void deleteAllTask() {
+        for (Map.Entry<Integer,Task> entry: taskMap.entrySet()) {
+            Node task = new Node(entry.getValue());
+            if(!historyManager.getHistory().isEmpty()){
+            historyManager.remove(task);
+        }}
         taskMap.clear();
+
     }
 
     //Удаление всех эпик задач model.EpicTask.
     @Override
     public void deleteAllEpic() {
+        for (Map.Entry<Integer,EpicTask> entry: epicTaskMap.entrySet()) {
+            Node task = new Node(entry.getValue());
+            if(!historyManager.getHistory().isEmpty()){
+                List<Integer> numberSubtask = entry.getValue().getListSubtask();
+                for(int number :numberSubtask){
+                    Node subTask = new Node(subTaskMap.get(number));
+                    historyManager.remove(subTask);
+                }
+            historyManager.remove(task);
+        }}
         epicTaskMap.clear();
         subTaskMap.clear();
+
     }
 
     //Удаление всех подзадач subTask.
     @Override
     public void deleteAllSubTask() {
+        for (Map.Entry<Integer,SubTask> entry: subTaskMap.entrySet()) {
+            Node task = new Node(entry.getValue());
+            if(!historyManager.getHistory().isEmpty()) {
+                historyManager.remove(task);
+            }
+        }
         Set<Integer> setKeys = epicTaskMap.keySet();
         for (int i : setKeys) {
             EpicTask epicTask = epicTaskMap.get(i);
@@ -221,6 +242,10 @@ public class InMemoryTaskManager implements TaskManager{
             taskMap.remove(key);
             System.out.println("Задача удалена");
         }
+        Node<Task> taskNode = new Node<>(taskMap.get(key));
+        if(!historyManager.getHistory().isEmpty()) {
+        historyManager.remove(taskNode);
+    }
     }
 
     //Удаление задачи model.EpicTask по идентификатору.
@@ -233,17 +258,29 @@ public class InMemoryTaskManager implements TaskManager{
         } else {
             EpicTask epicTask = epicTaskMap.get(key);
             Collection listSubTask = epicTask.getListSubtask();
+            if(!listSubTask.isEmpty()){
             for (Object i : listSubTask) {
                 subTaskMap.remove(i);
+                Node<Task> taskNode = new Node<>(subTaskMap.get(i));
+                if(!historyManager.getHistory().isEmpty()) {
+                    historyManager.remove(taskNode);
+                } }
             }
             epicTaskMap.remove(key);
             System.out.println("Эпик задача удалена вмести с подзадачами");
         }
-    }
+        Node<Task> taskNode = new Node<>(epicTaskMap.get(key));
+        if(!historyManager.getHistory().isEmpty()) {
+        historyManager.remove(taskNode);
+    }}
 
     //Удаление задачи model.SubTask по идентификатору.
     @Override
     public void deleteSubTaskById(int key) {
+        Node<Task> taskNode = new Node<>(subTaskMap.get(key));
+        if(!historyManager.getHistory().isEmpty()) {
+            historyManager.remove(taskNode);
+        }
         if (subTaskMap.isEmpty()) {
             System.out.println("Tакого id в списке подзадач задач - нет");
         } else if (!subTaskMap.containsKey(key)) {
@@ -270,7 +307,7 @@ public class InMemoryTaskManager implements TaskManager{
                 }
             }
         }
-    }
+        }
 
     //Обнавление задачи model.Task
     @Override

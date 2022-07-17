@@ -1,4 +1,5 @@
 id,type,name,status,description,epic,subtasks
+1,TASK,Проектирование,NEW,Проектирование ПО,no,no
 2,EPIC,Тестирование,NEW,Разработка тестирования,no,[3; 4; 5]
 3,SUBTASK,Разработка меню,NEW,Разработка класса меню,2,no
 4,SUBTASK,Разработка логики,NEW,Разработка класса логики,2,no
