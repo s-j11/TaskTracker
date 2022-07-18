@@ -5,6 +5,7 @@ import maketbussinesslogic.TaskManager;
 import model.*;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager{
@@ -125,7 +126,7 @@ public class InMemoryTaskManager implements TaskManager{
     public void deleteAllSubTask() {
         for (Map.Entry<Integer,SubTask> entry: subTaskMap.entrySet()) {
             Node task = new Node(entry.getValue());
-            if(historyManager.getHistory().contains(task)) {
+            if(!historyManager.getHistory().isEmpty() && historyManager.getHistory().contains(task)) {
                 historyManager.remove(task);
             }
         }
@@ -179,12 +180,14 @@ public class InMemoryTaskManager implements TaskManager{
 
     //Создание задачи model.Task
     @Override
-    public Task makeTask(String name, String description) {
+    public Task makeTask(String name, String description, LocalDateTime startTime, int duration) {
         Task task = new Task();
         task.setName(name);
         task.setDescription(description);
         task.setId(counterID++);
         task.setStatus(Status.NEW);
+        task.setStartTime(startTime);
+        task.setDuration(duration);
         taskMap.put(task.getId(), task);
         System.out.println("Номер вашей задачи " + task.getId() + "\n");
         return task;
@@ -205,13 +208,17 @@ public class InMemoryTaskManager implements TaskManager{
 
     //Создание задачи model.SubTask
     @Override
-    public SubTask makeSubTask(String name, String description, int id) {
+    public SubTask makeSubTask(String name, String description, int id, LocalDateTime startTime, int duration) {
         SubTask subTask = new SubTask();
         subTask.setName(name);
         subTask.setDescription(description);
         subTask.setEpicTaskNumber(id);
         subTask.setStatus(Status.NEW);
+        subTask.setDuration(duration);
+        subTask.setStartTime(startTime);
         Set<Integer> setKeysTask = epicTaskMap.keySet();
+        LocalDateTime start = null;
+        int time; 
         if (setKeysTask.size() == 0) {
             System.out.println("Tакого id в списке Эпик задач - нет");
         } else {
@@ -222,12 +229,32 @@ public class InMemoryTaskManager implements TaskManager{
                 } else {
                     subTask.setId(counterID++);
                     epicTask.addSubTask(subTask.getId());
+                    epicTask.setDuration(epicTask.getDuration() + subTask.getDuration());
+                    if(epicTask.getListSubtask().isEmpty()){
+                        epicTask.setStartTime(subTask.getStartTime());
+                        epicTask.setDuration(subTask.getDuration());
+                    }else{
+//                    if(!epicTask.getListSubtask().isEmpty()){
+                        for (int j : epicTask.getListSubtask()) {
+                         SubTask subTaskBuffer = subTaskMap.get(j);
+                         if(subTask.getStartTime().isBefore(subTaskBuffer.getStartTime())){
+                            epicTask.setEndTime(subTask.getStartTime());
+                            epicTask.setDuration(subTask.getDuration());
+                            }else{
+//                             start = subTaskBuffer.getStartTime();
+//                         }
+//                        }
+//                    }else{
+                        epicTask.setStartTime(subTaskBuffer.getStartTime());
+                        epicTask.setDuration(subTaskBuffer.getDuration());
+                    }
                     subTaskMap.put(subTask.getId(), subTask);
                     System.out.println("Номер вашей подзадачи " + subTask.getId() + "\n"
                             + "Она входит в Эпик задачу " + subTask.getEpicTaskNumber() + "\n");
                 }
             }
         }
+            }}
         return subTask;
     }
 
@@ -262,7 +289,7 @@ public class InMemoryTaskManager implements TaskManager{
             for (Object i : listSubTask) {
                 subTaskMap.remove(i);
                 Node<Task> taskNode = new Node<>(subTaskMap.get(i));
-                if(!historyManager.getHistory().isEmpty()) {
+                if(!historyManager.getHistory().isEmpty()&&historyManager.getHistory().contains(taskNode)) {
                     historyManager.remove(taskNode);
                 } }
             }

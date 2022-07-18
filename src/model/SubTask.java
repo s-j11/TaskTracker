@@ -1,5 +1,6 @@
 package model;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class SubTask extends  Task {
@@ -24,6 +25,35 @@ public class SubTask extends  Task {
         super(name, description, id, status);
         this.epicTaskNumber = epicTaskNumber;
     }
+
+    public SubTask(String name, String description, int id, Status status, LocalDateTime startTime, int duration) {
+        super(name, description, id, status, startTime, duration);
+    }
+
+    public SubTask(String name, String description, int id, Status status, LocalDateTime startTime, int duration, int epicTaskNumber) {
+        super(name, description, id, status, startTime,duration);
+        this.epicTaskNumber = epicTaskNumber;
+    }
+
+    public SubTask(int epicTaskNumber) {
+        this.epicTaskNumber = epicTaskNumber;
+    }
+
+    public SubTask(String name, String description, int epicTaskNumber) {
+        super(name, description);
+        this.epicTaskNumber = epicTaskNumber;
+    }
+
+    public SubTask(String name, String description, Status status, int epicTaskNumber) {
+        super(name, description, status);
+        this.epicTaskNumber = epicTaskNumber;
+    }
+
+    public SubTask(String name, String description, int id, int epicTaskNumber) {
+        super(name, description, id);
+        this.epicTaskNumber = epicTaskNumber;
+    }
+
 
     @Override
     public boolean equals(Object o) {

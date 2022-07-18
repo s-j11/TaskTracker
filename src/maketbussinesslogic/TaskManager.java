@@ -5,6 +5,7 @@ import model.SubTask;
 import model.Task;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -51,13 +52,13 @@ public interface TaskManager {
     void getSubTaskById(int key);
 
     //Создание задачи model.Task
-    Task makeTask(String name, String description);
+    Task makeTask(String name, String description, LocalDateTime startTime, int duration);
 
     //Создание задачи model.EpicTask
     EpicTask makeEpic(String name, String description);
 
     //Создание задачи model.SubTask
-    SubTask makeSubTask(String name, String description, int id);
+    SubTask makeSubTask(String name, String description, int id, LocalDateTime startTime, int duration);
 
     //Удаление задачи model.Task по идентификатору.
     void deleteTaskById(int key);

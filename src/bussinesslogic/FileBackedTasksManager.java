@@ -9,6 +9,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class FileBackedTasksManager extends InMemoryTaskManager implements TaskManager {
@@ -95,8 +96,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     }
 
     @Override
-    public Task makeTask(String name, String description) {
-        Task task = super.makeTask(name, description);
+    public Task makeTask(String name, String description,LocalDateTime startTime, int duration) {
+        Task task = super.makeTask(name, description,startTime,duration);
             saveToFile();
         return task;
     }
@@ -109,9 +110,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     }
 
     @Override
-    public SubTask makeSubTask(String name, String description, int id) {
-        SubTask subTask = super.makeSubTask(name,description,id);
-            saveToFile();
+    public SubTask makeSubTask(String name, String description, int id, LocalDateTime startTime, int duration) {
+        SubTask subTask = super.makeSubTask(name, description, id, startTime, duration);
         return subTask;
     }
 

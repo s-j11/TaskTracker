@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,14 +28,18 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
     @BeforeEach
     public void updateTaskManager(){
         super.updateTaskManager();
-        Task task =  taskManager.makeTask("Проектирование", "Проектирование ПО");
+        LocalDateTime startTime = LocalDateTime.of(2022,1,1,15,30);
+        LocalDateTime startTime1 = LocalDateTime.of(2022,1,5,15,30);
+        LocalDateTime startTime2 = LocalDateTime.of(2022,1,10,15,30);
+        LocalDateTime startTime3 = LocalDateTime.of(2022,1,15,15,30);
+        Task task =  taskManager.makeTask("Проектирование", "Проектирование ПО", startTime, 15);
         EpicTask epicTask = taskManager.makeEpic("Тестирование", "Разработка тестирования");
         SubTask subTask =  taskManager.makeSubTask("Разработка меню",
-                "Разработка класса меню", 2);
+                "Разработка класса меню", 2, startTime1,2);
         SubTask subTask1 =  taskManager.makeSubTask("Разработка логики",
-                "Разработка класса логики", 2);
+                "Разработка класса логики", 2,startTime2,150);
         SubTask subTask2 =  taskManager.makeSubTask("Класс тестирования",
-                "Разработка класа тестирования", 2);
+                "Разработка класа тестирования", 2,startTime3,240);
     }
     @Test
     public void shouldGetTaskMap() {
@@ -149,7 +154,8 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
         list.add(3);
         list.add(4);
         list.add(5);
-        EpicTask epicTask = new EpicTask("Тестирование", "Разработка тестирования", 2, Status.NEW, list);
+        EpicTask epicTask = new EpicTask("Тестирование", "Разработка тестирования", 2, Status.NEW,
+                list);
         SubTask subTask = new SubTask("Разработка меню", "Разработка класса меню", 3, Status.NEW,
                 2);
         FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("src/store/test.csv");
@@ -202,8 +208,8 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
                 2));
         subMap.put(4, new SubTask("Разработка логики", "Разработка класса логики", 4, Status.NEW,
                 2));
-        subMap.put(5, new SubTask("Класс тестирования", "Разработка класа тестирования", 5, Status.NEW,
-                2));
+        subMap.put(5, new SubTask("Класс тестирования", "Разработка класа тестирования", 5,
+                Status.NEW, 2));
         try {
             taskManager.fromFile();
         } catch (IOException e) {
@@ -233,13 +239,14 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
         list.add(3);
         list.add(4);
         list.add(5);
-        EpicTask epicTask = new EpicTask("Тестирование", "Разработка тестирования", 2, Status.NEW, list);
+        EpicTask epicTask = new EpicTask("Тестирование", "Разработка тестирования", 2, Status.NEW,
+                list);
         SubTask subTask = new SubTask("Разработка меню", "Разработка класса меню", 3, Status.NEW,
                 2);
-        SubTask subTask1 = new SubTask("Разработка логики", "Разработка класса логики", 4, Status.NEW,
-                2);
-        SubTask subTask2 = new SubTask("Класс тестирования", "Разработка класа тестирования", 5, Status.NEW,
-                2);
+        SubTask subTask1 = new SubTask("Разработка логики", "Разработка класса логики", 4,
+                Status.NEW,2);
+        SubTask subTask2 = new SubTask("Класс тестирования", "Разработка класа тестирования", 5,
+                Status.NEW,2);
         historyManager.add(epicTask);
         historyManager.add(subTask1);
         historyManager.add(subTask2);
@@ -285,6 +292,10 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
     }
     @Test
     public void shouldSaveToFile() throws IOException{
+        LocalDateTime startTime = LocalDateTime.of(2022,1,1,15,30);
+        LocalDateTime startTime1 = LocalDateTime.of(2022,1,5,15,30);
+        LocalDateTime startTime2 = LocalDateTime.of(2022,1,10,15,30);
+        LocalDateTime startTime3 = LocalDateTime.of(2022,1,15,15,30);
         FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("src/store/test.csv");
         taskManager.getEpicTaskById(2);
         taskManager.getSubTaskById(4);
@@ -293,11 +304,14 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
         taskManager.getSubTaskById(3);
         fileBackedTasksManager.fromFile();
         FileBackedTasksManager fileBackedTasksManager2 = new FileBackedTasksManager("src/store/test2.csv");
-        fileBackedTasksManager2.makeTask("Проектирование","Проектирование ПО");
+        fileBackedTasksManager2.makeTask("Проектирование","Проектирование ПО",startTime,30);
         fileBackedTasksManager2.makeEpic("Тестирование","Разработка тестирования");
-        fileBackedTasksManager2.makeSubTask("Разработка меню","Разработка класса меню",2);
-        fileBackedTasksManager2.makeSubTask("Разработка логики","Разработка класса логики",2);
-        fileBackedTasksManager2.makeSubTask("Класс тестирования","Разработка класа тестирования",2);
+        fileBackedTasksManager2.makeSubTask("Разработка меню","Разработка класса меню",2,startTime1,
+                30);
+        fileBackedTasksManager2.makeSubTask("Разработка логики","Разработка класса логики",2,
+                startTime2,30);
+        fileBackedTasksManager2.makeSubTask("Класс тестирования","Разработка класа тестирования",2,
+                startTime3,30);
         fileBackedTasksManager2.getEpicTaskById(2);
         fileBackedTasksManager2.getSubTaskById(4);
         fileBackedTasksManager2.getSubTaskById(5);
@@ -313,6 +327,10 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
     }
     @Test
     public void shouldEmptyTaskList() throws IOException{
+        LocalDateTime startTime = LocalDateTime.of(2022,1,1,15,30);
+        LocalDateTime startTime1 = LocalDateTime.of(2022,1,5,15,30);
+        LocalDateTime startTime2 = LocalDateTime.of(2022,1,10,15,30);
+        LocalDateTime startTime3 = LocalDateTime.of(2022,1,15,15,30);
         FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("src/store/test.csv");
         taskManager.getEpicTaskById(2);
         taskManager.getSubTaskById(4);
@@ -322,11 +340,14 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
         taskManager.deleteAllTask();
         fileBackedTasksManager.fromFile();
         FileBackedTasksManager fileBackedTasksManager2 = new FileBackedTasksManager("src/store/test2.csv");
-        fileBackedTasksManager2.makeTask("Проектирование","Проектирование ПО");
+        fileBackedTasksManager2.makeTask("Проектирование","Проектирование ПО",startTime,30);
         fileBackedTasksManager2.makeEpic("Тестирование","Разработка тестирования");
-        fileBackedTasksManager2.makeSubTask("Разработка меню","Разработка класса меню",2);
-        fileBackedTasksManager2.makeSubTask("Разработка логики","Разработка класса логики",2);
-        fileBackedTasksManager2.makeSubTask("Класс тестирования","Разработка класа тестирования",2);
+        fileBackedTasksManager2.makeSubTask("Разработка меню","Разработка класса меню",2,startTime1,
+                30);
+        fileBackedTasksManager2.makeSubTask("Разработка логики","Разработка класса логики",2,
+                startTime2,30);
+        fileBackedTasksManager2.makeSubTask("Класс тестирования","Разработка класа тестирования",2,
+                startTime3,30);
         fileBackedTasksManager2.getEpicTaskById(2);
         fileBackedTasksManager2.getSubTaskById(4);
         fileBackedTasksManager2.getSubTaskById(5);
@@ -343,13 +364,14 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
 
     @Test
     public void shouldEpicTaskWithEmptyListTasks() throws IOException {
+        LocalDateTime startTime = LocalDateTime.of(2022,1,1,15,30);
     FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("src/store/test.csv");
         taskManager.getEpicTaskById(2);
         taskManager.getTaskById(1);
         taskManager.deleteAllSubTask();
         fileBackedTasksManager.fromFile();
     FileBackedTasksManager fileBackedTasksManager2 = new FileBackedTasksManager("src/store/test2.csv");
-        fileBackedTasksManager2.makeTask("Проектирование","Проектирование ПО");
+        fileBackedTasksManager2.makeTask("Проектирование","Проектирование ПО",startTime,30);
         fileBackedTasksManager2.makeEpic("Тестирование","Разработка тестирования");
         fileBackedTasksManager2.getEpicTaskById(2);
         fileBackedTasksManager2.getTaskById(1);
@@ -364,12 +386,13 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
 
     @Test
     public void shouldEmptyHistoryList() throws IOException {
+        LocalDateTime startTime = LocalDateTime.of(2022,1,1,15,30);
         FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("src/store/test.csv");
         fileBackedTasksManager.fromFile();
         fileBackedTasksManager.deleteAllSubTask();
         fileBackedTasksManager.getHistoryManager().removeAllNode();
         FileBackedTasksManager fileBackedTasksManager2 = new FileBackedTasksManager("src/store/test2.csv");
-        fileBackedTasksManager2.makeTask("Проектирование","Проектирование ПО");
+        fileBackedTasksManager2.makeTask("Проектирование","Проектирование ПО",startTime,30);
         fileBackedTasksManager2.makeEpic("Тестирование","Разработка тестирования");
         fileBackedTasksManager2.fromFile();
         Assertions.assertEquals(fileBackedTasksManager2.getTaskMap(),fileBackedTasksManager.getTaskMap());

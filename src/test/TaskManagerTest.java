@@ -10,6 +10,8 @@ import model.Task;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDateTime;
 import java.util.*;
 public abstract class TaskManagerTest<T extends TaskManager> {
     public T taskManager;
@@ -173,7 +175,9 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     public void shouldGetTaskByID() {
         Map<Integer, Task> map = new HashMap<>();
-        map.put(1, new Task("Проектирование", "Проектирование ПО", 1, Status.NEW));
+        LocalDateTime startTime = LocalDateTime.of(2022,1,1,15,30);
+        map.put(1, new Task("Проектирование", "Проектирование ПО", 1, Status.NEW,
+                startTime,15));
         Assertions.assertEquals(map.get(1), taskManager.getTaskMap().get(1));
         taskManager.deleteAllTask();
         Assertions.assertNotEquals(map.get(1),taskManager.getTaskMap().get(1));

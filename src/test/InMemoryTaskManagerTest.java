@@ -8,6 +8,8 @@ import model.Task;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+
 class InMemoryTaskManagerTest extends TaskManagerTest {
 
     @Override
@@ -17,14 +19,18 @@ class InMemoryTaskManagerTest extends TaskManagerTest {
     @BeforeEach
     public void updateTaskManager(){
         super.updateTaskManager();
-        Task task =  taskManager.makeTask("Проектирование", "Проектирование ПО");
+        LocalDateTime startTime = LocalDateTime.of(2022,1,1,15,30);
+        LocalDateTime startTime1 = LocalDateTime.of(2022,1,5,15,30);
+        LocalDateTime startTime2 = LocalDateTime.of(2022,1,10,15,30);
+        LocalDateTime startTime3 = LocalDateTime.of(2022,1,15,15,30);
+        Task task =  taskManager.makeTask("Проектирование", "Проектирование ПО", startTime, 15);
         EpicTask epicTask = taskManager.makeEpic("Тестирование", "Разработка тестирования");
         SubTask subTask =  taskManager.makeSubTask("Разработка меню",
-                "Разработка класса меню", 2);
+                "Разработка класса меню", 2, startTime1,2);
         SubTask subTask1 =  taskManager.makeSubTask("Разработка логики",
-                "Разработка класса логики", 2);
+                "Разработка класса логики", 2,startTime2,150);
         SubTask subTask2 =  taskManager.makeSubTask("Класс тестирования",
-                "Разработка класа тестирования", 2);
+                "Разработка класа тестирования", 2,startTime3,240);
 
     }
 

@@ -6,6 +6,7 @@ import model.*;
 import test.TestTaskTraker;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class Menu {
@@ -82,6 +83,19 @@ public class Menu {
                 String name = scanner.next();
                 System.out.println("Введите описание задачи");
                 String descriptions = scanner.next();
+                System.out.println("Введите год");
+                int year = scanner.nextInt();
+                System.out.println("Введите месяц");
+                int mouth = scanner.nextInt();
+                System.out.println("Введите день");
+                int day = scanner.nextInt();
+                System.out.println("Введите час");
+                int hour = scanner.nextInt();
+                System.out.println("Введите миннуты");
+                int minutes = scanner.nextInt();
+                LocalDateTime startTime = LocalDateTime.of(year,mouth,day,hour,minutes);
+                System.out.println("Введите продолжительность задачи в минутах");
+                int duration = scanner.nextInt();
                 System.out.println("Ведите тип задачи которую хотите завести:\n"
                         + "1 - Задача\n"
                         + "2 - Эпик\n"
@@ -89,7 +103,7 @@ public class Menu {
                 int button = scanner.nextInt();
                 switch (button) {
                     case 1:
-                        fileBackedTasksManager.makeTask(name, descriptions);
+                        fileBackedTasksManager.makeTask(name, descriptions, startTime, duration);
                         break;
                     case 2:
                         fileBackedTasksManager.makeEpic(name, descriptions);
@@ -97,7 +111,7 @@ public class Menu {
                     case 3:
                         System.out.println("Введите номер эпик задачи");
                         int id = scanner.nextInt();
-                        fileBackedTasksManager.makeSubTask(name, descriptions, id);
+                        fileBackedTasksManager.makeSubTask(name,descriptions,id,startTime,duration);
                         break;
                     default:
                         System.out.println("Такого номера типа задачи нет введите от 1 до 3");
@@ -128,9 +142,23 @@ public class Menu {
                     default:
                         System.out.println("Такого номера типа задачи нет введите от 1 до 3");
                 }
+                System.out.println("Веедите дату начало задачи");
+                System.out.println("Введите год");
+                int year = scanner.nextInt();
+                System.out.println("Введите месяц");
+                int mouth = scanner.nextInt();
+                System.out.println("Введите день");
+                int day = scanner.nextInt();
+                System.out.println("Введите час");
+                int hour = scanner.nextInt();
+                System.out.println("Введите миннуты");
+                int minutes = scanner.nextInt();
+                LocalDateTime startTime = LocalDateTime.of(year,mouth,day,hour,minutes);
+                System.out.println("Введите новую продолжительность задачи в минутах");
+                int duration = scanner.nextInt();
                 status = status;
-                Task task = new Task(name, descriptions, id, status);
-                SubTask subTask = new SubTask(name, descriptions, id, status);
+                Task task = new Task(name, descriptions, id, status,startTime,duration);
+                SubTask subTask = new SubTask(name,descriptions,id,status,startTime,duration);
                 EpicTask epicTask = new EpicTask(name, descriptions, id);
                 fileBackedTasksManager.updateTaskById(task);
                 fileBackedTasksManager.updateEpicTaskById(epicTask);

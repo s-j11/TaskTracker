@@ -1,5 +1,6 @@
 package model;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -7,6 +8,7 @@ import java.util.Objects;
 public class EpicTask extends Task{
         private List<Integer> listSubtask = new ArrayList<>();
 
+        private LocalDateTime endTime;
         public void addSubTask(int subTask){
                 listSubtask.add(subTask);
         }
@@ -17,6 +19,16 @@ public class EpicTask extends Task{
 
         public void setListSubtask(List<Integer> listSubtask) {
                 this.listSubtask = listSubtask;
+        }
+
+
+        @Override
+        public LocalDateTime getEndTime() {
+                return endTime;
+        }
+
+        public void setEndTime(LocalDateTime endTime) {
+                this.endTime = endTime;
         }
 
         @Override

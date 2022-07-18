@@ -8,18 +8,24 @@ import model.SubTask;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDateTime;
+
 class EpicTaskTest {
     private Managers managers = new Managers();
     private TaskManager inFileBackedTaksManager = managers.getDefaultFileBackedManager("src/store/test.csv");
     @BeforeEach
     public void shouldPreparedTestEnvironment(){
+        LocalDateTime startTime = LocalDateTime.of(2022,1,1,15,30);
+        LocalDateTime startTime1 = LocalDateTime.of(2022,1,5,15,30);
+        LocalDateTime startTime2 = LocalDateTime.of(2022,1,10,15,30);
         EpicTask epicTask = inFileBackedTaksManager.makeEpic("Тестирование", "Разработка тестирования");
         SubTask subTask = inFileBackedTaksManager.makeSubTask("Разработка меню",
-                "Разработка класса меню", 1);
+                "Разработка класса меню",1, startTime,30);
         SubTask subTask1 = inFileBackedTaksManager.makeSubTask("Разработка логики",
-                "Разработка класса логики", 1);
+                "Разработка класса логики", 1, startTime1,30);
         SubTask subTask2 = inFileBackedTaksManager.makeSubTask("Класс тестирования",
-                "Разработка класа тестирования", 1);
+                "Разработка класа тестирования", 1,startTime2,30);
     }
     @Test
     public void shouldThrowEmptyListSubTask(){
