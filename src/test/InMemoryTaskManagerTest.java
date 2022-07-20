@@ -19,19 +19,18 @@ class InMemoryTaskManagerTest extends TaskManagerTest {
     @BeforeEach
     public void updateTaskManager(){
         super.updateTaskManager();
-        LocalDateTime startTime = LocalDateTime.of(2022,1,1,15,30);
-        LocalDateTime startTime1 = LocalDateTime.of(2022,1,5,15,30);
+        LocalDateTime startTime = LocalDateTime.of(2022,1,1,12,10);
+        LocalDateTime startTime1 = LocalDateTime.of(2022,1,5,14,20);
         LocalDateTime startTime2 = LocalDateTime.of(2022,1,10,15,30);
-        LocalDateTime startTime3 = LocalDateTime.of(2022,1,15,15,30);
+        LocalDateTime startTime3 = LocalDateTime.of(2022,1,15,16,40);
         Task task =  taskManager.makeTask("Проектирование", "Проектирование ПО", startTime, 15);
         EpicTask epicTask = taskManager.makeEpic("Тестирование", "Разработка тестирования");
         SubTask subTask =  taskManager.makeSubTask("Разработка меню",
-                "Разработка класса меню", 2, startTime1,2);
+                "Разработка класса меню", 2, startTime1,50);
         SubTask subTask1 =  taskManager.makeSubTask("Разработка логики",
                 "Разработка класса логики", 2,startTime2,150);
         SubTask subTask2 =  taskManager.makeSubTask("Класс тестирования",
                 "Разработка класа тестирования", 2,startTime3,240);
-
     }
 
     @Test

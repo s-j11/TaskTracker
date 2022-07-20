@@ -218,6 +218,7 @@ public class InMemoryTaskManager implements TaskManager{
         subTask.setStartTime(startTime);
         Set<Integer> setKeysTask = epicTaskMap.keySet();
         LocalDateTime start = null;
+        LocalDateTime end = null;
         int time; 
         if (setKeysTask.size() == 0) {
             System.out.println("Tакого id в списке Эпик задач - нет");
@@ -228,31 +229,34 @@ public class InMemoryTaskManager implements TaskManager{
                     System.out.println("Tакого id в списке Эпик задач - нет");
                 } else {
                     subTask.setId(counterID++);
-                    epicTask.addSubTask(subTask.getId());
                     epicTask.setDuration(epicTask.getDuration() + subTask.getDuration());
-                    if(epicTask.getListSubtask().isEmpty()){
+                    if(epicTask.getListSubtask().isEmpty()) {
                         epicTask.setStartTime(subTask.getStartTime());
-                        epicTask.setDuration(subTask.getDuration());
+                        epicTask.setEndTime(subTask.getEndTime());
                     }else{
-//                    if(!epicTask.getListSubtask().isEmpty()){
+                        start = epicTask.getStartTime();
+                        end = epicTask.getEndTime();
                         for (int j : epicTask.getListSubtask()) {
-                         SubTask subTaskBuffer = subTaskMap.get(j);
-                         if(subTask.getStartTime().isBefore(subTaskBuffer.getStartTime())){
-                            epicTask.setEndTime(subTask.getStartTime());
-                            epicTask.setDuration(subTask.getDuration());
-                            }else{
-//                             start = subTaskBuffer.getStartTime();
-//                         }
-//                        }
-//                    }else{
-                        epicTask.setStartTime(subTaskBuffer.getStartTime());
-                        epicTask.setDuration(subTaskBuffer.getDuration());
+                            SubTask subTaskBuffer = subTaskMap.get(j);
+                            if (subTask.getStartTime().isBefore(start) &&
+                                    subTask.getStartTime().isBefore(subTaskBuffer.getStartTime())) {
+                                epicTask.setStartTime(subTask.getStartTime());
+                            } else {
+                                epicTask.setStartTime(start);
+                            }
+                            if (subTask.getEndTime().isAfter(end) &&
+                                    subTask.getEndTime().isAfter(subTaskBuffer.getEndTime())) {
+                                epicTask.setEndTime(subTask.getEndTime());
+                            } else {
+                                epicTask.setEndTime(end);
+                            }
+                        }
+
                     }
+                    epicTask.addSubTask(subTask.getId());
                     subTaskMap.put(subTask.getId(), subTask);
                     System.out.println("Номер вашей подзадачи " + subTask.getId() + "\n"
                             + "Она входит в Эпик задачу " + subTask.getEpicTaskNumber() + "\n");
-                }
-            }
         }
             }}
         return subTask;
