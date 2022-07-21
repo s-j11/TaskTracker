@@ -2,6 +2,7 @@ package model;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Optional;
 
 public class Task {
    private String name;
@@ -11,7 +12,7 @@ public class Task {
 
     private int duration;
 
-    private LocalDateTime startTime;
+    private Optional<LocalDateTime> startTime =Optional.empty();
 
     public String getName() {
         return name;
@@ -53,16 +54,16 @@ public class Task {
         this.duration = duration;
     }
 
-    public LocalDateTime getStartTime() {
+    public Optional<LocalDateTime> getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalDateTime startTime) {
+    public void setStartTime(Optional<LocalDateTime> startTime) {
         this.startTime = startTime;
     }
 
     public LocalDateTime getEndTime(){
-        LocalDateTime endTime = startTime.plusMinutes(duration);
+        LocalDateTime endTime = startTime.get().plusMinutes(duration);
         return endTime;
     }
     public Task() {
@@ -92,7 +93,7 @@ public class Task {
         this.status = status;
     }
 
-    public Task(String name, String description, int id, Status status, LocalDateTime startTime, int duration) {
+    public Task(String name, String description, int id, Status status, Optional<LocalDateTime> startTime, int duration) {
         this.name = name;
         this.description = description;
         this.id = id;

@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public interface TaskManager {
 
@@ -52,13 +53,13 @@ public interface TaskManager {
     void getSubTaskById(int key);
 
     //Создание задачи model.Task
-    Task makeTask(String name, String description, LocalDateTime startTime, int duration);
+    Task makeTask(String name, String description, Optional<LocalDateTime> startTime, int duration);
 
     //Создание задачи model.EpicTask
     EpicTask makeEpic(String name, String description);
 
     //Создание задачи model.SubTask
-    SubTask makeSubTask(String name, String description, int id, LocalDateTime startTime, int duration);
+    SubTask makeSubTask(String name, String description, int id, Optional<LocalDateTime> startTime, int duration);
 
     //Удаление задачи model.Task по идентификатору.
     void deleteTaskById(int key);

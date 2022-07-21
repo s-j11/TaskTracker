@@ -175,7 +175,8 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     public void shouldGetTaskByID() {
         Map<Integer, Task> map = new HashMap<>();
-        LocalDateTime startTime = LocalDateTime.of(2022,1,1,15,30);
+        Optional<LocalDateTime> startTime = Optional.of(LocalDateTime.of(2022,1,1,15,
+                30));
         map.put(1, new Task("Проектирование", "Проектирование ПО", 1, Status.NEW,
                 startTime,15));
         Assertions.assertEquals(map.get(1), taskManager.getTaskMap().get(1));

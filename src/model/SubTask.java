@@ -2,6 +2,7 @@ package model;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Optional;
 
 public class SubTask extends  Task {
     int epicTaskNumber;
@@ -26,11 +27,11 @@ public class SubTask extends  Task {
         this.epicTaskNumber = epicTaskNumber;
     }
 
-    public SubTask(String name, String description, int id, Status status, LocalDateTime startTime, int duration) {
+    public SubTask(String name, String description, int id, Status status, Optional<LocalDateTime> startTime, int duration) {
         super(name, description, id, status, startTime, duration);
     }
 
-    public SubTask(String name, String description, int id, Status status, LocalDateTime startTime, int duration,
+    public SubTask(String name, String description, int id, Status status, Optional<LocalDateTime> startTime, int duration,
                    int epicTaskNumber) {
         super(name, description, id, status, startTime,duration);
         this.epicTaskNumber = epicTaskNumber;

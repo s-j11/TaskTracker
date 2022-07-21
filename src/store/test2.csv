@@ -1,0 +1,5 @@
+id,type,name,status,description,epic,subtasks,data,duration
+1,TASK,Проектирование,NEW,Проектирование ПО,no,no,2022.01.01.15:30,30
+2,EPIC,Тестирование,NEW,Разработка тестирования,no,no,no time,0
+
+Просмотра задач еще не было

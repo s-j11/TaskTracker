@@ -99,7 +99,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     }
 
     @Override
-    public Task makeTask(String name, String description,LocalDateTime startTime, int duration) {
+    public Task makeTask(String name, String description, Optional<LocalDateTime> startTime, int duration) {
         Task task = super.makeTask(name, description,startTime,duration);
             saveToFile();
         return task;
@@ -113,7 +113,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     }
 
     @Override
-    public SubTask makeSubTask(String name, String description, int id, LocalDateTime startTime, int duration) {
+    public SubTask makeSubTask(String name, String description, int id, Optional<LocalDateTime> startTime, int duration) {
         SubTask subTask = super.makeSubTask(name, description, id, startTime, duration);
             saveToFile();
         return subTask;
@@ -165,15 +165,13 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         TypeTask typeTask = null;
         String numberEpic = "no";
         String listSubtasks = "no";
-        Optional<LocalDateTime> time = null;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd.HH:mm");
-        time = Optional.of(task.getStartTime());
         String timeTostrin;
 
-        if(time.isPresent()&&!time.equals(null)){
-            timeTostrin = task.getStartTime().format(formatter);
+        if(task.getStartTime().isEmpty()){
+            timeTostrin = "no time";
         }else{
-            timeTostrin = "No time";
+            timeTostrin = task.getStartTime().get().format(formatter);
         }
 
         String duration;
@@ -214,7 +212,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         String description = null;
         Integer epicTask = null;
         java.util.List<Integer> list = new ArrayList<>();
-        LocalDateTime localDateTime;
+        Optional<LocalDateTime> localDateTime = Optional.empty();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd.HH:mm");
         int duration;
         Task task = null;
@@ -250,8 +248,11 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
 
         description = split[4].trim();
 
-        localDateTime =LocalDateTime.parse(split[7].trim(),formatter);
-
+        if(split[7].trim().equals("no time")){
+         localDateTime = Optional.empty();
+        }else {
+            localDateTime = Optional.of(LocalDateTime.parse(split[7].trim(), formatter));
+        }
         duration = Integer.parseInt(split[8].trim());
 
         if (typeTask.equals(TypeTask.TASK)) {
@@ -262,14 +263,14 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         } else if (typeTask.equals(TypeTask.EPIC)) {
                 String subString = split[6].trim().substring(1, split[6].length() - 1);
                 if(subString.equals("")){
-                    list =new ArrayList<>();
+                    list = new ArrayList<>();
                     task = new EpicTask(name, description, id, status, list);
                 }else{
                 String[] subStringNumbers = subString.split(";");
             for (String str : subStringNumbers) {
                 list.add(Integer.parseInt(str.trim()));
             }
-            task = new EpicTask(name, description, id, status,list);
+            task = new EpicTask(name, description, id, status,localDateTime,duration,list);
             }
         }
         return task;

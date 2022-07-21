@@ -28,10 +28,14 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
     @BeforeEach
     public void updateTaskManager(){
         super.updateTaskManager();
-        LocalDateTime startTime = LocalDateTime.of(2022,1,1,12,10);
-        LocalDateTime startTime1 = LocalDateTime.of(2022,1,5,14,20);
-        LocalDateTime startTime2 = LocalDateTime.of(2022,1,10,15,30);
-        LocalDateTime startTime3 = LocalDateTime.of(2022,1,15,16,40);
+        Optional<LocalDateTime> startTime = Optional.of(LocalDateTime.of(2022,1,1,12,
+                10));
+        Optional<LocalDateTime> startTime1 =Optional.of(LocalDateTime.of(2022,1,5,14,
+                20));
+        Optional<LocalDateTime> startTime2 = Optional.of(LocalDateTime.of(2022,1,10,15,
+                30));
+        Optional<LocalDateTime> startTime3 = Optional.of(LocalDateTime.of(2022,1,15,16,
+                40));
         Task task =  taskManager.makeTask("Проектирование", "Проектирование ПО", startTime, 15);
         EpicTask epicTask = taskManager.makeEpic("Тестирование", "Разработка тестирования");
         SubTask subTask =  taskManager.makeSubTask("Разработка меню",
@@ -137,7 +141,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
     @Test
     public void shouldToString(){
         String task = "1,TASK,Проектирование,NEW,Проектирование ПО,no,no,2022.01.01.12:10,15";
-        String epic = "2,EPIC,Тестирование,NEW,Разработка тестирования,no,[3; 4; 5]";
+        String epic = "2,EPIC,Тестирование,NEW,Разработка тестирования,no,[3; 4; 5],2022.01.05.14:20,440";
         String subtask ="3,SUBTASK,Разработка меню,NEW,Разработка класса меню,2,no,2022.01.05.14:20,50";
         FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("src/store/test.csv");
         String taskFromFile = fileBackedTasksManager.toString(taskManager.getTaskMap().get(1));
@@ -292,10 +296,14 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
     }
     @Test
     public void shouldSaveToFile() throws IOException{
-        LocalDateTime startTime = LocalDateTime.of(2022,1,1,15,30);
-        LocalDateTime startTime1 = LocalDateTime.of(2022,1,5,15,30);
-        LocalDateTime startTime2 = LocalDateTime.of(2022,1,10,15,30);
-        LocalDateTime startTime3 = LocalDateTime.of(2022,1,15,15,30);
+        Optional<LocalDateTime> startTime = Optional.of(LocalDateTime.of(2022,1,1,15,
+                30));
+        Optional<LocalDateTime> startTime1 = Optional.of(LocalDateTime.of(2022,1,5,15,
+                30));
+        Optional<LocalDateTime> startTime2 = Optional.of(LocalDateTime.of(2022,1,10,15,
+                30));
+        Optional<LocalDateTime> startTime3 = Optional.of(LocalDateTime.of(2022,1,15,15,
+                30));
         FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("src/store/test.csv");
         taskManager.getEpicTaskById(2);
         taskManager.getSubTaskById(4);
@@ -327,10 +335,14 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
     }
     @Test
     public void shouldEmptyTaskList() throws IOException{
-        LocalDateTime startTime = LocalDateTime.of(2022,1,1,15,30);
-        LocalDateTime startTime1 = LocalDateTime.of(2022,1,5,15,30);
-        LocalDateTime startTime2 = LocalDateTime.of(2022,1,10,15,30);
-        LocalDateTime startTime3 = LocalDateTime.of(2022,1,15,15,30);
+        Optional<LocalDateTime> startTime = Optional.of(LocalDateTime.of(2022,1,1,15,
+                30));
+        Optional<LocalDateTime> startTime1 = Optional.of(LocalDateTime.of(2022,1,5,15,
+                30));
+        Optional<LocalDateTime> startTime2 = Optional.of(LocalDateTime.of(2022,1,10,15,
+                30));
+        Optional<LocalDateTime> startTime3 = Optional.of(LocalDateTime.of(2022,1,15,15,
+                30));
         FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("src/store/test.csv");
         taskManager.getEpicTaskById(2);
         taskManager.getSubTaskById(4);
@@ -364,7 +376,8 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
 
     @Test
     public void shouldEpicTaskWithEmptyListTasks() throws IOException {
-        LocalDateTime startTime = LocalDateTime.of(2022,1,1,15,30);
+        Optional<LocalDateTime> startTime = Optional.of(LocalDateTime.of(2022,1,1,15,
+                30));
     FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("src/store/test.csv");
         taskManager.getEpicTaskById(2);
         taskManager.getTaskById(1);
@@ -386,7 +399,8 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
 
     @Test
     public void shouldEmptyHistoryList() throws IOException {
-        LocalDateTime startTime = LocalDateTime.of(2022,1,1,15,30);
+        Optional<LocalDateTime> startTime = Optional.of(LocalDateTime.of(2022,1,1,15,
+                30));
         FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("src/store/test.csv");
         fileBackedTasksManager.fromFile();
         fileBackedTasksManager.deleteAllSubTask();

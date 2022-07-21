@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 class InMemoryTaskManagerTest extends TaskManagerTest {
 
@@ -19,10 +20,14 @@ class InMemoryTaskManagerTest extends TaskManagerTest {
     @BeforeEach
     public void updateTaskManager(){
         super.updateTaskManager();
-        LocalDateTime startTime = LocalDateTime.of(2022,1,1,12,10);
-        LocalDateTime startTime1 = LocalDateTime.of(2022,1,5,14,20);
-        LocalDateTime startTime2 = LocalDateTime.of(2022,1,10,15,30);
-        LocalDateTime startTime3 = LocalDateTime.of(2022,1,15,16,40);
+        Optional<LocalDateTime> startTime = Optional.of(LocalDateTime.of(2022,1,1,12,
+                10));
+        Optional<LocalDateTime> startTime1 =Optional.of(LocalDateTime.of(2022,1,5,14,
+                20));
+        Optional<LocalDateTime> startTime2 = Optional.of(LocalDateTime.of(2022,1,10,15,
+                30));
+        Optional<LocalDateTime> startTime3 = Optional.of(LocalDateTime.of(2022,1,15,16,
+                40));
         Task task =  taskManager.makeTask("Проектирование", "Проектирование ПО", startTime, 15);
         EpicTask epicTask = taskManager.makeEpic("Тестирование", "Разработка тестирования");
         SubTask subTask =  taskManager.makeSubTask("Разработка меню",

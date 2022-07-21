@@ -180,7 +180,7 @@ public class InMemoryTaskManager implements TaskManager{
 
     //Создание задачи model.Task
     @Override
-    public Task makeTask(String name, String description, LocalDateTime startTime, int duration) {
+    public Task makeTask(String name, String description, Optional<LocalDateTime> startTime, int duration) {
         Task task = new Task();
         task.setName(name);
         task.setDescription(description);
@@ -208,7 +208,7 @@ public class InMemoryTaskManager implements TaskManager{
 
     //Создание задачи model.SubTask
     @Override
-    public SubTask makeSubTask(String name, String description, int id, LocalDateTime startTime, int duration) {
+    public SubTask makeSubTask(String name, String description, int id, Optional<LocalDateTime> startTime, int duration) {
         SubTask subTask = new SubTask();
         subTask.setName(name);
         subTask.setDescription(description);
@@ -217,7 +217,7 @@ public class InMemoryTaskManager implements TaskManager{
         subTask.setDuration(duration);
         subTask.setStartTime(startTime);
         Set<Integer> setKeysTask = epicTaskMap.keySet();
-        LocalDateTime start = null;
+        Optional<LocalDateTime> start = null;
         LocalDateTime end = null;
         int time; 
         if (setKeysTask.size() == 0) {
@@ -238,8 +238,8 @@ public class InMemoryTaskManager implements TaskManager{
                         end = epicTask.getEndTime();
                         for (int j : epicTask.getListSubtask()) {
                             SubTask subTaskBuffer = subTaskMap.get(j);
-                            if (subTask.getStartTime().isBefore(start) &&
-                                    subTask.getStartTime().isBefore(subTaskBuffer.getStartTime())) {
+                            if (subTask.getStartTime().get().isBefore(start.get()) &&
+                                    subTask.getStartTime().get().isBefore(subTaskBuffer.getStartTime().get())) {
                                 epicTask.setStartTime(subTask.getStartTime());
                             } else {
                                 epicTask.setStartTime(start);

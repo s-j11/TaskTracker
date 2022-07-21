@@ -93,7 +93,7 @@ public class Menu {
                 int hour = scanner.nextInt();
                 System.out.println("Введите миннуты");
                 int minutes = scanner.nextInt();
-                LocalDateTime startTime = LocalDateTime.of(year,mouth,day,hour,minutes);
+                Optional<LocalDateTime> startTime = Optional.of(LocalDateTime.of(year,mouth,day,hour,minutes));
                 System.out.println("Введите продолжительность задачи в минутах");
                 int duration = scanner.nextInt();
                 System.out.println("Ведите тип задачи которую хотите завести:\n"
@@ -153,7 +153,7 @@ public class Menu {
                 int hour = scanner.nextInt();
                 System.out.println("Введите миннуты");
                 int minutes = scanner.nextInt();
-                LocalDateTime startTime = LocalDateTime.of(year,mouth,day,hour,minutes);
+                Optional<LocalDateTime> startTime = Optional.of(LocalDateTime.of(year,mouth,day,hour,minutes));
                 System.out.println("Введите новую продолжительность задачи в минутах");
                 int duration = scanner.nextInt();
                 status = status;

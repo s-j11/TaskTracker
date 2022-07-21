@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class EpicTask extends Task{
         private List<Integer> listSubtask = new ArrayList<>();
@@ -59,8 +60,15 @@ public class EpicTask extends Task{
                 this.listSubtask = listSubtask;
         }
 
-        public EpicTask(String name, String description, int id, Status status, LocalDateTime startTime, int duration) {
+        public EpicTask(String name, String description, int id, Status status, Optional<LocalDateTime> startTime,
+                        int duration) {
                 super(name, description, id, status, startTime, duration);
+        }
+
+        public EpicTask(String name, String description, int id, Status status, Optional<LocalDateTime> startTime,
+                        int duration, List<Integer> listSubtask) {
+                super(name, description, id, status, startTime, duration);
+                this.listSubtask = listSubtask;
         }
 
         public EpicTask(String name, String description, int id) {

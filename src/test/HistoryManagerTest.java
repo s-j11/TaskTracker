@@ -11,10 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,10 +24,14 @@ class HistoryManagerTest {
 
     @BeforeEach
     public void shouldPreparedTestEnvironment(){
-        LocalDateTime startTime = LocalDateTime.of(2022,1,1,15,30);
-        LocalDateTime startTime1 = LocalDateTime.of(2022,1,5,15,30);
-        LocalDateTime startTime2 = LocalDateTime.of(2022,1,10,15,30);
-        LocalDateTime startTime3 = LocalDateTime.of(2022,1,15,15,30);
+        Optional<LocalDateTime> startTime = Optional.of(LocalDateTime.of(2022,1,1,15,
+                30));
+        Optional<LocalDateTime> startTime1 = Optional.of(LocalDateTime.of(2022,1,5,15,
+                30));
+        Optional<LocalDateTime> startTime2 = Optional.of(LocalDateTime.of(2022,1,10,15,
+                30));
+        Optional<LocalDateTime> startTime3 = Optional.of(LocalDateTime.of(2022,1,15,15,
+                30));
         Task task = inMemoryTaskManager.makeTask("Проектирование","Проектирование ПО",
                         startTime, 15);
         EpicTask epicTask = inMemoryTaskManager.makeEpic("Тестирование", "Разработка тестирования");
