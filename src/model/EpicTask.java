@@ -31,6 +31,7 @@ public class EpicTask extends Task{
                 this.endTime = endTime;
         }
 
+
         @Override
         public boolean equals(Object o) {
                 if (this == o) return true;
@@ -56,6 +57,10 @@ public class EpicTask extends Task{
         public EpicTask(String name, String description, int id, Status status, List<Integer> listSubtask) {
                 super(name, description, id, status);
                 this.listSubtask = listSubtask;
+        }
+
+        public EpicTask(String name, String description, int id, Status status, LocalDateTime startTime, int duration) {
+                super(name, description, id, status, startTime, duration);
         }
 
         public EpicTask(String name, String description, int id) {

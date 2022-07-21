@@ -5,11 +5,14 @@ import maketbussinesslogic.HistoryManager;
 import maketbussinesslogic.TaskManager;
 import model.*;
 
+import javax.swing.text.html.Option;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class FileBackedTasksManager extends InMemoryTaskManager implements TaskManager {
@@ -112,6 +115,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     @Override
     public SubTask makeSubTask(String name, String description, int id, LocalDateTime startTime, int duration) {
         SubTask subTask = super.makeSubTask(name, description, id, startTime, duration);
+            saveToFile();
         return subTask;
     }
 
@@ -161,6 +165,25 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         TypeTask typeTask = null;
         String numberEpic = "no";
         String listSubtasks = "no";
+        Optional<LocalDateTime> time = null;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd.HH:mm");
+        time = Optional.of(task.getStartTime());
+        String timeTostrin;
+
+        if(time.isPresent()&&!time.equals(null)){
+            timeTostrin = task.getStartTime().format(formatter);
+        }else{
+            timeTostrin = "No time";
+        }
+
+        String duration;
+        if (task.getDuration()==0){
+            duration = "0";
+        }else {
+            duration = String.valueOf(task.getDuration());
+        }
+
+
         if (task.getClass() == Task.class) {
             typeTask = TypeTask.TASK;
         } else if (task.getClass() == EpicTask.class) {
@@ -173,8 +196,12 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
             typeTask = TypeTask.SUBTASK;
             numberEpic = String.valueOf(((SubTask) task).getEpicTaskNumber());
         }
+
+
+
         String string = String.join(",", String.valueOf(task.getId()), typeTask.toString(), task.getName(),
-                task.getStatus().toString(), task.getDescription(), numberEpic, listSubtasks);
+                task.getStatus().toString(), task.getDescription(), numberEpic, listSubtasks, timeTostrin,
+                duration);
         return string;
     }
 
@@ -187,6 +214,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         String description = null;
         Integer epicTask = null;
         java.util.List<Integer> list = new ArrayList<>();
+        LocalDateTime localDateTime;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd.HH:mm");
+        int duration;
         Task task = null;
 
         String[] split = value.split(",");
@@ -220,11 +250,15 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
 
         description = split[4].trim();
 
+        localDateTime =LocalDateTime.parse(split[7].trim(),formatter);
+
+        duration = Integer.parseInt(split[8].trim());
+
         if (typeTask.equals(TypeTask.TASK)) {
-            task = new Task(name, description, id, status);
+            task = new Task(name, description, id, status,localDateTime,duration);
         }   else if (typeTask.equals(TypeTask.SUBTASK)) {
             epicTask = Integer.parseInt(split[5].trim());
-            task = new SubTask(name, description, id, status, epicTask);
+            task = new SubTask(name, description, id, status, localDateTime,duration, epicTask);
         } else if (typeTask.equals(TypeTask.EPIC)) {
                 String subString = split[6].trim().substring(1, split[6].length() - 1);
                 if(subString.equals("")){
@@ -235,7 +269,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
             for (String str : subStringNumbers) {
                 list.add(Integer.parseInt(str.trim()));
             }
-            task = new EpicTask(name, description, id, status, list);
+            task = new EpicTask(name, description, id, status,list);
             }
         }
         return task;
@@ -346,7 +380,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
             Path pathToFile = Paths.get(path).toAbsolutePath();
             if (!Files.exists(pathToFile)) {
                 Writer writer = new FileWriter(pathToFile.toString());
-                writer.write("id,type,name,status,description,epic,subtasks\n");
+                writer.write("id,type,name,status,description,epic,subtasks,data,duration\n");
                 for (Map.Entry entry : super.getTaskMap().entrySet()) {
                     sting = toString((Task) entry.getValue());
                     writer.write(sting + "\n");
@@ -364,7 +398,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                 writer.close();
             } else if (Files.exists(pathToFile)) {
                 Writer writer = new FileWriter(pathToFile.toString());
-                writer.write("id,type,name,status,description,epic,subtasks\n");
+                writer.write("id,type,name,status,description,epic,subtasks,data,duration\n");
                 for (Map.Entry entry : super.getTaskMap().entrySet()) {
                     sting = toString((Task) entry.getValue());
                     writer.write(sting + "\n");

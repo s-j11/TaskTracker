@@ -13,8 +13,6 @@ public class Task {
 
     private LocalDateTime startTime;
 
-
-
     public String getName() {
         return name;
     }

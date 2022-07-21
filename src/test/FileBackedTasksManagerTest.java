@@ -28,14 +28,14 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
     @BeforeEach
     public void updateTaskManager(){
         super.updateTaskManager();
-        LocalDateTime startTime = LocalDateTime.of(2022,1,1,15,30);
-        LocalDateTime startTime1 = LocalDateTime.of(2022,1,5,15,30);
+        LocalDateTime startTime = LocalDateTime.of(2022,1,1,12,10);
+        LocalDateTime startTime1 = LocalDateTime.of(2022,1,5,14,20);
         LocalDateTime startTime2 = LocalDateTime.of(2022,1,10,15,30);
-        LocalDateTime startTime3 = LocalDateTime.of(2022,1,15,15,30);
+        LocalDateTime startTime3 = LocalDateTime.of(2022,1,15,16,40);
         Task task =  taskManager.makeTask("Проектирование", "Проектирование ПО", startTime, 15);
         EpicTask epicTask = taskManager.makeEpic("Тестирование", "Разработка тестирования");
         SubTask subTask =  taskManager.makeSubTask("Разработка меню",
-                "Разработка класса меню", 2, startTime1,2);
+                "Разработка класса меню", 2, startTime1,50);
         SubTask subTask1 =  taskManager.makeSubTask("Разработка логики",
                 "Разработка класса логики", 2,startTime2,150);
         SubTask subTask2 =  taskManager.makeSubTask("Класс тестирования",
@@ -136,9 +136,9 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
 
     @Test
     public void shouldToString(){
-        String task = "1,TASK,Проектирование,NEW,Проектирование ПО,no,no";
+        String task = "1,TASK,Проектирование,NEW,Проектирование ПО,no,no,2022.01.01.12:10,15";
         String epic = "2,EPIC,Тестирование,NEW,Разработка тестирования,no,[3; 4; 5]";
-        String subtask ="3,SUBTASK,Разработка меню,NEW,Разработка класса меню,2,no";
+        String subtask ="3,SUBTASK,Разработка меню,NEW,Разработка класса меню,2,no,2022.01.05.14:20,50";
         FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("src/store/test.csv");
         String taskFromFile = fileBackedTasksManager.toString(taskManager.getTaskMap().get(1));
         String epicFromFile = fileBackedTasksManager.toString(taskManager.getEpicTaskMap().get(2));
