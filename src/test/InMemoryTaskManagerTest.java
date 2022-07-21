@@ -133,4 +133,14 @@ class InMemoryTaskManagerTest extends TaskManagerTest {
     @Test
     void shouldFromFile() {
     }
+
+    @Test
+    public void shouldGetTime() {
+        super.shouldGetTime();
+    }
+
+    @Test
+    public void shouldGetDuration(){
+        super.shouldGetDuration();
+    }
 }

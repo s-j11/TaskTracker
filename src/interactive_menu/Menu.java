@@ -3,7 +3,6 @@ package interactive_menu;
 import bussinesslogic.Managers;
 import maketbussinesslogic.TaskManager;
 import model.*;
-import test.TestTaskTraker;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -16,7 +15,6 @@ public class Menu {
     private Map<Integer, Task> taskMap = fileBackedTasksManager.getTaskMap();
     private Map<Integer, EpicTask> epicTaskMap = fileBackedTasksManager.getEpicTaskMap();
     private Map<Integer, SubTask> subTaskMap = fileBackedTasksManager.getSubTaskMap();
-    private TestTaskTraker testTaskTraker = new TestTaskTraker(taskMap, epicTaskMap, subTaskMap);
 
     @Override
     public String toString() {
@@ -36,10 +34,9 @@ public class Menu {
             System.out.println("5 - Изменить задачу по ее номеру");
             System.out.println("6 - Удалить задачу по ее номеру");
             System.out.println("7 - Вывести список подзадач по номеру Эпик");
-            System.out.println("8 - Тестирование");
-            System.out.println("9 - Вывести историю последних 10 операций");
-            System.out.println("10 - Загрузить данные из файла");
-            System.out.println("11 - Выйти из приложения");
+            System.out.println("8 - Вывести историю последних 10 операций");
+            System.out.println("9 - Загрузить данные из файла");
+            System.out.println("10 - Выйти из приложения");
 
 
             int command = scanner.nextInt();
@@ -174,15 +171,13 @@ public class Menu {
                 int id = scanner.nextInt();
                 fileBackedTasksManager.getAllSubTaskInEpic(id);
             } else if (command == 8) {
-                testTaskTraker.testEpicTask();
-            } else if (command == 9) {
                 System.out.println(fileBackedTasksManager.getHistoryManager().getHistory());
-            }else if(command == 10) {
+            }else if(command == 9) {
                 taskMap.clear();
                 epicTaskMap.clear();
                 subTaskMap.clear();
             fileBackedTasksManager.fromFile();
-            }else if (command == 11) {
+            }else if (command == 10) {
                 System.out.println("Выход");
                 break;
             } else {

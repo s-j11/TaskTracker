@@ -416,4 +416,13 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
                 fileBackedTasksManager.getHistoryManager().getHistory());
     }
 
+    @Test
+    public void shouldGetTime() {
+        super.shouldGetTime();
+    }
+
+    @Test
+    public void shouldGetDuration(){
+        super.shouldGetDuration();
+    }
 }
