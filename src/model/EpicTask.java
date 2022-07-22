@@ -9,7 +9,9 @@ import java.util.Optional;
 public class EpicTask extends Task{
         private List<Integer> listSubtask = new ArrayList<>();
 
-        private LocalDateTime endTime;
+        private Optional<LocalDateTime> endTime = Optional.empty();
+
+
         public void addSubTask(int subTask){
                 listSubtask.add(subTask);
         }
@@ -24,11 +26,11 @@ public class EpicTask extends Task{
 
 
         @Override
-        public LocalDateTime getEndTime() {
+        public Optional<LocalDateTime> getEndTime() {
                 return endTime;
         }
 
-        public void setEndTime(LocalDateTime endTime) {
+        public void setEndTime(Optional<LocalDateTime> endTime) {
                 this.endTime = endTime;
         }
 
@@ -71,19 +73,37 @@ public class EpicTask extends Task{
                 this.listSubtask = listSubtask;
         }
 
+        public EpicTask(String name, String description, int id, Status status, Optional<LocalDateTime> startTime,
+                        int duration, List<Integer> listSubtask, Optional<LocalDateTime> endTime) {
+                super(name, description, id, status, startTime, duration);
+                this.listSubtask = listSubtask;
+                this.endTime = endTime;
+        }
+
         public EpicTask(String name, String description, int id) {
                 super(name, description, id);
         }
 
         public String toString() {
-                String result = "{name=' " + getName() + '\'';
+                String result = "{name= " + getName();
                 if (getDescription() != null) {
-                        result = result + ", description= " + getDescription().length() + '\'';
+                        result = result + ", description= " + getDescription().length();
                 } else {
                         result = result + ", description= null ";
                 }
                 result = result + ", id= " + getId() + ", ListSubTaskNumber= "
-                        + listSubtask + ", status= '" + getStatus() + '\'' + '}';
+                        + listSubtask + ", status= " + getStatus();
+                if(getStartTime().isEmpty()) {
+                        result = result +", start time = Нет данных";
+                }else {
+                        result = result +   ", start time= " + getStartTime().get();
+                }
+                 if(getEndTime().isEmpty()) {
+                         result = result + ", end time= Нет данных";
+                 }else {
+                        result = result  + ", end time= " + endTime.get();
+                }
+                 result = result + ", duration= " + getDuration()  + '}';
                 return result;
         }
 

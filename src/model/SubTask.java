@@ -72,14 +72,15 @@ public class SubTask extends  Task {
     }
 
     public String toString() {
-        String result = "{name=' " + getName() + '\'';
+        String result = "{name= " + getName();
         if (getDescription() != null) {
-            result = result + ", description= " + getDescription().length() + '\'';
+            result = result + ", description= " + getDescription().length();
         } else {
             result = result + ", description= null ";
         }
         result = result + ", id= " + getId() + ", " + "epic task number= "
-                + epicTaskNumber + ", status= '" + getStatus() + '\'' + '}';
+                + epicTaskNumber + ", status= " + getStatus() + ", start time= " + getStartTime().get()
+                + ", end time= " + getEndTime().get() + ", duration= " + getDuration() + '}';
         return result;
     }
 

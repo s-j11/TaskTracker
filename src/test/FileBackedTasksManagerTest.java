@@ -140,9 +140,11 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
 
     @Test
     public void shouldToString(){
-        String task = "1,TASK,Проектирование,NEW,Проектирование ПО,no,no,2022.01.01.12:10,15";
-        String epic = "2,EPIC,Тестирование,NEW,Разработка тестирования,no,[3; 4; 5],2022.01.05.14:20,440";
-        String subtask ="3,SUBTASK,Разработка меню,NEW,Разработка класса меню,2,no,2022.01.05.14:20,50";
+        String task = "1,TASK,Проектирование,NEW,Проектирование ПО,no,no,2022.01.01.12:10,2022.01.01.12:25,15";
+        String epic = "2,EPIC,Тестирование,NEW,Разработка тестирования,no,[3; 4; 5],2022.01.05.14:20,2022.01.15.20:40" +
+                ",440";
+        String subtask ="3,SUBTASK,Разработка меню,NEW,Разработка класса меню,2,no,2022.01.05.14:20,2022.01.05.15:10," +
+                "50";
         FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("src/store/test.csv");
         String taskFromFile = fileBackedTasksManager.toString(taskManager.getTaskMap().get(1));
         String epicFromFile = fileBackedTasksManager.toString(taskManager.getEpicTaskMap().get(2));

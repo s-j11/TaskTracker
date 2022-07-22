@@ -338,7 +338,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
                 .toString());
         Assertions.assertEquals("2022-01-05T14:20", taskManager.getEpicTaskMap().get(2).getStartTime().get()
                 .toString());
-        Assertions.assertEquals("2022-01-15T20:40", taskManager.getEpicTaskMap().get(2).getEndTime()
+        Assertions.assertEquals("2022-01-15T20:40", taskManager.getEpicTaskMap().get(2).getEndTime().get()
                 .toString());
         Assertions.assertEquals("2022-01-05T14:20", taskManager.getSubTaskMap().get(3).getStartTime().get()
                 .toString());

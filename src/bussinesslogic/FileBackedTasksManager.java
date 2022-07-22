@@ -166,12 +166,19 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         String numberEpic = "no";
         String listSubtasks = "no";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd.HH:mm");
-        String timeTostrin;
+        String timeTostring;
+        String endTimeToString;
 
         if(task.getStartTime().isEmpty()){
-            timeTostrin = "no time";
+            timeTostring = "no time";
         }else{
-            timeTostrin = task.getStartTime().get().format(formatter);
+            timeTostring = task.getStartTime().get().format(formatter);
+        }
+
+        if(task.getEndTime().isEmpty()){
+            endTimeToString = "no time";
+        }else{
+            endTimeToString = task.getEndTime().get().format(formatter);
         }
 
         String duration;
@@ -198,8 +205,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
 
 
         String string = String.join(",", String.valueOf(task.getId()), typeTask.toString(), task.getName(),
-                task.getStatus().toString(), task.getDescription(), numberEpic, listSubtasks, timeTostrin,
-                duration);
+                task.getStatus().toString(), task.getDescription(), numberEpic, listSubtasks, timeTostring,
+                endTimeToString, duration);
         return string;
     }
 
@@ -213,6 +220,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         Integer epicTask = null;
         java.util.List<Integer> list = new ArrayList<>();
         Optional<LocalDateTime> localDateTime = Optional.empty();
+        Optional<LocalDateTime> endTime = Optional.empty();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd.HH:mm");
         int duration;
         Task task = null;
@@ -253,10 +261,19 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         }else {
             localDateTime = Optional.of(LocalDateTime.parse(split[7].trim(), formatter));
         }
-        duration = Integer.parseInt(split[8].trim());
+
+        if(split[8].trim().equals("no time")){
+            endTime = Optional.empty();
+        }else {
+            endTime = Optional.of(LocalDateTime.parse(split[8].trim(), formatter));
+        }
+
+        duration = Integer.parseInt(split[9].trim());
+
+
 
         if (typeTask.equals(TypeTask.TASK)) {
-            task = new Task(name, description, id, status,localDateTime,duration);
+            task = new Task(name, description, id, status,localDateTime, duration);
         }   else if (typeTask.equals(TypeTask.SUBTASK)) {
             epicTask = Integer.parseInt(split[5].trim());
             task = new SubTask(name, description, id, status, localDateTime,duration, epicTask);
@@ -270,7 +287,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
             for (String str : subStringNumbers) {
                 list.add(Integer.parseInt(str.trim()));
             }
-            task = new EpicTask(name, description, id, status,localDateTime,duration,list);
+            task = new EpicTask(name, description, id, status, localDateTime, duration, list, endTime);
             }
         }
         return task;
@@ -300,6 +317,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                     } else if (task.getClass().equals(SubTask.class)) {
                         System.out.println("SubTask" + task);
                         mapSubTask.put(task.getId(), (SubTask) task);
+//                        SubTask subTask = mapSubTask.get(task.getId());
+//                        updateSubTaskById(subTask);
                     }
                     setCounterID(++conterId);
                 } else {

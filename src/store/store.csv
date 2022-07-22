@@ -1,6 +1,7 @@
 id,type,name,status,description,epic,subtasks,data,duration
-1,TASK,djklf,NEW,kfj,no,no,0001.01.01.01:01,1
-2,EPIC,flkj,NEW,fklj,no,[3],0001.01.01.01:01,1
-3,SUBTASK,lkfj,NEW,fkj,2,no,0001.01.01.01:01,1
+1,TASK,П,NEW,П,no,no,0001.01.01.01:15,0001.01.01.01:35,20
+2,EPIC,Р,NEW,Р,no,[3; 4],0001.01.01.01:04,0001.01.01.01:51,61
+3,SUBTASK,t,NEW,t,2,no,0001.01.01.01:04,0001.01.01.01:37,33
+4,SUBTASK,t,NEW,t2,2,no,0001.01.01.01:23,0001.01.01.01:51,28
 
-2, 3, 1
+Просмотра задач еще не было

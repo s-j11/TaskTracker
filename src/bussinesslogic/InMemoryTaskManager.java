@@ -218,7 +218,7 @@ public class InMemoryTaskManager implements TaskManager{
         subTask.setStartTime(startTime);
         Set<Integer> setKeysTask = epicTaskMap.keySet();
         Optional<LocalDateTime> start = null;
-        LocalDateTime end = null;
+        Optional<LocalDateTime> end = null;
         int time; 
         if (setKeysTask.size() == 0) {
             System.out.println("Tакого id в списке Эпик задач - нет");
@@ -244,8 +244,8 @@ public class InMemoryTaskManager implements TaskManager{
                             } else {
                                 epicTask.setStartTime(start);
                             }
-                            if (subTask.getEndTime().isAfter(end) &&
-                                    subTask.getEndTime().isAfter(subTaskBuffer.getEndTime())) {
+                            if (subTask.getEndTime().get().isAfter(end.get()) &&
+                                    subTask.getEndTime().get().isAfter(subTaskBuffer.getEndTime().get())) {
                                 epicTask.setEndTime(subTask.getEndTime());
                             } else {
                                 epicTask.setEndTime(end);
@@ -386,9 +386,12 @@ public class InMemoryTaskManager implements TaskManager{
             int counterNew = 0;
             int counterInProcess = 0;
             int counterDone = 0;
+            int duration = 0;
             EpicTask epicTask = epicTaskMap.get(numberOfEpicTask);
-            Collection listSubTask = epicTask.getListSubtask();
-            for (Object j : listSubTask) {
+            List<Integer> listSubTask = epicTask.getListSubtask();
+            Optional<LocalDateTime> start = Optional.empty();
+            Optional<LocalDateTime> end = Optional.empty();
+            for (int j : listSubTask) {
                 SubTask subTask1 = subTaskMap.get(j);
                 Status status = subTask1.getStatus();
                 if (status == Status.NEW) {
@@ -398,7 +401,23 @@ public class InMemoryTaskManager implements TaskManager{
                 } else {
                     counterDone++;
                 }
+
+                duration = duration + subTask1.getDuration();
+
+                if (taskUpdate.getStartTime().get().isBefore(subTask1.getStartTime().get())) {
+                    epicTask.setStartTime(taskUpdate.getStartTime());
+                } else {
+                    epicTask.setStartTime(subTask1.getStartTime());
+                }
+                if (taskUpdate.getEndTime().get().isAfter(subTask1.getEndTime().get())) {
+                    epicTask.setEndTime(taskUpdate.getEndTime());
+                } else {
+                    epicTask.setEndTime(subTask1.getEndTime());
+                }
             }
+
+            epicTask.setDuration(duration);
+
             if (counterNew == epicTask.getListSubtask().size()) {
             } else if (counterInProcess > 0) {
                 epicTask.setStatus(Status.IN_PROGRESS);

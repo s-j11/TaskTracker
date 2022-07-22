@@ -12,7 +12,7 @@ public class Task {
 
     private int duration;
 
-    private Optional<LocalDateTime> startTime =Optional.empty();
+    private Optional<LocalDateTime> startTime = Optional.empty();
 
     public String getName() {
         return name;
@@ -62,9 +62,9 @@ public class Task {
         this.startTime = startTime;
     }
 
-    public LocalDateTime getEndTime(){
+    public Optional<LocalDateTime> getEndTime(){
         LocalDateTime endTime = startTime.get().plusMinutes(duration);
-        return endTime;
+        return Optional.of(endTime);
     }
     public Task() {
     }
@@ -93,7 +93,8 @@ public class Task {
         this.status = status;
     }
 
-    public Task(String name, String description, int id, Status status, Optional<LocalDateTime> startTime, int duration) {
+    public Task(String name, String description, int id, Status status, Optional<LocalDateTime> startTime, int duration)
+    {
         this.name = name;
         this.description = description;
         this.id = id;
@@ -104,13 +105,14 @@ public class Task {
 
     @Override
     public String toString() {
-        String result = "{name= '" + name + '\'';
+        String result = "{name= " + name;
                  if(description != null) {
-                     result = result + ", description= '" + description.length() + '\'';
+                     result = result + ", description= " + description.length();
                  }else{
                      result = result + ", description= null ";
                  }
-                result = result + ", id= " + id  + ", status= '" + status + '\'' + '}';
+                result = result + ", id= " + id  + ", status= " + status + ", start time= " + startTime.get()
+                        + ", end time= " + getEndTime().get() + ", duration= " + duration + '}';
         return result;
     }
 
@@ -119,7 +121,8 @@ public class Task {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return id == task.id && Objects.equals(name, task.name) && Objects.equals(description, task.description) && status == task.status;
+        return id == task.id && Objects.equals(name, task.name) && Objects.equals(description, task.description)
+                && status == task.status;
     }
 
     @Override
