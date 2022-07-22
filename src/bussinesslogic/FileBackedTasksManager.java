@@ -317,8 +317,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                     } else if (task.getClass().equals(SubTask.class)) {
                         System.out.println("SubTask" + task);
                         mapSubTask.put(task.getId(), (SubTask) task);
-//                        SubTask subTask = mapSubTask.get(task.getId());
-//                        updateSubTaskById(subTask);
                     }
                     setCounterID(++conterId);
                 } else {

@@ -286,9 +286,13 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     public void shouldUpdateTaskById(){
         Map<Integer, Task> map = new HashMap<>();
-        map.put(1, new Task("Проектирование", "Проектирование ПО", 1, Status.DONE));
+        Optional<LocalDateTime> startTime = Optional.of(LocalDateTime.of(2022,1,1,12,
+                10));
+        map.put(1, new Task("Проектирование", "Проектирование ПО",1, Status.DONE, startTime,
+                15));
         Assertions.assertNotEquals(map.get(1), taskManager.getTaskMap().get(1));
-        Task task = new Task("Проектирование", "Проектирование ПО", 1, Status.DONE);
+        Task task = new Task("Проектирование", "Проектирование ПО", 1, Status.DONE, startTime,
+                15);
         taskManager.updateTaskById(task);
         Assertions.assertEquals(map.get(1),taskManager.getTaskMap().get(1));
         Assertions.assertNotNull(taskManager.getTaskMap().get(1));
