@@ -439,7 +439,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     }
 
     @Override
-    public LinkedList<Task> getPrioritizedTasks() {
+    public TreeSet<Task> getPrioritizedTasks() {
         return super.getPrioritizedTasks();
     }
 }

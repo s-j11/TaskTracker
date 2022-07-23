@@ -450,7 +450,8 @@ public class InMemoryTaskManager implements TaskManager{
 
     //Получение задач по приоретету времени
     @Override
-    public LinkedList<Task> getPrioritizedTasks() {
+    public TreeSet<Task> getPrioritizedTasks() {
+        TreeSet<Task> treeSet = new TreeSet<>();
         LinkedList<Task> listTask = new LinkedList<>();
         Optional<LocalDateTime> start = Optional.empty();
         for (Map.Entry<Integer,Task> entry:taskMap.entrySet()) {
@@ -478,7 +479,11 @@ public class InMemoryTaskManager implements TaskManager{
             }
         }
 
-        return listTask;
+        for (Task task:listTask) {
+            treeSet.add(task);
+        }
+
+        return treeSet;
     }
 
     @Override
