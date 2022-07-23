@@ -7,6 +7,8 @@ import model.*;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class InMemoryTaskManager implements TaskManager{
     private Integer counterID = 1;
@@ -444,6 +446,39 @@ public class InMemoryTaskManager implements TaskManager{
                 System.out.println("Список id подзадач " + listSubTask + " у Эпик задачи id " + epicTask.getId());
             }
         }
+    }
+
+    //Получение задач по приоретету времени
+    @Override
+    public LinkedList<Task> getPrioritizedTasks() {
+        LinkedList<Task> listTask = new LinkedList<>();
+        Optional<LocalDateTime> start = Optional.empty();
+        for (Map.Entry<Integer,Task> entry:taskMap.entrySet()) {
+            if (listTask.isEmpty()){
+                listTask.add(entry.getValue());
+                start = entry.getValue().getStartTime();
+        }else if (entry.getValue().getStartTime().get().isBefore(start.get())){
+           listTask.addFirst(entry.getValue());
+        }else if(entry.getValue().getStartTime().get().isAfter(start.get())){
+                listTask.add(entry.getValue());
+            }else if (entry.getValue().getStartTime().isEmpty()){
+                listTask.addLast(entry.getValue());
+            }
+        }
+        for (Map.Entry<Integer,SubTask> entry:subTaskMap.entrySet()) {
+            if (listTask.isEmpty()){
+                listTask.add(entry.getValue());
+                start = entry.getValue().getStartTime();
+            }else if (entry.getValue().getStartTime().get().isBefore(start.get())){
+                listTask.addFirst(entry.getValue());
+            }else if(entry.getValue().getStartTime().get().isAfter(start.get())){
+                listTask.add(entry.getValue());
+            }else if (entry.getValue().getStartTime().isEmpty()){
+                listTask.addLast(entry.getValue());
+            }
+        }
+
+        return listTask;
     }
 
     @Override

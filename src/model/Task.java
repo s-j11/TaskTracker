@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 
-public class Task {
+public class Task implements Comparable<Task>{
    private String name;
     private String description;
     private int id;
@@ -128,5 +128,18 @@ public class Task {
     @Override
     public int hashCode() {
         return Objects.hash(name, description, id, status);
+    }
+
+    @Override
+    public int compareTo(Task o) {
+        int i = 0;
+        if (this.getStartTime().get().isBefore(o.getStartTime().get())){
+            i = 1;
+        }else if (this.getStartTime().get().isAfter(o.getStartTime().get())){
+            i = -1;
+        }else if(this.getStartTime().get().isEqual(o.getStartTime().get())){
+            i = 0;
+        }
+        return i;
     }
 }

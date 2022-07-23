@@ -437,4 +437,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
             throw new ManagerSaveException(e.getMessage());
         }
     }
+
+    @Override
+    public LinkedList<Task> getPrioritizedTasks() {
+        return super.getPrioritizedTasks();
+    }
 }

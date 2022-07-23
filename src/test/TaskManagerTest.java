@@ -1,6 +1,7 @@
 package test;
 
 import bussinesslogic.InMemoryHistoryManager;
+import bussinesslogic.InMemoryTaskManager;
 import maketbussinesslogic.HistoryManager;
 import maketbussinesslogic.TaskManager;
 import model.EpicTask;
@@ -353,6 +354,31 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         Assertions.assertEquals(15, taskManager.getTaskMap().get(1).getDuration());
         Assertions.assertEquals(440, taskManager.getEpicTaskMap().get(2).getDuration());
         Assertions.assertEquals(50, taskManager.getSubTaskMap().get(3).getDuration());
+    }
+
+    @Test
+    public void voidgetPrioritizedTasks(){
+        LinkedList<Task> list = new LinkedList<>();
+        Optional<LocalDateTime> startTime = Optional.of(LocalDateTime.of(2022,1,1,12,
+                10));
+        Optional<LocalDateTime> startTime1 =Optional.of(LocalDateTime.of(2022,1,5,14,
+                20));
+        Optional<LocalDateTime> startTime2 = Optional.of(LocalDateTime.of(2022,1,10,15,
+                30));
+        Optional<LocalDateTime> startTime3 = Optional.of(LocalDateTime.of(2022,1,15,16,
+                40));
+        TaskManager taskManager1 = new InMemoryTaskManager();
+
+        Task task =  taskManager1.makeTask("Проектирование", "Проектирование ПО", startTime,
+                15);
+        EpicTask epicTask = taskManager1.makeEpic("Тестирование", "Разработка тестирования");
+        SubTask subTask =  taskManager1.makeSubTask("Разработка меню",
+                "Разработка класса меню", 2, startTime1,50);
+        SubTask subTask1 =  taskManager1.makeSubTask("Разработка логики",
+                "Разработка класса логики", 2,startTime2,150);
+        SubTask subTask2 =  taskManager1.makeSubTask("Класс тестирования",
+                "Разработка класа тестирования", 2,startTime3,240);
+        Assertions.assertEquals(taskManager1.getPrioritizedTasks(),taskManager.getPrioritizedTasks());
     }
     @Test
     public void shouldGetFromFie(){

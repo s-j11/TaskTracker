@@ -84,4 +84,8 @@ public class SubTask extends  Task {
         return result;
     }
 
+    @Override
+    public int compareTo(Task o) {
+        return super.compareTo(o);
+    }
 }

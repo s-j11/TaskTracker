@@ -82,6 +82,9 @@ public interface TaskManager {
     //Получение всех задач Эпик задачи
     void getAllSubTaskInEpic(int key);
 
+    //Получение задач по приоретету времени
+    Collection<Task> getPrioritizedTasks();
+
     //Чтение данных из файла.
     void fromFile() throws IOException;
 }

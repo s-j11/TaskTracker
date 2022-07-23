@@ -427,4 +427,9 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
     public void shouldGetDuration(){
         super.shouldGetDuration();
     }
+
+    @Test
+    public void voidgetPrioritizedTasks() {
+        super.voidgetPrioritizedTasks();
+    }
 }
