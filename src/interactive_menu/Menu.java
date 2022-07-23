@@ -34,9 +34,10 @@ public class Menu {
             System.out.println("5 - Изменить задачу по ее номеру");
             System.out.println("6 - Удалить задачу по ее номеру");
             System.out.println("7 - Вывести список подзадач по номеру Эпик");
-            System.out.println("8 - Вывести историю последних 10 операций");
-            System.out.println("9 - Загрузить данные из файла");
-            System.out.println("10 - Выйти из приложения");
+            System.out.println("8 - Вывести зададчи по времени выполнения");
+            System.out.println("9 - Вывести историю последних 10 операций");
+            System.out.println("10 - Загрузить данные из файла");
+            System.out.println("11 - Выйти из приложения");
 
 
             int command = scanner.nextInt();
@@ -170,14 +171,17 @@ public class Menu {
                 System.out.println("Введите id Эпик задачи, в которой хотите просмотреть все подзадачи: ");
                 int id = scanner.nextInt();
                 fileBackedTasksManager.getAllSubTaskInEpic(id);
-            } else if (command == 8) {
+            }else if (command == 8){
+                fileBackedTasksManager.getPrioritizedTasks().stream().sorted(Comparator.reverseOrder())
+                        .forEach(System.out::println);
+            } else if (command == 9) {
                 System.out.println(fileBackedTasksManager.getHistoryManager().getHistory());
-            }else if(command == 9) {
+            }else if(command == 10) {
                 taskMap.clear();
                 epicTaskMap.clear();
                 subTaskMap.clear();
             fileBackedTasksManager.fromFile();
-            }else if (command == 10) {
+            }else if (command == 11) {
                 System.out.println("Выход");
                 break;
             } else {
