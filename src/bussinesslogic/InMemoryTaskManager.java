@@ -7,8 +7,6 @@ import model.*;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class InMemoryTaskManager implements TaskManager{
     private Integer counterID = 1;
@@ -423,7 +421,7 @@ public class InMemoryTaskManager implements TaskManager{
         } else {
             TreeSet<Task> treeSet = this.getPrioritizedTasks();
             int count = 0;
-            int iteration = 0;
+            treeSet.remove(taskMap.get(taskUpdate.getId()));
             for (Task task1 : treeSet) {
                 if (taskUpdate.getStartTime().get().isBefore(task1.getStartTime().get()) && taskUpdate.getEndTime()
                         .get().isAfter(task1.getEndTime().get())) {
@@ -442,7 +440,7 @@ public class InMemoryTaskManager implements TaskManager{
                         count++;
                 } else if (taskUpdate.getStartTime().get().isEqual(task1.getStartTime().get()) &&
                         taskUpdate.getEndTime().get().isEqual(task1.getEndTime().get())){
-                    iteration++;
+                    count++;
                 } else if (taskUpdate.getStartTime().get().isEqual(task1.getStartTime().get()) &&
                         taskUpdate.getEndTime().get().isBefore(task1.getEndTime().get())) {
                     count++;
@@ -453,7 +451,7 @@ public class InMemoryTaskManager implements TaskManager{
                     count++;
                 }
             }
-            if ((count == 0 || iteration == 1) && taskMap.get(taskUpdate.getId()).getId() == taskUpdate.getId()) {
+            if (count == 0 ) {
                 taskMap.put(taskUpdate.getId(), taskUpdate);
                 System.out.println("Номер вашей задачи " + taskUpdate.getId() + "\n");
                 System.out.println("Задача обновлена");
@@ -497,7 +495,7 @@ public class InMemoryTaskManager implements TaskManager{
         } else {
             TreeSet<Task> treeSet = (TreeSet<Task>) this.getPrioritizedTasks();
             int count = 0;
-            int iteration = 1;
+            treeSet.remove(subTaskMap.get(taskUpdate.getId()));
             for (Task task1 : treeSet) {
                 if (taskUpdate.getStartTime().get().isBefore(task1.getStartTime().get()) && taskUpdate.getEndTime()
                         .get().isAfter(task1.getEndTime().get())) {
@@ -516,7 +514,7 @@ public class InMemoryTaskManager implements TaskManager{
                         count++;
                 } else if (taskUpdate.getStartTime().get().isEqual(task1.getStartTime().get()) &&
                         taskUpdate.getEndTime().get().isEqual(task1.getEndTime().get())){
-                    iteration++;
+                    count++;
                 } else if (taskUpdate.getStartTime().get().isEqual(task1.getStartTime().get()) &&
                         taskUpdate.getEndTime().get().isBefore(task1.getEndTime().get())) {
                     count++;
@@ -527,7 +525,7 @@ public class InMemoryTaskManager implements TaskManager{
                     count++;
                 }
             }
-            if ((count == 0 || iteration == 1) && subTaskMap.get(taskUpdate.getId()).getId() == taskUpdate.getId()) {
+            if (count == 0 ) {
             SubTask subTask = subTaskMap.get(taskUpdate.getId());
             taskUpdate.setEpicTaskNumber(subTask.getEpicTaskNumber());
             subTaskMap.put(taskUpdate.getId(), taskUpdate);

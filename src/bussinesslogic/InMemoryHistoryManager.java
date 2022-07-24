@@ -10,11 +10,9 @@ import java.util.*;
     private  Map<Integer, Node> indexMap = new HashMap<Integer, Node>();
     private  Node<Task> head = null;
     private  Node<Task> tail = null;
-
         public Map<Integer, Node> getIndexMap() {
             return indexMap;
         }
-
         public Node<Task> linkLast(Task task){
          Node<Task> lastNode = tail;
          Node<Task> newNode = new Node( tail, task, null);
@@ -96,7 +94,6 @@ import java.util.*;
     public void clearHistory() {
         historyList.clear();
     }
-
     @Override
     public void removeAllNode(){
        Collection<Node> list = this.historyList;
@@ -107,7 +104,6 @@ import java.util.*;
         i--;
        }
         }
-
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
@@ -115,7 +111,6 @@ import java.util.*;
             InMemoryHistoryManager that = (InMemoryHistoryManager) o;
             return Objects.equals(historyList, that.historyList) && Objects.equals(indexMap, that.indexMap) && Objects.equals(head, that.head) && Objects.equals(tail, that.tail);
         }
-
         @Override
         public int hashCode() {
             return Objects.hash(historyList, indexMap, head, tail);
