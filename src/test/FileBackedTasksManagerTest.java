@@ -429,7 +429,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
     }
 
     @Test
-    public void voidgetPrioritizedTasks() {
-        super.voidgetPrioritizedTasks();
+    public void getPrioritizedTasks() {
+        super.getPrioritizedTasks();
     }
 }

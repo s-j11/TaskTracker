@@ -142,7 +142,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest {
         super.shouldGetDuration();
     }
     @Test
-    public void voidgetPrioritizedTasks() {
-        super.voidgetPrioritizedTasks();
+    public void getPrioritizedTasks() {
+        super.getPrioritizedTasks();
     }
 }

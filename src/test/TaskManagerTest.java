@@ -357,7 +357,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    public void voidgetPrioritizedTasks(){
+    public void getPrioritizedTasks(){
         LinkedList<Task> list = new LinkedList<>();
         Optional<LocalDateTime> startTime = Optional.of(LocalDateTime.of(2022,1,1,12,
                 10));
