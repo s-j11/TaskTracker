@@ -90,7 +90,6 @@ public class InMemoryTaskManager implements TaskManager{
         return listSubTask;
     }
 
-
     //Удаление всех задач model.Task.
     @Override
     public void deleteAllTask() {
@@ -100,7 +99,6 @@ public class InMemoryTaskManager implements TaskManager{
             historyManager.remove(task);
         }}
         taskMap.clear();
-
     }
 
     //Удаление всех эпик задач model.EpicTask.
@@ -189,37 +187,7 @@ public class InMemoryTaskManager implements TaskManager{
         task.setStartTime(startTime);
         task.setDuration(duration);
         TreeSet<Task> treeSet = getPrioritizedTasks();
-        int count = 0;
-        for (Task task1 : treeSet) {
-            if (task.getStartTime().get().isBefore(task1.getStartTime().get()) && task.getEndTime().get()
-                    .isAfter(task1.getEndTime().get())) {
-                count++;
-            }else if(task.getStartTime().get().isBefore(task1.getStartTime().get()) && task.getEndTime().get()
-                    .isAfter(task1.getStartTime().get())) {
-                count++;
-            } else if (task.getStartTime().get().isAfter(task1.getStartTime().get()) && task.getEndTime().get()
-                    .isBefore(task1.getStartTime().get())) {
-                count++;
-            }else if (task.getStartTime().get().isAfter(task1.getStartTime().get()) && task.getStartTime().get()
-                    .isBefore(task1.getEndTime().get())) {
-                count++;
-            }else if ((task.getStartTime().get().isAfter(task1.getStartTime().get())) && task.getEndTime()
-                        .equals(task1.getEndTime())){
-                    count++;
-            } else if (task.getStartTime().get().isEqual(task1.getStartTime().get()) && task.getEndTime().get()
-                    .isEqual(task1.getEndTime().get())){
-                count++;
-            } else if (task.getStartTime().get().isEqual(task1.getStartTime().get()) && task.getEndTime().get()
-                    .isBefore(task1.getEndTime().get())) {
-                count++;
-            } else if (task.getStartTime().get().isEqual(task1.getStartTime().get()) && task.getEndTime().get()
-                    .isAfter(task1.getEndTime().get())) {
-                count++;
-            } else if (task.getEndTime().get().isEqual(task1.getStartTime().get())) {
-                count++;
-            }
-        }
-        if (count != 0) {
+        if ( freeTime(treeSet,task) != 0) {
             System.out.println("Задача пересекается по времени с другими задачами и не будет добавлена");
         } else {
             taskMap.put(task.getId(), task);
@@ -254,37 +222,7 @@ public class InMemoryTaskManager implements TaskManager{
         subTask.setStartTime(startTime);
         Set<Integer> setKeysTask = epicTaskMap.keySet();
         TreeSet<Task> treeSet = this.getPrioritizedTasks();
-        int count = 0;
-        for (Task task1 : treeSet) {
-            if (subTask.getStartTime().get().isBefore(task1.getStartTime().get()) && subTask.getEndTime().get()
-                    .isAfter(task1.getEndTime().get())) {
-                count++;
-            }else if(subTask.getStartTime().get().isBefore(task1.getStartTime().get()) && subTask.getEndTime().get()
-                    .isAfter(task1.getStartTime().get())) {
-                count++;
-            } else if (subTask.getStartTime().get().isAfter(task1.getStartTime().get()) && subTask.getEndTime().get()
-                    .isBefore(task1.getStartTime().get())) {
-                count++;
-            }else if (subTask.getStartTime().get().isAfter(task1.getStartTime().get()) && subTask.getStartTime().get()
-                    .isBefore(task1.getEndTime().get())) {
-                count++;
-            }else if ((subTask.getStartTime().get().isAfter(task1.getStartTime().get())) && subTask.getEndTime()
-                    .equals(task1.getEndTime())){
-            count++;
-            } else if (subTask.getStartTime().get().isEqual(task1.getStartTime().get()) && subTask.getEndTime().get()
-                    .isEqual(task1.getEndTime().get())){
-                count++;
-            } else if (subTask.getStartTime().get().isEqual(task1.getStartTime().get()) && subTask.getEndTime().get()
-                    .isBefore(task1.getEndTime().get())) {
-                count++;
-            } else if (subTask.getStartTime().get().isEqual(task1.getStartTime().get()) && subTask.getEndTime().get()
-                    .isAfter(task1.getEndTime().get())) {
-                count++;
-            } else if (subTask.getEndTime().get().isEqual(task1.getStartTime().get())) {
-                count++;
-            }
-        }
-        if (count == 0) {
+        if (freeTime(treeSet,subTask) == 0) {
         Optional<LocalDateTime> start = null;
         Optional<LocalDateTime> end = null;
         int time; 
@@ -420,38 +358,8 @@ public class InMemoryTaskManager implements TaskManager{
             System.out.println("Tакого id в списке задач - нет");
         } else {
             TreeSet<Task> treeSet = this.getPrioritizedTasks();
-            int count = 0;
             treeSet.remove(taskMap.get(taskUpdate.getId()));
-            for (Task task1 : treeSet) {
-                if (taskUpdate.getStartTime().get().isBefore(task1.getStartTime().get()) && taskUpdate.getEndTime()
-                        .get().isAfter(task1.getEndTime().get())) {
-                    count++;
-                }else if(taskUpdate.getStartTime().get().isBefore(task1.getStartTime().get()) && taskUpdate.getEndTime()
-                        .get().isAfter(task1.getStartTime().get())) {
-                    count++;
-                } else if (taskUpdate.getStartTime().get().isAfter(task1.getStartTime().get()) &&
-                        taskUpdate.getEndTime().get().isBefore(task1.getStartTime().get())) {
-                    count++;
-                }else if (taskUpdate.getStartTime().get().isAfter(task1.getStartTime().get()) &&
-                         taskUpdate.getStartTime().get().isBefore(task1.getEndTime().get())) {
-                    count++;
-                }else if ((taskUpdate.getStartTime().get().isAfter(task1.getStartTime().get())) && taskUpdate
-                        .getEndTime().equals(task1.getEndTime())){
-                        count++;
-                } else if (taskUpdate.getStartTime().get().isEqual(task1.getStartTime().get()) &&
-                        taskUpdate.getEndTime().get().isEqual(task1.getEndTime().get())){
-                    count++;
-                } else if (taskUpdate.getStartTime().get().isEqual(task1.getStartTime().get()) &&
-                        taskUpdate.getEndTime().get().isBefore(task1.getEndTime().get())) {
-                    count++;
-                } else if (taskUpdate.getStartTime().get().isEqual(task1.getStartTime().get()) &&
-                        taskUpdate.getEndTime().get().isAfter(task1.getEndTime().get())) {
-                    count++;
-                } else if (taskUpdate.getEndTime().get().isEqual(task1.getStartTime().get())) {
-                    count++;
-                }
-            }
-            if (count == 0 ) {
+            if (freeTime(treeSet,taskUpdate) == 0 ) {
                 taskMap.put(taskUpdate.getId(), taskUpdate);
                 System.out.println("Номер вашей задачи " + taskUpdate.getId() + "\n");
                 System.out.println("Задача обновлена");
@@ -459,8 +367,6 @@ public class InMemoryTaskManager implements TaskManager{
             } else {
                 System.out.println("Задача пересекается по времени с другими задачами и не будет добавлена");
             }
-//            taskMap.put(taskUpdate.getId(), taskUpdate);
-//            System.out.println("Задача обновлена");
         }
         return taskMap;
     }
@@ -494,38 +400,8 @@ public class InMemoryTaskManager implements TaskManager{
             System.out.println("Tакого id в списке подзадач задач - нет");
         } else {
             TreeSet<Task> treeSet = (TreeSet<Task>) this.getPrioritizedTasks();
-            int count = 0;
             treeSet.remove(subTaskMap.get(taskUpdate.getId()));
-            for (Task task1 : treeSet) {
-                if (taskUpdate.getStartTime().get().isBefore(task1.getStartTime().get()) && taskUpdate.getEndTime()
-                        .get().isAfter(task1.getEndTime().get())) {
-                    count++;
-                }else if(taskUpdate.getStartTime().get().isBefore(task1.getStartTime().get()) && taskUpdate.getEndTime()
-                        .get().isAfter(task1.getStartTime().get())) {
-                    count++;
-                } else if (taskUpdate.getStartTime().get().isAfter(task1.getStartTime().get()) &&
-                        taskUpdate.getEndTime().get().isBefore(task1.getStartTime().get())) {
-                    count++;
-                }else if (taskUpdate.getStartTime().get().isAfter(task1.getStartTime().get()) &&
-                        taskUpdate.getStartTime().get().isBefore(task1.getEndTime().get())) {
-                    count++;
-                }else if ((taskUpdate.getStartTime().get().isAfter(task1.getStartTime().get())) && taskUpdate
-                        .getEndTime().equals(task1.getEndTime())){
-                        count++;
-                } else if (taskUpdate.getStartTime().get().isEqual(task1.getStartTime().get()) &&
-                        taskUpdate.getEndTime().get().isEqual(task1.getEndTime().get())){
-                    count++;
-                } else if (taskUpdate.getStartTime().get().isEqual(task1.getStartTime().get()) &&
-                        taskUpdate.getEndTime().get().isBefore(task1.getEndTime().get())) {
-                    count++;
-                } else if (taskUpdate.getStartTime().get().isEqual(task1.getStartTime().get()) &&
-                        taskUpdate.getEndTime().get().isAfter(task1.getEndTime().get())) {
-                    count++;
-                } else if (taskUpdate.getEndTime().get().isEqual(task1.getStartTime().get())) {
-                    count++;
-                }
-            }
-            if (count == 0 ) {
+            if (freeTime(treeSet,taskUpdate) == 0 ) {
             SubTask subTask = subTaskMap.get(taskUpdate.getId());
             taskUpdate.setEpicTaskNumber(subTask.getEpicTaskNumber());
             subTaskMap.put(taskUpdate.getId(), taskUpdate);
@@ -626,12 +502,44 @@ public class InMemoryTaskManager implements TaskManager{
                 listTask.addLast(entry.getValue());
             }
         }
-
         for (Task task:listTask) {
             treeSet.add(task);
         }
-
         return treeSet;
+    }
+
+    public int freeTime(TreeSet<Task> treeSet, Task task){
+        int count = 0;
+        for (Task task1 : treeSet) {
+            if (task.getStartTime().get().isBefore(task1.getStartTime().get()) && task.getEndTime().get()
+                    .isAfter(task1.getEndTime().get())) {
+                count++;
+            }else if(task.getStartTime().get().isBefore(task1.getStartTime().get()) && task.getEndTime().get()
+                    .isAfter(task1.getStartTime().get())) {
+                count++;
+            } else if (task.getStartTime().get().isAfter(task1.getStartTime().get()) && task.getEndTime().get()
+                    .isBefore(task1.getStartTime().get())) {
+                count++;
+            }else if (task.getStartTime().get().isAfter(task1.getStartTime().get()) && task.getStartTime().get()
+                    .isBefore(task1.getEndTime().get())) {
+                count++;
+            }else if ((task.getStartTime().get().isAfter(task1.getStartTime().get())) && task.getEndTime()
+                    .equals(task1.getEndTime())){
+                count++;
+            } else if (task.getStartTime().get().isEqual(task1.getStartTime().get()) && task.getEndTime().get()
+                    .isEqual(task1.getEndTime().get())){
+                count++;
+            } else if (task.getStartTime().get().isEqual(task1.getStartTime().get()) && task.getEndTime().get()
+                    .isBefore(task1.getEndTime().get())) {
+                count++;
+            } else if (task.getStartTime().get().isEqual(task1.getStartTime().get()) && task.getEndTime().get()
+                    .isAfter(task1.getEndTime().get())) {
+                count++;
+            } else if (task.getEndTime().get().isEqual(task1.getStartTime().get())) {
+                count++;
+            }
+        }
+        return count;
     }
 
     @Override
