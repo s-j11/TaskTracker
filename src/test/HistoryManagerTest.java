@@ -48,8 +48,10 @@ class HistoryManagerTest {
         Assertions.assertEquals(historyManager.getHistory(), inMemoryTaskManager.getHistoryManager().getHistory());
         historyManager.add(task);
         inMemoryTaskManager.getTaskById(1);
-        Assertions.assertNotNull(inMemoryTaskManager.getHistoryManager().getHistory());
-        Assertions.assertEquals(historyManager.getHistory(),inMemoryTaskManager.getHistoryManager().getHistory());
+        assertAll(
+                ()-> assertNotNull(inMemoryTaskManager.getHistoryManager().getHistory()),
+                ()->assertEquals(historyManager.getHistory(),inMemoryTaskManager.getHistoryManager().getHistory())
+        );
     }
 
     @Test
@@ -58,8 +60,10 @@ class HistoryManagerTest {
         node = new Node<Task>(task);
         historyManager.add(task);
         inMemoryTaskManager.getTaskById(1);
-        Assertions.assertNotNull(inMemoryTaskManager.getHistoryManager().getHistory());
-        Assertions.assertEquals(historyManager.getHistory(),inMemoryTaskManager.getHistoryManager().getHistory());
+        assertAll(
+                ()->assertNotNull(inMemoryTaskManager.getHistoryManager().getHistory()),
+                ()->assertEquals(historyManager.getHistory(),inMemoryTaskManager.getHistoryManager().getHistory())
+        );
         historyManager.remove(node);
         Assertions.assertNotEquals(historyManager.getHistory(),inMemoryTaskManager.getHistoryManager().getHistory());
         inMemoryTaskManager.getHistoryManager().remove(node);
@@ -73,8 +77,10 @@ class HistoryManagerTest {
         historyManager.add(task);
         Assertions.assertNotEquals(historyManager.getHistory(), inMemoryTaskManager.getHistoryManager().getHistory());
         inMemoryTaskManager.getTaskById(1);
-        Assertions.assertNotNull(inMemoryTaskManager.getHistoryManager().getHistory());
-        Assertions.assertEquals(historyManager.getHistory(),inMemoryTaskManager.getHistoryManager().getHistory());
+        assertAll(
+                ()->assertNotNull(inMemoryTaskManager.getHistoryManager().getHistory()),
+                ()->assertEquals(historyManager.getHistory(),inMemoryTaskManager.getHistoryManager().getHistory())
+        );
     }
 
     @Test
@@ -91,8 +97,10 @@ class HistoryManagerTest {
         historyManager.add(task);
         Assertions.assertNotEquals(historyManager.getHistory(), inMemoryTaskManager.getHistoryManager().getHistory());
         inMemoryTaskManager.getTaskById(1);
-        Assertions.assertNotNull(inMemoryTaskManager.getHistoryManager().getHistory());
-        Assertions.assertEquals(historyManager.getHistory(),inMemoryTaskManager.getHistoryManager().getHistory());
+        assertAll(
+                ()->assertNotNull(inMemoryTaskManager.getHistoryManager().getHistory()),
+        ()->assertEquals(historyManager.getHistory(),inMemoryTaskManager.getHistoryManager().getHistory())
+        );
         historyManager.add(epicTask);
         inMemoryTaskManager.getEpicTaskById(2);
         Assertions.assertEquals(historyManager.getHistory(),inMemoryTaskManager.getHistoryManager().getHistory());
@@ -115,8 +123,10 @@ class HistoryManagerTest {
         historyManager.add(task);
         Assertions.assertNotEquals(historyManager.getHistory(), inMemoryTaskManager.getHistoryManager().getHistory());
         inMemoryTaskManager.getTaskById(1);
-        Assertions.assertNotNull(inMemoryTaskManager.getHistoryManager().getHistory());
-        Assertions.assertEquals(historyManager.getHistory(),inMemoryTaskManager.getHistoryManager().getHistory());
+        assertAll(
+                ()->assertNotNull(inMemoryTaskManager.getHistoryManager().getHistory()),
+                ()->assertEquals(historyManager.getHistory(),inMemoryTaskManager.getHistoryManager().getHistory())
+        );
         historyManager.add(epicTask);
         inMemoryTaskManager.getEpicTaskById(2);
         Assertions.assertEquals(historyManager.getHistory(),inMemoryTaskManager.getHistoryManager().getHistory());

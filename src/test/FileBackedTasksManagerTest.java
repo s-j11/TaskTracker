@@ -149,9 +149,11 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
         String taskFromFile = fileBackedTasksManager.toString(taskManager.getTaskMap().get(1));
         String epicFromFile = fileBackedTasksManager.toString(taskManager.getEpicTaskMap().get(2));
         String subFromFile = fileBackedTasksManager.toString(taskManager.getSubTaskMap().get(3));
-        Assertions.assertEquals(task, taskFromFile);
-        Assertions.assertEquals(epic, epicFromFile);
-        Assertions.assertEquals(subtask, subFromFile);
+        assertAll(
+                ()->assertEquals(task, taskFromFile),
+                ()->assertEquals(epic, epicFromFile),
+                ()->assertEquals(subtask, subFromFile)
+        );
     }
     @Test
     public void shouldFromString()throws IOException {
@@ -188,10 +190,12 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
             Task epicFromString = fileBackedTasksManager.fromString(listString.get(1));
             Task subTaskFromString = fileBackedTasksManager.fromString(listString.get(2));
             Task subTaskFromString1 = fileBackedTasksManager.fromString(listString.get(3));
-            Assertions.assertEquals(task, taskFromString);
-            Assertions.assertEquals(epicTask, epicFromString);
-            Assertions.assertEquals(subTask, subTaskFromString);
-            Assertions.assertNotEquals(subTask,subTaskFromString1);
+            assertAll(
+                    ()->assertEquals(task, taskFromString),
+                    ()->assertEquals(epicTask, epicFromString),
+                    ()->assertEquals(subTask, subTaskFromString),
+                    ()->assertNotEquals(subTask,subTaskFromString1)
+            );
         }
     @Test
     public void shouldFromFile() {
@@ -221,9 +225,11 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        Assertions.assertEquals(map,taskManager.getTaskMap());
-        Assertions.assertEquals(epicMap,taskManager.getEpicTaskMap());
-        Assertions.assertEquals(subMap,taskManager.getSubTaskMap());
+        assertAll(
+        ()->assertEquals(map,taskManager.getTaskMap()),
+        ()->assertEquals(epicMap,taskManager.getEpicTaskMap()),
+        ()->assertEquals(subMap,taskManager.getSubTaskMap())
+    );
     }
     @Test
     public void shouldToStringHistoryManager(){
@@ -329,11 +335,13 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
         fileBackedTasksManager2.getSubTaskById(3);
         fileBackedTasksManager2.saveToFile();
         fileBackedTasksManager2.fromFile();
-        Assertions.assertEquals(fileBackedTasksManager2.getTaskMap(),fileBackedTasksManager.getTaskMap());
-        Assertions.assertEquals(fileBackedTasksManager2.getEpicTaskMap(),fileBackedTasksManager.getEpicTaskMap());
-        Assertions.assertEquals(fileBackedTasksManager2.getSubTaskMap(),fileBackedTasksManager.getSubTaskMap());
-        Assertions.assertEquals(fileBackedTasksManager2.getHistoryManager().getHistory(),
-                fileBackedTasksManager.getHistoryManager().getHistory());
+        assertAll(
+                ()->assertEquals(fileBackedTasksManager2.getTaskMap(),fileBackedTasksManager.getTaskMap()),
+        ()->assertEquals(fileBackedTasksManager2.getEpicTaskMap(),fileBackedTasksManager.getEpicTaskMap()),
+        ()->assertEquals(fileBackedTasksManager2.getSubTaskMap(),fileBackedTasksManager.getSubTaskMap()),
+        ()->assertEquals(fileBackedTasksManager2.getHistoryManager().getHistory(),
+                fileBackedTasksManager.getHistoryManager().getHistory())
+        );
     }
     @Test
     public void shouldEmptyTaskList() throws IOException{
@@ -369,11 +377,13 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
         fileBackedTasksManager2.getSubTaskById(3);
         fileBackedTasksManager2.deleteAllTask();
         fileBackedTasksManager2.fromFile();
-        Assertions.assertEquals(fileBackedTasksManager2.getTaskMap(),fileBackedTasksManager.getTaskMap());
-        Assertions.assertEquals(fileBackedTasksManager2.getEpicTaskMap(),fileBackedTasksManager.getEpicTaskMap());
-        Assertions.assertEquals(fileBackedTasksManager2.getSubTaskMap(),fileBackedTasksManager.getSubTaskMap());
-        Assertions.assertEquals(fileBackedTasksManager2.getHistoryManager().getHistory(),
-                fileBackedTasksManager.getHistoryManager().getHistory());
+        assertAll(
+                ()->assertEquals(fileBackedTasksManager2.getTaskMap(),fileBackedTasksManager.getTaskMap()),
+                ()->assertEquals(fileBackedTasksManager2.getEpicTaskMap(),fileBackedTasksManager.getEpicTaskMap()),
+                ()->assertEquals(fileBackedTasksManager2.getSubTaskMap(),fileBackedTasksManager.getSubTaskMap()),
+                ()->assertEquals(fileBackedTasksManager2.getHistoryManager().getHistory(),
+                fileBackedTasksManager.getHistoryManager().getHistory())
+        );
     }
 
     @Test
@@ -391,11 +401,13 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
         fileBackedTasksManager2.getEpicTaskById(2);
         fileBackedTasksManager2.getTaskById(1);
         fileBackedTasksManager2.fromFile();
-        Assertions.assertEquals(fileBackedTasksManager2.getTaskMap(),fileBackedTasksManager.getTaskMap());
-        Assertions.assertEquals(fileBackedTasksManager2.getEpicTaskMap(),fileBackedTasksManager.getEpicTaskMap());
-        Assertions.assertEquals(fileBackedTasksManager2.getSubTaskMap(),fileBackedTasksManager.getSubTaskMap());
-        Assertions.assertEquals(fileBackedTasksManager2.getHistoryManager().getHistory(),
-                fileBackedTasksManager.getHistoryManager().getHistory());
+        assertAll(
+        ()->assertEquals(fileBackedTasksManager2.getTaskMap(),fileBackedTasksManager.getTaskMap()),
+        ()->assertEquals(fileBackedTasksManager2.getEpicTaskMap(),fileBackedTasksManager.getEpicTaskMap()),
+        ()->assertEquals(fileBackedTasksManager2.getSubTaskMap(),fileBackedTasksManager.getSubTaskMap()),
+        ()->assertEquals(fileBackedTasksManager2.getHistoryManager().getHistory(),
+                fileBackedTasksManager.getHistoryManager().getHistory())
+        );
 }
 
 
@@ -411,11 +423,13 @@ class FileBackedTasksManagerTest extends TaskManagerTest{
         fileBackedTasksManager2.makeTask("Проектирование","Проектирование ПО",startTime,30);
         fileBackedTasksManager2.makeEpic("Тестирование","Разработка тестирования");
         fileBackedTasksManager2.fromFile();
-        Assertions.assertEquals(fileBackedTasksManager2.getTaskMap(),fileBackedTasksManager.getTaskMap());
-        Assertions.assertEquals(fileBackedTasksManager2.getEpicTaskMap(),fileBackedTasksManager.getEpicTaskMap());
-        Assertions.assertEquals(fileBackedTasksManager2.getSubTaskMap(),fileBackedTasksManager.getSubTaskMap());
-        Assertions.assertEquals(fileBackedTasksManager2.getHistoryManager().getHistory(),
-                fileBackedTasksManager.getHistoryManager().getHistory());
+        assertAll(
+        ()->assertEquals(fileBackedTasksManager2.getTaskMap(),fileBackedTasksManager.getTaskMap()),
+        ()->assertEquals(fileBackedTasksManager2.getEpicTaskMap(),fileBackedTasksManager.getEpicTaskMap()),
+        ()->assertEquals(fileBackedTasksManager2.getSubTaskMap(),fileBackedTasksManager.getSubTaskMap()),
+        ()->assertEquals(fileBackedTasksManager2.getHistoryManager().getHistory(),
+                fileBackedTasksManager.getHistoryManager().getHistory())
+        );
     }
 
     @Test

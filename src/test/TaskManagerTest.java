@@ -14,6 +14,9 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.util.*;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 public abstract class TaskManagerTest<T extends TaskManager> {
     public T taskManager;
     public abstract T сreateTaskManager();
@@ -24,7 +27,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     @Test
         public void shouldExistEpicTask() {
         SubTask sT = taskManager.getSubTaskMap().get(3);
-        Assertions.assertEquals(2, sT.getEpicTaskNumber());
+        assertEquals(2, sT.getEpicTaskNumber());
     }
     @Test
         public void shouldCountStatusEpicTask() {
@@ -35,18 +38,20 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         taskManager.updateSubTaskById(subTask);
         taskManager.updateSubTaskById(subTask1);
         EpicTask eT = taskManager.getEpicTaskMap().get(2);
-        Assertions.assertEquals(Status.IN_PROGRESS, eT.getStatus(), "Статус не IN_PROGRESS");
+        assertEquals(Status.IN_PROGRESS, eT.getStatus(), "Статус не IN_PROGRESS");
     }
     @Test
     public void shouldGetTaskMap() {
         Map<Integer, Task> map = new HashMap<>();
         map.put(1, new Task("Проектирование", "Проектирование ПО", 1, Status.NEW));
-        Assertions.assertEquals(map, taskManager.getTaskMap());
-        Assertions.assertNotEquals(null, taskManager.getTaskMap());
+        assertAll(
+                ()->assertEquals(map, taskManager.getTaskMap()),
+                ()->assertNotEquals(null, taskManager.getTaskMap())
+        );
         taskManager.deleteAllTask();
-        Assertions.assertNotEquals(map,taskManager.getTaskMap());
+        assertNotEquals(map,taskManager.getTaskMap());
         map.clear();
-        Assertions.assertEquals(map,taskManager.getTaskMap());
+        assertEquals(map,taskManager.getTaskMap());
     }
     @Test
     public void shouldGetEpicTaskMap() {
@@ -56,13 +61,15 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         list.add(4);
         list.add(5);
         map.put(2, new EpicTask("Тестирование", "Разработка тестирования", 2, Status.NEW, list));
-        Assertions.assertEquals(map, taskManager.getEpicTaskMap());
-        Assertions.assertEquals(Status.NEW,taskManager.getEpicTaskMap().get(2).getStatus());
+        assertAll(
+                ()->assertEquals(map, taskManager.getEpicTaskMap()),
+                ()->assertEquals(Status.NEW,taskManager.getEpicTaskMap().get(2).getStatus())
+        );
         Assertions.assertNotNull(taskManager.getEpicTaskMap());
         taskManager.deleteAllEpic();
-        Assertions.assertNotEquals(map,taskManager.getEpicTaskMap());
+        assertNotEquals(map,taskManager.getEpicTaskMap());
         map.clear();
-        Assertions.assertEquals(map,taskManager.getEpicTaskMap());
+        assertEquals(map,taskManager.getEpicTaskMap());
     }
     @Test
     public void shouldGetSubTaskMap() {
@@ -73,26 +80,28 @@ public abstract class TaskManagerTest<T extends TaskManager> {
                 2));
         map.put(5, new SubTask("Класс тестирования", "Разработка класа тестирования", 5, Status.NEW,
                 2));
-        Assertions.assertEquals(map, taskManager.getSubTaskMap());
-        Assertions.assertEquals(2,taskManager.getSubTaskMap().get(3).getEpicTaskNumber());
-        Assertions.assertNotNull(taskManager.getSubTaskMap());
+        assertAll(
+                ()->assertEquals(map, taskManager.getSubTaskMap()),
+                ()->assertEquals(2,taskManager.getSubTaskMap().get(3).getEpicTaskNumber()),
+                ()->assertNotNull(taskManager.getSubTaskMap())
+        );
         taskManager.deleteAllSubTask();
-        Assertions.assertNotEquals(map,taskManager.getSubTaskMap());
+        assertNotEquals(map,taskManager.getSubTaskMap());
         map.clear();
-        Assertions.assertEquals(map,taskManager.getSubTaskMap());
+        assertEquals(map,taskManager.getSubTaskMap());
     }
     @Test
     public void shouldGetListTasks(){
         Collection list = new ArrayList();
         list.add(new Task("Проектирование", "Проектирование ПО", 1, Status.NEW));
         Map map = taskManager.getTaskMap();
-        Assertions.assertEquals(list, taskManager.getListTasks(map));
+        assertEquals(list, taskManager.getListTasks(map));
         Assertions.assertNotNull(taskManager.getListTasks(map));
         taskManager.deleteAllTask();
         map = taskManager.getTaskMap();
-        Assertions.assertNotEquals(list,taskManager.getListTasks(map));
+        assertNotEquals(list,taskManager.getListTasks(map));
         list.clear();
-        Assertions.assertEquals(list,taskManager.getListTasks(map));
+        assertEquals(list,taskManager.getListTasks(map));
     }
     @Test
     public void shouldGetListEpicTasks(){
@@ -104,13 +113,13 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         list.add(new EpicTask("Тестирование", "Разработка тестирования", 2, Status.NEW,
                 listSubTasks));
         Map map = taskManager.getEpicTaskMap();
-        Assertions.assertEquals(list, taskManager.getListEpicTasks(map));
+        assertEquals(list, taskManager.getListEpicTasks(map));
         Assertions.assertNotNull(taskManager.getListEpicTasks(map));
         taskManager.deleteAllEpic();
         map = taskManager.getEpicTaskMap();
-        Assertions.assertNotEquals(list,taskManager.getListTasks(map));
+        assertNotEquals(list,taskManager.getListTasks(map));
         list.clear();
-        Assertions.assertEquals(list,taskManager.getListEpicTasks(map));
+        assertEquals(list,taskManager.getListEpicTasks(map));
     }
     @Test
     public void shouldGetListSubTasks(){
@@ -122,55 +131,61 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         list.add(new SubTask("Класс тестирования", "Разработка класа тестирования", 5, Status.NEW,
                 2));
         Map map = taskManager.getSubTaskMap();
-        Assertions.assertEquals(list, taskManager.getListSubTasks(map));
+        assertEquals(list, taskManager.getListSubTasks(map));
         Assertions.assertNotNull(taskManager.getListSubTasks(map));
         taskManager.deleteAllSubTask();
         map = taskManager.getSubTaskMap();
-        Assertions.assertNotEquals(list,taskManager.getListSubTasks(map));
+        assertNotEquals(list,taskManager.getListSubTasks(map));
         list.clear();
-        Assertions.assertEquals(list,taskManager.getListSubTasks(map));
+        assertEquals(list,taskManager.getListSubTasks(map));
     }
     @Test
     public void shouldGetHistoryManager(){
         InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
         Task task = new Task("Проектирование", "Проектирование ПО", 1, Status.NEW);
-        Assertions.assertEquals(inMemoryHistoryManager.getHistory(), taskManager.getHistoryManager().getHistory());
+        assertEquals(inMemoryHistoryManager.getHistory(), taskManager.getHistoryManager().getHistory());
         inMemoryHistoryManager.add(task);
         taskManager.getTaskById(1);
-        Assertions.assertNotNull(taskManager.getHistoryManager().getHistory());
-        Assertions.assertEquals(inMemoryHistoryManager.getHistory(),taskManager.getHistoryManager().getHistory());
+        assertAll(
+                ()->assertNotNull(taskManager.getHistoryManager().getHistory()),
+                ()->assertEquals(inMemoryHistoryManager.getHistory(),taskManager.getHistoryManager().getHistory())
+        );
 
     };
     @Test
     public void shouldDeleteAllTask() {
         Map<Integer, Task> map = new HashMap<>();
         taskManager.deleteAllTask();
-        Assertions.assertEquals(map, taskManager.getTaskMap());
+        assertEquals(map, taskManager.getTaskMap());
         map.put(1, new Task("Проектирование", "Проектирование ПО", 1, Status.NEW));
-        Assertions.assertNotEquals(map,taskManager.getTaskMap());
-        Assertions.assertNotNull(taskManager.getTaskMap());
+        assertAll(
+                ()->assertNotEquals(map,taskManager.getTaskMap()),
+                ()->assertNotNull(taskManager.getTaskMap())
+        );
     }
     @Test
     public void shouldDeleteAllEpicTask() {
         Map<Integer, EpicTask> map = new HashMap<>();
         taskManager.deleteAllEpic();
-        Assertions.assertEquals(map, taskManager.getEpicTaskMap());
+        assertEquals(map, taskManager.getEpicTaskMap());
         List<Integer> list = new ArrayList<>();
         list.add(3);
         list.add(4);
         list.add(5);
         map.put(2, new EpicTask("Тестирование", "Разработка тестирования", 2, Status.NEW, list));
-        Assertions.assertNotEquals(map, taskManager.getEpicTaskMap());
-        Assertions.assertNotNull(taskManager.getEpicTaskMap());
+        assertAll(
+                ()->assertNotEquals(map, taskManager.getEpicTaskMap()),
+                ()->assertNotNull(taskManager.getEpicTaskMap())
+        );
     }
     @Test
     public void shouldDeleteAllSubTask() {
         Map<Integer, SubTask> map = new HashMap<>();
         taskManager.deleteAllSubTask();
-        Assertions.assertEquals(map, taskManager.getSubTaskMap());
+        assertEquals(map, taskManager.getSubTaskMap());
         map.put(3, new SubTask("Разработка меню", "Разработка класса меню", 3, Status.NEW,
                 2));
-        Assertions.assertNotEquals(map,taskManager.getSubTaskMap());
+        assertNotEquals(map,taskManager.getSubTaskMap());
         Assertions.assertNotNull(taskManager.getSubTaskMap());
     }
     @Test
@@ -180,10 +195,12 @@ public abstract class TaskManagerTest<T extends TaskManager> {
                 30));
         map.put(1, new Task("Проектирование", "Проектирование ПО", 1, Status.NEW,
                 startTime,15));
-        Assertions.assertEquals(map.get(1), taskManager.getTaskMap().get(1));
+        assertEquals(map.get(1), taskManager.getTaskMap().get(1));
         taskManager.deleteAllTask();
-        Assertions.assertNotEquals(map.get(1),taskManager.getTaskMap().get(1));
-        Assertions.assertNull(taskManager.getTaskMap().get(1));
+        assertAll(
+                ()->assertNotEquals(map.get(1),taskManager.getTaskMap().get(1)),
+                ()->assertNull(taskManager.getTaskMap().get(1))
+        );
     }
     @Test
     public void shouldGetEpicTaskByID() {
@@ -193,29 +210,35 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         list.add(4);
         list.add(5);
         map.put(2, new EpicTask("Тестирование", "Разработка тестирования", 2, Status.NEW, list));
-        Assertions.assertEquals(map.get(2), taskManager.getEpicTaskMap().get(2));
+        assertEquals(map.get(2), taskManager.getEpicTaskMap().get(2));
         taskManager.deleteAllEpic();
-        Assertions.assertNotEquals(map.get(2),taskManager.getEpicTaskMap().get(2));
-        Assertions.assertNull(taskManager.getEpicTaskMap().get(2));
+        assertAll(
+                ()->assertNotEquals(map.get(2),taskManager.getEpicTaskMap().get(2)),
+                ()->assertNull(taskManager.getEpicTaskMap().get(2))
+        );
     }
     @Test
     public void shouldGetSubTaskByID() {
         Map<Integer, SubTask> map = new HashMap<>();
         map.put(3, new SubTask("Разработка меню", "Разработка класса меню", 3, Status.NEW,
                 2));
-        Assertions.assertEquals(map.get(3), taskManager.getSubTaskMap().get(3));
+        assertEquals(map.get(3), taskManager.getSubTaskMap().get(3));
         taskManager.deleteAllSubTask();
-        Assertions.assertNotEquals(map.get(3),taskManager.getSubTaskMap().get(3));
-        Assertions.assertNull(taskManager.getSubTaskMap().get(3));
+        assertAll(
+                ()->assertNotEquals(map.get(3),taskManager.getSubTaskMap().get(3)),
+                ()->assertNull(taskManager.getSubTaskMap().get(3))
+        );
     }
     @Test
     public void shouldMakeTask() {
         Map<Integer, Task> map = new HashMap<>();
         map.put(1, new Task("Проектирование", "Проектирование ПО", 1, Status.NEW));
-        Assertions.assertEquals(map.get(1), taskManager.getTaskMap().get(1));
-        Assertions.assertNull(taskManager.getTaskMap().get(2));
-        Assertions.assertNotNull(taskManager.getTaskMap().get(1));
-        Assertions.assertNotEquals(map.get(1),taskManager.getTaskMap().get(0));
+        assertAll(
+                ()->assertEquals(map.get(1), taskManager.getTaskMap().get(1)),
+                ()->assertNull(taskManager.getTaskMap().get(2)),
+                ()->assertNotNull(taskManager.getTaskMap().get(1)),
+                ()->assertNotEquals(map.get(1),taskManager.getTaskMap().get(0))
+        );
     }
     @Test
     public void shouldMakeEpicTask() {
@@ -225,37 +248,44 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         list.add(4);
         list.add(5);
         map.put(2, new EpicTask("Тестирование", "Разработка тестирования", 2, Status.NEW, list));
-        Assertions.assertEquals(map.get(2), taskManager.getEpicTaskMap().get(2));
-        Assertions.assertNull(taskManager.getEpicTaskMap().get(1));
-        Assertions.assertNotNull(taskManager.getEpicTaskMap().get(2));
-        Assertions.assertNotEquals(map.get(2),taskManager.getEpicTaskMap().get(1));
+        assertAll(
+                ()->assertEquals(map.get(2), taskManager.getEpicTaskMap().get(2)),
+                ()->assertNull(taskManager.getEpicTaskMap().get(1)),
+                ()->assertNotNull(taskManager.getEpicTaskMap().get(2)),
+                ()->assertNotEquals(map.get(2),taskManager.getEpicTaskMap().get(1))
+        );
     }
     @Test
     public void shouldMakeSubTask() {
         Map<Integer, SubTask> map = new HashMap<>();
         map.put(3, new SubTask("Разработка меню", "Разработка класса меню", 3, Status.NEW,
                 2));
-        Assertions.assertEquals(map.get(3), taskManager.getSubTaskMap().get(3));
-        Assertions.assertNull(taskManager.getSubTaskMap().get(7));
-        Assertions.assertNotNull(taskManager.getSubTaskMap().get(3));
-        Assertions.assertNotEquals(map.get(3),taskManager.getSubTaskMap().get(4));
-
+        assertAll(
+                ()->assertEquals(map.get(3), taskManager.getSubTaskMap().get(3)),
+                ()->assertNull(taskManager.getSubTaskMap().get(7)),
+                ()->assertNotNull(taskManager.getSubTaskMap().get(3)),
+                ()->assertNotEquals(map.get(3),taskManager.getSubTaskMap().get(4))
+        );
     }
     @Test
     public void shouldDeleteTaskByID() {
         Map<Integer, EpicTask> map = new HashMap<>();
         taskManager.deleteTaskById(1);
-        Assertions.assertEquals(map, taskManager.getTaskMap());
-        Assertions.assertNull(taskManager.getTaskMap().get(1));
+        assertAll(
+                ()->assertEquals(map, taskManager.getTaskMap()),
+                ()->assertNull(taskManager.getTaskMap().get(1))
+        );
     }
     @Test
     public void shouldDeleteEpicTaskByID() {
         Map<Integer, EpicTask> epicMap = new HashMap<>();
         Map<Integer, SubTask> subMap = new HashMap<>();
         taskManager.deleteEpicTaskById(2);
-        Assertions.assertEquals(epicMap, taskManager.getEpicTaskMap());
-        Assertions.assertEquals(subMap, taskManager.getSubTaskMap());
-        Assertions.assertNull(taskManager.getEpicTaskMap().get(2));
+        assertAll(
+                ()->assertEquals(epicMap, taskManager.getEpicTaskMap()),
+                ()->assertEquals(subMap, taskManager.getSubTaskMap()),
+                ()->assertNull(taskManager.getEpicTaskMap().get(2))
+        );
     }
     @Test
     public void shouldDeleteSubTaskByID() {
@@ -265,8 +295,10 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         subMap.put(5, new SubTask("Класс тестирования", "Разработка класа тестирования", 5, Status.NEW,
                 2));
         taskManager.deleteSubTaskById(3);
-        Assertions.assertEquals(subMap, taskManager.getSubTaskMap());
-        Assertions.assertNull(taskManager.getSubTaskMap().get(3));
+        assertAll(
+                ()->assertEquals(subMap, taskManager.getSubTaskMap()),
+                ()->assertNull(taskManager.getSubTaskMap().get(3))
+        );
     }
     @Test
     public void shouldDeleteSubTaskByIDIDEpicTask() {
@@ -282,7 +314,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         list.add(4);
         list.add(5);
         epicMap.put(2, new EpicTask("Тестирование", "Разработка тестирования", 2, Status.NEW, list));
-        Assertions.assertEquals(epicMap, taskManager.getEpicTaskMap());
+        assertEquals(epicMap, taskManager.getEpicTaskMap());
     }
     @Test
     public void shouldUpdateTaskById(){
@@ -291,12 +323,14 @@ public abstract class TaskManagerTest<T extends TaskManager> {
                 10));
         map.put(1, new Task("Проектирование", "Проектирование ПО",1, Status.DONE, startTime,
                 15));
-        Assertions.assertNotEquals(map.get(1), taskManager.getTaskMap().get(1));
+        assertNotEquals(map.get(1), taskManager.getTaskMap().get(1));
         Task task = new Task("Проектирование", "Проектирование ПО", 1, Status.DONE, startTime,
                 15);
         taskManager.updateTaskById(task);
-        Assertions.assertEquals(map.get(1),taskManager.getTaskMap().get(1));
-        Assertions.assertNotNull(taskManager.getTaskMap().get(1));
+        assertAll(
+                ()->assertEquals(map.get(1),taskManager.getTaskMap().get(1)),
+                ()->assertNotNull(taskManager.getTaskMap().get(1))
+        );
     }
     @Test
     public void shouldUpdateEpicTaskById(){
@@ -306,26 +340,30 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         list.add(4);
         list.add(5);
         map.put(2, new EpicTask("Unit тесты", "Разработка unit тестов", 2, Status.NEW, list));
-        Assertions.assertNotEquals(map.get(2),taskManager.getEpicTaskMap().get(2));
+        assertNotEquals(map.get(2),taskManager.getEpicTaskMap().get(2));
         EpicTask epicTask= taskManager.getEpicTaskMap().get(2);
         epicTask.setName("Unit тесты");
         epicTask.setDescription("Разработка unit тестов");
         taskManager.updateEpicTaskById(epicTask);
-        Assertions.assertEquals(map.get(2), taskManager.getEpicTaskMap().get(2));
-        Assertions.assertNotNull(taskManager.getEpicTaskMap().get(2));
+        assertAll(
+                ()->assertEquals(map.get(2), taskManager.getEpicTaskMap().get(2)),
+                ()->assertNotNull(taskManager.getEpicTaskMap().get(2))
+        );
     }
     @Test
     public void shouldUpdateSubTaskById(){
         Map<Integer, SubTask> map = new HashMap<>();
         map.put(3, new SubTask("Разработка консоли", "Разработка меню консоли", 3, Status.NEW,
                 2));
-        Assertions.assertNotEquals(map.get(3),taskManager.getSubTaskMap().get(3));
+        assertNotEquals(map.get(3),taskManager.getSubTaskMap().get(3));
         SubTask subTask= taskManager.getSubTaskMap().get(3);
         subTask.setName("Разработка консоли");
         subTask.setDescription("Разработка меню консоли");
         taskManager.updateSubTaskById(subTask);
-        Assertions.assertEquals(map.get(3), taskManager.getSubTaskMap().get(3));
-        Assertions.assertNotNull(taskManager.getSubTaskMap().get(3));
+        assertAll(
+                ()->assertEquals(map.get(3), taskManager.getSubTaskMap().get(3)),
+                ()->assertNotNull(taskManager.getSubTaskMap().get(3))
+        );
     }
     @Test
     public void shouldGetAllSubTaskInEpic(){
@@ -334,26 +372,32 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         list.add(4);
         list.add(5);
         EpicTask epicTask = taskManager.getEpicTaskMap().get(2);
-        Assertions.assertEquals(list,epicTask.getListSubtask());
-        Assertions.assertNotNull(epicTask.getListSubtask());
+        assertAll(
+                ()->assertEquals(list,epicTask.getListSubtask()),
+                ()->assertNotNull(epicTask.getListSubtask())
+        );
     }
     @Test
     public void shouldGetTime(){
-        Assertions.assertEquals("2022-01-01T12:10", taskManager.getTaskMap().get(1).getStartTime().get()
-                .toString());
-        Assertions.assertEquals("2022-01-05T14:20", taskManager.getEpicTaskMap().get(2).getStartTime().get()
-                .toString());
-        Assertions.assertEquals("2022-01-15T20:40", taskManager.getEpicTaskMap().get(2).getEndTime().get()
-                .toString());
-        Assertions.assertEquals("2022-01-05T14:20", taskManager.getSubTaskMap().get(3).getStartTime().get()
-                .toString());
+        assertAll(
+                ()->assertEquals("2022-01-01T12:10", taskManager.getTaskMap().get(1).getStartTime().get()
+                .toString()),
+                ()->assertEquals("2022-01-05T14:20", taskManager.getEpicTaskMap().get(2).getStartTime().get()
+                .toString()),
+                ()->assertEquals("2022-01-15T20:40", taskManager.getEpicTaskMap().get(2).getEndTime().get()
+                .toString()),
+                ()->assertEquals("2022-01-05T14:20", taskManager.getSubTaskMap().get(3).getStartTime().get()
+                .toString())
+        );
     }
 
     @Test
     public void shouldGetDuration(){
-        Assertions.assertEquals(15, taskManager.getTaskMap().get(1).getDuration());
-        Assertions.assertEquals(440, taskManager.getEpicTaskMap().get(2).getDuration());
-        Assertions.assertEquals(50, taskManager.getSubTaskMap().get(3).getDuration());
+        assertAll(
+                ()->assertEquals(15, taskManager.getTaskMap().get(1).getDuration()),
+        ()->assertEquals(440, taskManager.getEpicTaskMap().get(2).getDuration()),
+        ()->assertEquals(50, taskManager.getSubTaskMap().get(3).getDuration())
+        );
     }
 
     @Test
@@ -378,7 +422,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
                 "Разработка класса логики", 2,startTime2,150);
         SubTask subTask2 =  taskManager1.makeSubTask("Класс тестирования",
                 "Разработка класа тестирования", 2,startTime3,240);
-        Assertions.assertEquals(taskManager1.getPrioritizedTasks(),taskManager.getPrioritizedTasks());
+        assertEquals(taskManager1.getPrioritizedTasks(),taskManager.getPrioritizedTasks());
     }
     @Test
     public void shouldGetFromFie(){

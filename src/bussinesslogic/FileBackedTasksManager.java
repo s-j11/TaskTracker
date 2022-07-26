@@ -251,6 +251,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         Map<Integer, SubTask> mapSubTask = getSubTaskMap();
         Integer conterId = getCounterID();
         HistoryManager historyManager = this.getHistoryManager();
+        TreeSet<Task> treeSet = getPrioritizedTasks();
         if(Paths.get(path).toFile().isFile()) {
             Reader reader = new FileReader(path);
             BufferedReader bf = new BufferedReader(reader);
@@ -263,12 +264,14 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                     if (task.getClass().equals(Task.class)) {
                         System.out.println("Task" + task);
                         map.put(task.getId(), task);
+                        treeSet.add(task);
                     } else if (task.getClass().equals(EpicTask.class)) {
                         System.out.println("Epic" + task);
                         mapEpic.put(task.getId(), (EpicTask) task);
                     } else if (task.getClass().equals(SubTask.class)) {
                         System.out.println("SubTask" + task);
                         mapSubTask.put(task.getId(), (SubTask) task);
+                        treeSet.add(task);
                     }
                     setCounterID(++conterId);
                 } else {
