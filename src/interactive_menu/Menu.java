@@ -1,5 +1,6 @@
 package interactive_menu;
 
+import bussinesslogic.HttpTaskServer;
 import bussinesslogic.Managers;
 import maketbussinesslogic.TaskManager;
 import model.*;
@@ -15,6 +16,8 @@ public class Menu {
     private Map<Integer, Task> taskMap = fileBackedTasksManager.getTaskMap();
     private Map<Integer, EpicTask> epicTaskMap = fileBackedTasksManager.getEpicTaskMap();
     private Map<Integer, SubTask> subTaskMap = fileBackedTasksManager.getSubTaskMap();
+
+    private HttpTaskServer httpTaskServer = managers.getDefaultHttpTaskMangger();
 
     @Override
     public String toString() {
@@ -37,7 +40,9 @@ public class Menu {
             System.out.println("8 - Вывести зададчи по времени выполнения");
             System.out.println("9 - Вывести историю последних 10 операций");
             System.out.println("10 - Загрузить данные из файла");
-            System.out.println("11 - Выйти из приложения");
+            System.out.println("11 - Запустить HTTP-server");
+            System.out.println("12 - Остановить HTTP-server");
+            System.out.println("13 - Выйти из приложения");
 
 
             int command = scanner.nextInt();
@@ -181,7 +186,11 @@ public class Menu {
                 epicTaskMap.clear();
                 subTaskMap.clear();
             fileBackedTasksManager.fromFile();
-            }else if (command == 11) {
+            }else if(command == 11) {
+                httpTaskServer.getStartServer();
+            } else if(command == 12) {
+                httpTaskServer.getStopServer();
+            } else if (command == 13) {
                 System.out.println("Выход");
                 break;
             } else {

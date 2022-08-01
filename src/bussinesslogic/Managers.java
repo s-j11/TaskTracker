@@ -19,4 +19,9 @@ public class Managers {
         FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(path);
         return fileBackedTasksManager;
     }
+
+    public static HttpTaskServer getDefaultHttpTaskMangger(){
+        HttpTaskServer httpTaskServer = new HttpTaskServer();
+        return httpTaskServer;
+    }
 }
