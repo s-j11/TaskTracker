@@ -47,36 +47,40 @@ public class EpicTaskEP implements HttpHandler {
                 default:
                     response = "Некорректный метод!";
             }
-        }else{
+            exchange.sendResponseHeaders(200, 0);
+            response = response;
+        } else {
             String idFromRequest = path.split("/")[3];
-            id =Integer.parseInt(idFromRequest);
-            switch (method) {
-                case "GET":
-                    task = fileBackedTasksManager.getEpicTaskMap().get(id);
-                    String taskString = gson.toJson(task);
-                    response = taskString;
-                    break;
-                case "POST":
-                    task = gson.fromJson(body, EpicTask.class);
-                    fileBackedTasksManager.updateEpicTaskById(task);
-                    break;
-                case "DELETE":
-                    fileBackedTasksManager.deleteEpicTaskById(id);
-                    break;
-                default:
-                    response = "Некорректный метод!";
+            id = Integer.parseInt(idFromRequest);
+            if (fileBackedTasksManager.getEpicTaskMap().containsKey(id)) {
+                switch (method) {
+                    case "GET":
+                        task = fileBackedTasksManager.getEpicTaskMap().get(id);
+                        String taskString = gson.toJson(task);
+                        response = taskString;
+                        break;
+                    case "POST":
+                        task = gson.fromJson(body, EpicTask.class);
+                        fileBackedTasksManager.updateEpicTaskById(task);
+                        break;
+                    case "DELETE":
+                        fileBackedTasksManager.deleteEpicTaskById(id);
+                        break;
+                    default:
+                        response = "Некорректный метод!";
+                }
+                response = response;
+                exchange.sendResponseHeaders(200, 0);
+            } else {
+                exchange.sendResponseHeaders(404, 0);
+                response = gson.toJson("Ошибка 404");
             }
             response = response;
 
         }
-        response = response;
-
-
-
-        exchange.sendResponseHeaders(200, 0);
 
         try (OutputStream os = exchange.getResponseBody()) {
             os.write(response.getBytes());
         }
-    }
+}
 }

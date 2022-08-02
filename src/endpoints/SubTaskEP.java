@@ -29,54 +29,60 @@ public class SubTaskEP implements HttpHandler {
         String method = exchange.getRequestMethod();
         String path = exchange.getRequestURI().getPath();
         String response = null;
-        headers.add("application","json");
+        headers.add("application", "json");
         int id = 0;
 
         if (path.equals("/tasks/subtask")) {
             switch (method) {
                 case "GET":
                     String subTask = gson.toJson(listSubTask);
+//                    exchange.sendResponseHeaders(200, 0);
                     response = subTask;
                     break;
                 case "POST":
                     task = gson.fromJson(body, SubTask.class);
-                    fileBackedTasksManager.makeSubTask(task.getName(),task.getDescription(),task.getEpicTaskNumber(),
+                    fileBackedTasksManager.makeSubTask(task.getName(), task.getDescription(), task.getEpicTaskNumber(),
                             task.getStartTime(), task.getDuration());
                     break;
                 case "DELETE":
                     fileBackedTasksManager.deleteAllSubTask();
+                    exchange.sendResponseHeaders(200, 0);
                     break;
                 default:
                     response = "Некорректный метод!";
             }
-        }else{
+            exchange.sendResponseHeaders(200, 0);
+            response = response;
+        } else {
             String idFromRequest = path.split("/")[3];
-            id =Integer.parseInt(idFromRequest);
-            switch (method) {
-                case "GET":
-                    //headers.add("application","json");
-                    task = fileBackedTasksManager.getSubTaskMap().get(id);
-                    String taskString = gson.toJson(task);
-                    response = taskString;
-                    break;
-                case "POST":
-                    task = gson.fromJson(body, SubTask.class);
-                    fileBackedTasksManager.updateTaskById(task);
-                    break;
-                case "DELETE":
-                    fileBackedTasksManager.deleteSubTaskById(id);
-                    break;
-                default:
-                    response = "Некорректный метод!";
+            id = Integer.parseInt(idFromRequest);
+            if (fileBackedTasksManager.getSubTaskMap().containsKey(id)) {
+                switch (method) {
+                    case "GET":
+                        //headers.add("application","json");
+                        task = fileBackedTasksManager.getSubTaskMap().get(id);
+                        String taskString = gson.toJson(task);
+                        response = taskString;
+                        break;
+                    case "POST":
+                        task = gson.fromJson(body, SubTask.class);
+                        fileBackedTasksManager.updateTaskById(task);
+                        break;
+                    case "DELETE":
+                        fileBackedTasksManager.deleteSubTaskById(id);
+                        break;
+                    default:
+                        response = "Некорректный метод!";
+                }
+                response = response;
+                exchange.sendResponseHeaders(200, 0);
+            } else {
+                exchange.sendResponseHeaders(404, 0);
+                response = gson.toJson("Ошибка 404");
             }
             response = response;
-
         }
         response = response;
-
-
-        exchange.sendResponseHeaders(200, 0);
-
         try (OutputStream os = exchange.getResponseBody()) {
             os.write(response.getBytes());
         }
