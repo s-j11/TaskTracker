@@ -66,8 +66,8 @@ public class KVTaskClient {
     }
 
 
-    public void load(String key){
-//        String value = null;
+    public String load(String key){
+        String value = null;
 
         url = URI.create(getPath()+"/load"+"/"+key+"?API_TOKEN="+getToken());
 //        String jsonFromJson = gson.toJson(json);
@@ -76,7 +76,8 @@ public class KVTaskClient {
         try {
             HttpResponse<String> response = client.send(request,handler);
             if (response.statusCode() == 200) {
-//                value = response.toString();
+                value = gson.toJson(response.body());
+
                 // передаем парсеру тело ответа в виде строки, содержащей данные в формате JSON
                 System.out.println("Данные загруженны в хранилище на сервере.");
             } else {
@@ -86,6 +87,7 @@ public class KVTaskClient {
             System.out.println("Во время выполнения запроса возникла ошибка.\n" +
                     "Проверьте, пожалуйста, адрес и повторите попытку.");
         }
+        return value;
     }
 
     public void getTokenFromServer(String path)  {

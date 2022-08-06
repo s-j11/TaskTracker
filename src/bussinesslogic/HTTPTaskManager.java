@@ -183,7 +183,7 @@ public class HTTPTaskManager extends FileBackedTasksManager{
         Map<Integer, EpicTask> epicTaskMap = new HashMap<>();
         Map<Integer, SubTask> subTaskMap = new HashMap<>();
         HistoryManager historyManager = new InMemoryHistoryManager();
-        kvTaskClient.load(getToken());
-
+        String str = kvTaskClient.load(getToken());
+        System.out.println(str);
     }
 }
