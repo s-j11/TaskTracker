@@ -7,7 +7,7 @@ import endpoints.*;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
-public class HttpTaskServer {
+public class HTTPTaskServer {
     private static final int PORT = 8080;
     Gson gson = new Gson();
     private FileBackedTasksManager fileBackedTasksManager = new Managers()

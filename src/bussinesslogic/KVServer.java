@@ -32,36 +32,40 @@ public class KVServer {
 
 	private void load(HttpExchange h) throws IOException{
 		// TODO Добавьте получение значения по ключу
-		 FileBackedTasksManager fileBackedTasksManager = new Managers()
-				.getDefaultFileBackedManager("src/store/store2.csv");
-		 String response = null;
+
 		try {
-			fileBackedTasksManager.fromFile();
-			data.put("task",fileBackedTasksManager.getTaskMap().toString());
-			data.put("epic",fileBackedTasksManager.getEpicTaskMap().toString());
-			data.put("subtask",fileBackedTasksManager.getSubTaskMap().toString());
-			data.put("history",fileBackedTasksManager.getHistoryManager().getHistory().toString());
-			data.put("prioritized",fileBackedTasksManager.getPrioritizedTasks().toString());
-			Map<Integer, List<Integer>> mST = new HashMap<>();
-			Map<Integer,EpicTask> epicTaskMap = fileBackedTasksManager.getEpicTaskMap();
-			for (Map.Entry<Integer, EpicTask> entry:epicTaskMap.entrySet()) {
-				if (entry.getValue().getListSubtask().isEmpty()){
-					mST.put(entry.getValue().getId(), new ArrayList<>());
-				}else if(!entry.getValue().getListSubtask().isEmpty()){
-					mST.put(entry.getValue().getId(),entry.getValue().getListSubtask());
-				}else{
-					mST = mST;
-				}
+			System.out.println("\n/load");
+			if (!hasAuth(h)) {
+				System.out.println("Запрос неавторизован, нужен параметр в query API_TOKEN со значением апи-ключа");
+				h.sendResponseHeaders(403, 0);
+				return;
 			}
-			data.put("astaie",mST.toString());
-			h.sendResponseHeaders(200, 0);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
+			if ("GET".equals(h.getRequestMethod())) {
+				String key = h.getRequestURI().getPath().substring("/load/".length());
+				if (key.isEmpty()) {
+					System.out.println("Key для выгрузки пустой. key указывается в пути: /load/{key}");
+					h.sendResponseHeaders(400, 0);
+					return;
+				}
+				String value = data.get(key);
+				if (value.isEmpty()) {
+					System.out.println("Value для выгрузки пустой. value указывается в теле запроса");
+					h.sendResponseHeaders(400, 0);
+					return;
+				}
+				value = data.get(key);
+				System.out.println("Значение для ключа " + key + " успешно выгружено!");
+				h.sendResponseHeaders(200, 0);
+				try (OutputStream os = h.getResponseBody()) {
+					os.write(value.getBytes());
+				}
+			} else {
+				System.out.println("/save ждёт POST-запрос, а получил: " + h.getRequestMethod());
+				h.sendResponseHeaders(405, 0);
+			}
+		} finally {
+			h.close();
 		}
-		response = "Загрузка данных осуществлена";
-		try (OutputStream os = h.getResponseBody()) {
-            os.write(response.getBytes());
-        }
 	}
 
 	private void save(HttpExchange h) throws IOException {

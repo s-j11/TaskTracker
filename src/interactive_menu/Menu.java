@@ -1,6 +1,7 @@
 package interactive_menu;
 
-import bussinesslogic.HttpTaskServer;
+import bussinesslogic.HTTPTaskServer;
+import bussinesslogic.KVTaskClient;
 import bussinesslogic.Managers;
 import maketbussinesslogic.TaskManager;
 import model.*;
@@ -12,12 +13,16 @@ import java.util.*;
 public class Menu {
     private Scanner scanner = new Scanner(System.in);
     private Managers managers = new Managers();
-    private TaskManager  fileBackedTasksManager = managers.getDefaultFileBackedManager("src/store/store.csv");
-    private Map<Integer, Task> taskMap = fileBackedTasksManager.getTaskMap();
-    private Map<Integer, EpicTask> epicTaskMap = fileBackedTasksManager.getEpicTaskMap();
-    private Map<Integer, SubTask> subTaskMap = fileBackedTasksManager.getSubTaskMap();
+    private TaskManager httpTaskManager = managers.getDefaultHTTPTaskManager("http://localhost:8078");
+    private Map<Integer, Task> taskMap = httpTaskManager.getTaskMap();
+    private Map<Integer, EpicTask> epicTaskMap = httpTaskManager.getEpicTaskMap();
+    private Map<Integer, SubTask> subTaskMap = httpTaskManager.getSubTaskMap();
 
-    private HttpTaskServer httpTaskServer = managers.getDefaultHttpTaskMangger();
+    private HTTPTaskServer httpTaskServer = managers.getDefaultHTTPTaskServer();
+
+    private KVTaskClient kvTaskClient =new KVTaskClient();
+
+
 
     @Override
     public String toString() {
@@ -48,9 +53,9 @@ public class Menu {
             int command = scanner.nextInt();
             if (command == 1) {
                 System.out.println("Список всех задач: ");
-                System.out.println("Список задач: " + fileBackedTasksManager.getListTasks(taskMap));
-                System.out.println("Список Эпик задач: " + fileBackedTasksManager.getListEpicTasks(epicTaskMap));
-                System.out.println("Список подзадач: " + fileBackedTasksManager.getListSubTasks(subTaskMap));
+                System.out.println("Список задач: " + httpTaskManager.getListTasks(taskMap));
+                System.out.println("Список Эпик задач: " + httpTaskManager.getListEpicTasks(epicTaskMap));
+                System.out.println("Список подзадач: " + httpTaskManager.getListSubTasks(subTaskMap));
                 System.out.println();
             } else if (command == 2) {
                 System.out.println("Введите номер списка задач, который хотите удалить:\n"
@@ -60,15 +65,15 @@ public class Menu {
                 int button = scanner.nextInt();
                 switch (button) {
                     case 1:
-                        fileBackedTasksManager.deleteAllTask();
+                        httpTaskManager.deleteAllTask();
                         System.out.println("Список задач удален");
                         break;
                     case 2:
-                        fileBackedTasksManager.deleteAllEpic();
+                        httpTaskManager.deleteAllEpic();
                         System.out.println("Список Эпик задач удален и связыанные с ними подзадачи");
                         break;
                     case 3:
-                        fileBackedTasksManager.deleteAllSubTask();
+                        httpTaskManager.deleteAllSubTask();
                         System.out.println("Список подзадач удален");
                         break;
                     default:
@@ -77,9 +82,9 @@ public class Menu {
             } else if (command == 3) {
                 System.out.println("Введите id задачи, которую хотите найти: ");
                 int id = scanner.nextInt();
-                fileBackedTasksManager.getTaskById(id);
-                fileBackedTasksManager.getEpicTaskById(id);
-                fileBackedTasksManager.getSubTaskById(id);
+                httpTaskManager.getTaskById(id);
+                httpTaskManager.getEpicTaskById(id);
+                httpTaskManager.getSubTaskById(id);
                 System.out.println();
             } else if (command == 4) {
                 System.out.println("Введите название задачи");
@@ -106,15 +111,15 @@ public class Menu {
                 int button = scanner.nextInt();
                 switch (button) {
                     case 1:
-                        fileBackedTasksManager.makeTask(name, descriptions, startTime, duration);
+                        httpTaskManager.makeTask(name, descriptions, startTime, duration);
                         break;
                     case 2:
-                        fileBackedTasksManager.makeEpic(name, descriptions);
+                        httpTaskManager.makeEpic(name, descriptions);
                         break;
                     case 3:
                         System.out.println("Введите номер эпик задачи");
                         int id = scanner.nextInt();
-                        fileBackedTasksManager.makeSubTask(name,descriptions,id,startTime,duration);
+                        httpTaskManager.makeSubTask(name,descriptions,id,startTime,duration);
                         break;
                     default:
                         System.out.println("Такого номера типа задачи нет введите от 1 до 3");
@@ -163,33 +168,35 @@ public class Menu {
                 Task task = new Task(name, descriptions, id, status,startTime,duration);
                 SubTask subTask = new SubTask(name,descriptions,id,status,startTime,duration);
                 EpicTask epicTask = new EpicTask(name, descriptions, id);
-                fileBackedTasksManager.updateTaskById(task);
-                fileBackedTasksManager.updateEpicTaskById(epicTask);
-                fileBackedTasksManager.updateSubTaskById(subTask);
+                httpTaskManager.updateTaskById(task);
+                httpTaskManager.updateEpicTaskById(epicTask);
+                httpTaskManager.updateSubTaskById(subTask);
             } else if (command == 6) {
                 System.out.println("Введите id задачи, которую хотите удалить: ");
                 int id = scanner.nextInt();
-                fileBackedTasksManager.deleteTaskById(id);
-                fileBackedTasksManager.deleteEpicTaskById(id);
-                fileBackedTasksManager.deleteSubTaskById(id);
+                httpTaskManager.deleteTaskById(id);
+                httpTaskManager.deleteEpicTaskById(id);
+                httpTaskManager.deleteSubTaskById(id);
             } else if (command == 7) {
                 System.out.println("Введите id Эпик задачи, в которой хотите просмотреть все подзадачи: ");
                 int id = scanner.nextInt();
-                fileBackedTasksManager.getAllSubTaskInEpic(id);
+                httpTaskManager.getAllSubTaskInEpic(id);
             }else if (command == 8){
-                fileBackedTasksManager.getPrioritizedTasks().stream().sorted(Comparator.reverseOrder())
+                httpTaskManager.getPrioritizedTasks().stream().sorted(Comparator.reverseOrder())
                         .forEach(System.out::println);
             } else if (command == 9) {
-                System.out.println(fileBackedTasksManager.getHistoryManager().getHistory());
+                System.out.println(httpTaskManager.getHistoryManager().getHistory());
             }else if(command == 10) {
                 taskMap.clear();
                 epicTaskMap.clear();
                 subTaskMap.clear();
-            fileBackedTasksManager.fromFile();
+            httpTaskManager.fromFile();
             }else if(command == 11) {
                 httpTaskServer.getStartServer();
             } else if(command == 12) {
                 httpTaskServer.getStopServer();
+            } else if(command == 14) {
+                httpTaskManager.fromFile();
             } else if (command == 13) {
                 System.out.println("Выход");
                 break;

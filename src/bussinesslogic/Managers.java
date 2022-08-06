@@ -20,8 +20,13 @@ public class Managers {
         return fileBackedTasksManager;
     }
 
-    public static HttpTaskServer getDefaultHttpTaskMangger(){
-        HttpTaskServer httpTaskServer = new HttpTaskServer();
+    public static HTTPTaskServer getDefaultHTTPTaskServer(){
+        HTTPTaskServer httpTaskServer = new HTTPTaskServer();
         return httpTaskServer;
     }
+    public static HTTPTaskManager getDefaultHTTPTaskManager(String path){
+        HTTPTaskManager httpTaskManager = new HTTPTaskManager(path);
+        return httpTaskManager;
+    }
+
 }
