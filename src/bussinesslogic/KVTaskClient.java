@@ -76,9 +76,7 @@ public class KVTaskClient {
         try {
             HttpResponse<String> response = client.send(request,handler);
             if (response.statusCode() == 200) {
-//                value = gson.toJson(response.body());
                 value = response.body();
-//                value = gson.toString(value);
                 // передаем парсеру тело ответа в виде строки, содержащей данные в формате JSON
                 System.out.println("Данные загруженны в хранилище на сервере.");
             } else {

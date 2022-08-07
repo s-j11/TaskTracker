@@ -165,30 +165,50 @@ public class HTTPTaskManager extends FileBackedTasksManager{
         Collection listTask = super.getListTasks(super.getTaskMap());
         Collection listEpicTask = super.getListEpicTasks(super.getEpicTaskMap());
         Collection listSubTask = super.getListSubTasks(super.getSubTaskMap());
-
+        Collection listHistoryManager = super.getHistoryManager().getHistory();
         String task = gson.toJson(listTask);
         String epicTask = gson.toJson(listEpicTask);
         String subTask = gson.toJson(listSubTask);
+        String history = gson.toJson(listHistoryManager);
 
         Collection allTasks = new ArrayList<>();
         allTasks.add(task);
         allTasks.add(epicTask);
         allTasks.add(subTask);
+        allTasks.add(history);
         String response = allTasks.toString();
-//        response = gson.toJson(response);
        kvTaskClient.put(getToken(),response);
     }
 
     @Override
     public void fromFile() throws IOException {
+
         Map<Integer, Task> taskMap = new HashMap<>();
-        Map<Integer, EpicTask> epicTaskMap = new HashMap<>();
-        Map<Integer, SubTask> subTaskMap = new HashMap<>();
-        HistoryManager historyManager = new InMemoryHistoryManager();
+        Map<Integer, EpicTask> epicTaskMap = this.getEpicTaskMap();
+        Map<Integer, SubTask> subTaskMap = this.getSubTaskMap();
+        HistoryManager historyManager = this.getHistoryManager();
         String str = kvTaskClient.load(getToken());
         System.out.println(str);
-//        str = gson.fromJson(str);
-        str = str.replace("\\","");
-        System.out.println(str);
+        String[] strBuffer = str.split(", ");
+        String strTaskMap = strBuffer[0];
+        String strEpicTaskMap = strBuffer[1];
+        String strSubTaskMap = strBuffer[2];
+        String strHistory = strBuffer[3];
+
+
+       String jsonTaskMap = gson.toJson(strTaskMap);
+        strTaskMap = strTaskMap.replace("},{", "}spl{");
+        strTaskMap = strTaskMap.replace("[[","");
+        strTaskMap = strTaskMap.replace("}]","}");
+        String[] bufferGsonTask = strTaskMap.split("spl");
+
+        List<String> jsonListTaskMap =Arrays.asList(bufferGsonTask);
+
+        for (String sting: jsonListTaskMap){
+            System.out.println(sting);
+            Task task = gson.fromJson(sting, Task.class);
+            taskMap.put(task.getId(),task);
+        }
+        System.out.println(taskMap);
     }
 }
