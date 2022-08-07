@@ -169,11 +169,13 @@ public class HTTPTaskManager extends FileBackedTasksManager{
         String task = gson.toJson(listTask);
         String epicTask = gson.toJson(listEpicTask);
         String subTask = gson.toJson(listSubTask);
+
         Collection allTasks = new ArrayList<>();
         allTasks.add(task);
         allTasks.add(epicTask);
         allTasks.add(subTask);
         String response = allTasks.toString();
+//        response = gson.toJson(response);
        kvTaskClient.put(getToken(),response);
     }
 
@@ -184,6 +186,9 @@ public class HTTPTaskManager extends FileBackedTasksManager{
         Map<Integer, SubTask> subTaskMap = new HashMap<>();
         HistoryManager historyManager = new InMemoryHistoryManager();
         String str = kvTaskClient.load(getToken());
+        System.out.println(str);
+//        str = gson.fromJson(str);
+        str = str.replace("\\","");
         System.out.println(str);
     }
 }

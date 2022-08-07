@@ -48,8 +48,8 @@ public class KVTaskClient {
 //        String token = getToken();
 //        url = URI.create("http://localhost:8078/save/"+key+"?API_TOKEN="+token);
         url = URI.create(getPath()+"/save"+"/"+key+"?API_TOKEN="+getToken());
-        String jsonFromJson = gson.toJson(json);
-        final HttpRequest.BodyPublisher body = HttpRequest.BodyPublishers.ofString(jsonFromJson);
+//        String jsonFromJson = gson.toString(json);
+        final HttpRequest.BodyPublisher body = HttpRequest.BodyPublishers.ofString(json);
         HttpRequest request = HttpRequest.newBuilder().uri(url).POST(body).build();
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -76,8 +76,9 @@ public class KVTaskClient {
         try {
             HttpResponse<String> response = client.send(request,handler);
             if (response.statusCode() == 200) {
-                value = gson.toJson(response.body());
-
+//                value = gson.toJson(response.body());
+                value = response.body();
+//                value = gson.toString(value);
                 // передаем парсеру тело ответа в виде строки, содержащей данные в формате JSON
                 System.out.println("Данные загруженны в хранилище на сервере.");
             } else {
