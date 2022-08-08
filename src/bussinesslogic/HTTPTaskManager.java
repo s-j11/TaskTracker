@@ -1,16 +1,12 @@
 package bussinesslogic;
 
-import com.google.gson.Gson;
+import com.google.gson.*;
 import maketbussinesslogic.HistoryManager;
 import model.EpicTask;
 import model.SubTask;
 import model.Task;
 
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.Writer;
-import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -196,19 +192,34 @@ public class HTTPTaskManager extends FileBackedTasksManager{
         String strHistory = strBuffer[3];
 
 
-       String jsonTaskMap = gson.toJson(strTaskMap);
-        strTaskMap = strTaskMap.replace("},{", "}spl{");
-        strTaskMap = strTaskMap.replace("[[","");
-        strTaskMap = strTaskMap.replace("}]","}");
-        String[] bufferGsonTask = strTaskMap.split("spl");
+//       String jsonTaskMap = gson.toJson(strTaskMap);
+//        strTaskMap = strTaskMap.replace("},{", "}spl{");
+//        strTaskMap = strTaskMap.replace("[[","");
+//        strTaskMap = strTaskMap.replace("}]","}");
+//        String[] bufferGsonTask = strTaskMap.split("spl");
+//
+//        List<String> jsonListTaskMap =Arrays.asList(bufferGsonTask);
+//
+//        for (String sting: jsonListTaskMap){
+//            System.out.println(sting);
+//            Task task = gson.fromJson(sting, Task.class);
+//            taskMap.put(task.getId(),task);
+//        }
 
-        List<String> jsonListTaskMap =Arrays.asList(bufferGsonTask);
 
-        for (String sting: jsonListTaskMap){
-            System.out.println(sting);
-            Task task = gson.fromJson(sting, Task.class);
-            taskMap.put(task.getId(),task);
-        }
+        JsonElement jsonElement = JsonParser.parseString(str);
+        JsonArray jsonArray = jsonElement.getAsJsonArray();
+
+        JsonArray jsonArrayTask = jsonArray.get(0).getAsJsonArray();
+        JsonArray jsonArrayEpicTask = jsonArray.get(1).getAsJsonArray();
+        JsonArray jsonArraySubTask = jsonArray.get(2).getAsJsonArray();
+        JsonArray jsonArrayHistory = jsonArray.get(3).getAsJsonArray();
+
+        System.out.println(jsonArray);
+        System.out.println(jsonArrayTask);
+        System.out.println(jsonArrayEpicTask);
+        System.out.println(jsonArraySubTask);
+        System.out.println(jsonArrayHistory);
         System.out.println(taskMap);
     }
 }
