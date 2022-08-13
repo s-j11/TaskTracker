@@ -95,8 +95,6 @@ public class HTTPTaskManager extends FileBackedTasksManager{
 
     @Override
     public Task makeTask(String name, String description, Optional<LocalDateTime> startTime, int duration) {
-//        kvTaskClient.getTokenFromServer(super.getPath());
-//        Task task = super.makeTask(name, description, startTime, duration);
         return super.makeTask(name, description, startTime, duration);
     }
 
@@ -155,6 +153,7 @@ public class HTTPTaskManager extends FileBackedTasksManager{
         return super.getPrioritizedTasks();
     }
 
+    //Метод переписан под работу с сервером хранилищем
     @Override
     public void saveToFile() {
 
@@ -176,27 +175,9 @@ public class HTTPTaskManager extends FileBackedTasksManager{
        kvTaskClient.put(getToken(),response);
     }
 
-    @Override
-    public HistoryManager fromFile(String value) {
-        HistoryManager historyManager = getHistoryManager();
-
-        JsonElement jsonElement = JsonParser.parseString(value);
-        JsonArray jsonArray = jsonElement.getAsJsonArray();
-
-        for (JsonElement element : jsonArray) {
-            Task task = gson.fromJson(element, Task.class);
-            historyManager.add(task);
-        }
-
-        return historyManager;
-    }
-
+    //Метод переписан под работу с сервером хранилищем
     @Override
     public void fromFile() throws IOException {
-        getTaskMap().clear();
-        getEpicTaskMap().clear();
-        getSubTaskMap().clear();
-        getHistoryManager().removeAllNode();
 
         Map<Integer, Task> taskMap = getTaskMap();
         Map<Integer, EpicTask> epicTaskMap = getEpicTaskMap();
@@ -213,7 +194,7 @@ public class HTTPTaskManager extends FileBackedTasksManager{
         JsonArray jsonArrayEpicTask = jsonArray.get(1).getAsJsonArray();
         JsonArray jsonArraySubTask = jsonArray.get(2).getAsJsonArray();
         JsonArray jsonArrayHistory = jsonArray.get(3).getAsJsonArray();
-        String strJsonArrayHistory = String.valueOf(JsonParser.parseString(jsonArrayHistory.toString()));
+
 
         for (JsonElement element : jsonArrayTask) {
             Task task = gson.fromJson(element, Task.class);
@@ -230,12 +211,9 @@ public class HTTPTaskManager extends FileBackedTasksManager{
             subTaskMap.put(task.getId(), task);
         }
 
-        historyManager = fromFile(strJsonArrayHistory);
-
-        System.out.println(taskMap);
-        System.out.println(epicTaskMap);
-        System.out.println(subTaskMap);
-        System.out.println(historyManager.getHistory());
-        System.out.println("Данные восстановлены с сервера");
+        for (JsonElement element : jsonArrayHistory) {
+            Task task = gson.fromJson(element, Task.class);
+            historyManager.add(task);
+        }
     }
 }
