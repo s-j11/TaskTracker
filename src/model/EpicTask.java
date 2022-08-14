@@ -11,7 +11,6 @@ public class EpicTask extends Task{
 
         private Optional<LocalDateTime> endTime = Optional.empty();
 
-
         public void addSubTask(int subTask){
                 listSubtask.add(subTask);
         }
@@ -24,7 +23,6 @@ public class EpicTask extends Task{
                 this.listSubtask = listSubtask;
         }
 
-
         @Override
         public Optional<LocalDateTime> getEndTime() {
                 return endTime;
@@ -33,7 +31,6 @@ public class EpicTask extends Task{
         public void setEndTime(Optional<LocalDateTime> endTime) {
                 this.endTime = endTime;
         }
-
 
         @Override
         public boolean equals(Object o) {

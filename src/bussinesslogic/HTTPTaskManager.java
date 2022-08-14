@@ -184,36 +184,42 @@ public class HTTPTaskManager extends FileBackedTasksManager{
         Map<Integer, SubTask> subTaskMap = getSubTaskMap();
         HistoryManager historyManager = getHistoryManager();
 
-
+try {
         String str = kvTaskClient.load(getToken());
 
-        JsonElement jsonElement = JsonParser.parseString(str);
-        JsonArray jsonArray = jsonElement.getAsJsonArray();
 
-        JsonArray jsonArrayTask = jsonArray.get(0).getAsJsonArray();
-        JsonArray jsonArrayEpicTask = jsonArray.get(1).getAsJsonArray();
-        JsonArray jsonArraySubTask = jsonArray.get(2).getAsJsonArray();
-        JsonArray jsonArrayHistory = jsonArray.get(3).getAsJsonArray();
+            JsonElement jsonElement = JsonParser.parseString(str);
+            JsonArray jsonArray = jsonElement.getAsJsonArray();
+
+            JsonArray jsonArrayTask = jsonArray.get(0).getAsJsonArray();
+            JsonArray jsonArrayEpicTask = jsonArray.get(1).getAsJsonArray();
+            JsonArray jsonArraySubTask = jsonArray.get(2).getAsJsonArray();
+            JsonArray jsonArrayHistory = jsonArray.get(3).getAsJsonArray();
 
 
-        for (JsonElement element : jsonArrayTask) {
-            Task task = gson.fromJson(element, Task.class);
-            taskMap.put(task.getId(), task);
-        }
+            for (JsonElement element : jsonArrayTask) {
+                Task task = gson.fromJson(element, Task.class);
+                taskMap.put(task.getId(), task);
+            }
 
-        for (JsonElement element : jsonArrayEpicTask) {
-            EpicTask task = gson.fromJson(element, EpicTask.class);
-            epicTaskMap.put(task.getId(), task);
-        }
+            for (JsonElement element : jsonArrayEpicTask) {
+                EpicTask task = gson.fromJson(element, EpicTask.class);
+                epicTaskMap.put(task.getId(), task);
+            }
 
-        for (JsonElement element : jsonArraySubTask) {
-            SubTask task = gson.fromJson(element, SubTask.class);
-            subTaskMap.put(task.getId(), task);
-        }
+            for (JsonElement element : jsonArraySubTask) {
+                SubTask task = gson.fromJson(element, SubTask.class);
+                subTaskMap.put(task.getId(), task);
+            }
 
-        for (JsonElement element : jsonArrayHistory) {
-            Task task = gson.fromJson(element, Task.class);
-            historyManager.add(task);
+            for (JsonElement element : jsonArrayHistory) {
+                Task task = gson.fromJson(element, Task.class);
+                historyManager.add(task);
+            }
+                } catch (NullPointerException e){
+            System.out.println();
+            System.out.println("Данных еще нет в хранилище");
+            System.out.println();
         }
     }
 }

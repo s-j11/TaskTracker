@@ -5,14 +5,10 @@ import com.google.gson.Gson;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import model.Task;
 
-import java.awt.*;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Set;
 
 public class HistoryEP implements HttpHandler {
     Gson gson = new Gson();
@@ -33,6 +29,5 @@ public class HistoryEP implements HttpHandler {
         try (OutputStream os = exchange.getResponseBody()) {
             os.write(response.getBytes());
         }
-
     }
 }

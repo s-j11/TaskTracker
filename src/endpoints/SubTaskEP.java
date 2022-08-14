@@ -6,12 +6,10 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import model.SubTask;
-import model.Task;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.Collection;
 
 public class SubTaskEP implements HttpHandler {
@@ -36,7 +34,6 @@ public class SubTaskEP implements HttpHandler {
             switch (method) {
                 case "GET":
                     String subTask = gson.toJson(listSubTask);
-//                    exchange.sendResponseHeaders(200, 0);
                     response = subTask;
                     break;
                 case "POST":
@@ -46,7 +43,6 @@ public class SubTaskEP implements HttpHandler {
                     break;
                 case "DELETE":
                     fileBackedTasksManager.deleteAllSubTask();
-                    exchange.sendResponseHeaders(200, 0);
                     break;
                 default:
                     response = "Некорректный метод!";

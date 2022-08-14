@@ -233,7 +233,8 @@ public class InMemoryTaskManager implements TaskManager{
 
     //Создание задачи model.SubTask
     @Override
-    public SubTask makeSubTask(String name, String description, int id, Optional<LocalDateTime> startTime, int duration) {
+    public SubTask makeSubTask(String name, String description, int id, Optional<LocalDateTime> startTime, int duration)
+    {
         SubTask subTask = new SubTask();
         subTask.setName(name);
         subTask.setDescription(description);

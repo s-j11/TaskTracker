@@ -14,7 +14,6 @@ public class AllTasksEP implements HttpHandler {
     Gson gson = new Gson();
     FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("src/store/store2.csv");
 
-
     @Override
     public void handle(HttpExchange exchange)  throws IOException{
 

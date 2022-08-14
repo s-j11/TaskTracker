@@ -2,7 +2,6 @@ package test;
 
 import bussinesslogic.InMemoryHistoryManager;
 import bussinesslogic.InMemoryTaskManager;
-import maketbussinesslogic.HistoryManager;
 import maketbussinesslogic.TaskManager;
 import model.EpicTask;
 import model.Status;
@@ -292,8 +291,8 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         Map<Integer, SubTask> subMap = new HashMap<>();
         subMap.put(4, new SubTask("Разработка логики", "Разработка класса логики", 4, Status.NEW,
                 2));
-        subMap.put(5, new SubTask("Класс тестирования", "Разработка класа тестирования", 5, Status.NEW,
-                2));
+        subMap.put(5, new SubTask("Класс тестирования", "Разработка класа тестирования", 5,
+                Status.NEW, 2));
         taskManager.deleteSubTaskById(3);
         assertAll(
                 ()->assertEquals(subMap, taskManager.getSubTaskMap()),
@@ -305,8 +304,8 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         Map<Integer, SubTask> subMap = new HashMap<>();
         subMap.put(4, new SubTask("Разработка логики", "Разработка класса логики", 4, Status.NEW,
                 2));
-        subMap.put(5, new SubTask("Класс тестирования", "Разработка класа тестирования", 5, Status.NEW,
-                2));
+        subMap.put(5, new SubTask("Класс тестирования", "Разработка класа тестирования", 5,
+                Status.NEW, 2));
         taskManager.deleteSubTaskById(3);
 
         Map<Integer, EpicTask> epicMap = new HashMap<>();

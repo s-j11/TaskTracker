@@ -175,10 +175,10 @@ class HistoryManagerTest {
                 list);
         SubTask subTask = new SubTask("Разработка меню", "Разработка класса меню", 3, Status.NEW,
                 2);
-        SubTask subTask1 = new SubTask("Разработка логики", "Разработка класса логики", 4, Status.NEW,
-                2);
-        SubTask subTask2 = new SubTask("Класс тестирования", "Разработка класа тестирования", 5, Status.NEW,
-                2);
+        SubTask subTask1 = new SubTask("Разработка логики", "Разработка класса логики", 4,
+                Status.NEW, 2);
+        SubTask subTask2 = new SubTask("Класс тестирования", "Разработка класа тестирования", 5,
+                Status.NEW, 2);
 
         historyManager.add(task);
         historyManager.add(epicTask);

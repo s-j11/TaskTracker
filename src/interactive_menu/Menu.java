@@ -47,7 +47,8 @@ public class Menu {
             System.out.println("10 - Загрузить данные из файла");
             System.out.println("11 - Запустить HTTP-server");
             System.out.println("12 - Остановить HTTP-server");
-            System.out.println("13 - Выйти из приложения");
+            System.out.println("13 - Загрузить данные из хранилища");
+            System.out.println("14 - Выйти из приложения");
 
 
             int command = scanner.nextInt();
@@ -195,9 +196,9 @@ public class Menu {
                 httpTaskServer.getStartServer();
             } else if(command == 12) {
                 httpTaskServer.getStopServer();
-            } else if(command == 14) {
+            } else if(command == 13) {
                 httpTaskManager.fromFile();
-            } else if (command == 13) {
+            } else if (command == 14) {
                 System.out.println("Выход");
                 break;
             } else {

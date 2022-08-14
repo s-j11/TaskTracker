@@ -5,7 +5,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -38,17 +37,9 @@ public class KVTaskClient {
     public void setPath(String path) {
         this.path = path;
     }
-//    HttpRequest request = HttpRequest.newBuilder().build();
-//            .uri(url)
-//            .GET()
-//            .build();
-//    private HttpResponse<String> response;
 
     public void put(String key, String json){
-//        String token = getToken();
-//        url = URI.create("http://localhost:8078/save/"+key+"?API_TOKEN="+token);
         url = URI.create(getPath()+"/save"+"/"+key+"?API_TOKEN="+getToken());
-//        String jsonFromJson = gson.toString(json);
         final HttpRequest.BodyPublisher body = HttpRequest.BodyPublishers.ofString(json);
         HttpRequest request = HttpRequest.newBuilder().uri(url).POST(body).build();
         try {
@@ -91,7 +82,6 @@ public class KVTaskClient {
 
     public void getTokenFromServer(String path)  {
         setPath(path);
-//        url = URI.create("http://localhost:8078/register");
         url = URI.create(getPath()+"/register");
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(url)
@@ -113,15 +103,13 @@ public class KVTaskClient {
 
             // Получение токена
             setToken(jsonObject);
-
         } else {
             System.out.println("Что-то пошло не так. Сервер вернул код состояния: " + response.statusCode());
         }
         }catch (IOException | InterruptedException e) { // обрабатываем ошибки отправки запроса
         System.out.println("Во время выполнения запроса возникла ошибка.\n" +
                 "Проверьте, пожалуйста, адрес и повторите попытку.");
-    }
-
+        }
     }
 }
 

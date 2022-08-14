@@ -9,9 +9,9 @@ import java.net.InetSocketAddress;
 
 public class HTTPTaskServer {
     private static final int PORT = 8080;
-    Gson gson = new Gson();
-    private FileBackedTasksManager fileBackedTasksManager = new Managers()
-            .getDefaultFileBackedManager("src/store/store2.csv");
+//    Gson gson = new Gson();
+//    private FileBackedTasksManager fileBackedTasksManager = new Managers()
+//            .getDefaultFileBackedManager("src/store/store2.csv");
 
     HttpServer httpServer;
 
@@ -37,8 +37,8 @@ public class HTTPTaskServer {
         }
 
         public void getStopServer(){
-            System.out.println("HTTP-сервер будет остановлен на " + PORT + " порту, через 3 секунд");
-        httpServer.stop(3);
+            System.out.println("HTTP-сервер будет остановлен на " + PORT + " порту, через 1 секунд");
+        httpServer.stop(1);
 
         }
     }
