@@ -55,7 +55,7 @@ public class SubTaskEP implements HttpHandler {
             if (fileBackedTasksManager.getSubTaskMap().containsKey(id)) {
                 switch (method) {
                     case "GET":
-                        //headers.add("application","json");
+                        fileBackedTasksManager.getSubTaskById(id);
                         task = fileBackedTasksManager.getSubTaskMap().get(id);
                         String taskString = gson.toJson(task);
                         response = taskString;

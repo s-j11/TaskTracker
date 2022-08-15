@@ -128,7 +128,7 @@ public class HTTPTaskServerTest {
         Assertions.assertEquals("[3,4]", result);
     }
 
-    @Order(17)
+    @Order(10)
     @Test
     public void shouldGetHistory() {
         String result = null;
@@ -150,14 +150,16 @@ public class HTTPTaskServerTest {
                     "Проверьте, пожалуйста, адрес и повторите попытку.");
         }
         Assertions.assertEquals(200, code);
-        Assertions.assertEquals("[{\"epicTaskNumber\":2,\"name\":\"Т2\",\"description\":\"Т2\",\"id\":4," +
-                "\"status\":\"NEW\",\"duration\":15,\"startTime\":{\"value\":{\"date\":{\"year\":1,\"month\":1," +
-                "\"day\":1},\"time\":{\"hour\":2,\"minute\":50,\"second\":0,\"nano\":0}}}},{\"epicTaskNumber\":2," +
-                "\"name\":\"Т\",\"description\":\"Т\",\"id\":3,\"status\":\"NEW\",\"duration\":10,\"startTime\":" +
-                "{\"value\":{\"date\":{\"year\":1,\"month\":1,\"day\":1},\"time\":{\"hour\":2,\"minute\":30," +
-                "\"second\":0,\"nano\":0}}}},{\"name\":\"П\",\"description\":\"П\",\"id\":1,\"status\":\"NEW\"," +
-                "\"duration\":30,\"startTime\":{\"value\":{\"date\":{\"year\":1,\"month\":1,\"day\":1},\"time\":" +
-                "{\"hour\":1,\"minute\":15,\"second\":0,\"nano\":0}}}}]", result);
+        Assertions.assertEquals("[{\"epicTaskNumber\":2,\"name\":\"Т\",\"description\":\"Т\",\"id\":3," +
+                "\"status\":\"NEW\",\"duration\":10,\"startTime\":{\"value\":{\"date\":{\"year\":1,\"month\":1," +
+                "\"day\":1},\"time\":{\"hour\":2,\"minute\":30,\"second\":0,\"nano\":0}}}},{\"name\":\"П\"," +
+                "\"description\":\"П\",\"id\":1,\"status\":\"NEW\",\"duration\":30,\"startTime\":{\"value\":" +
+                "{\"date\":{\"year\":1,\"month\":1,\"day\":1},\"time\":{\"hour\":1,\"minute\":15,\"second\":0," +
+                "\"nano\":0}}}},{\"listSubtask\":[3,4],\"endTime\":{\"value\":{\"date\":{\"year\":1,\"month\":1," +
+                "\"day\":1},\"time\":{\"hour\":3,\"minute\":5,\"second\":0,\"nano\":0}}},\"name\":\"Р\"," +
+                "\"description\":\"Р\",\"id\":2,\"status\":\"NEW\",\"duration\":25,\"startTime\":{\"value\":" +
+                "{\"date\":{\"year\":1,\"month\":1,\"day\":1},\"time\":{\"hour\":2,\"minute\":30,\"second\":0," +
+                "\"nano\":0}}}}]", result);
     }
 
     @Order(4)
@@ -186,7 +188,7 @@ public class HTTPTaskServerTest {
                 "\"duration\":30,\"startTime\":{\"value\":{\"date\":{\"year\":1,\"month\":1,\"day\":1}," +
                 "\"time\":{\"hour\":1,\"minute\":15,\"second\":0,\"nano\":0}}}}]", result);
     }
-    @Order(5)
+    @Order(8)
     @Test
     public void shouldGetTaskByID() {
         String result = null;
@@ -213,7 +215,7 @@ public class HTTPTaskServerTest {
                 "\"time\":{\"hour\":1,\"minute\":15,\"second\":0,\"nano\":0}}}}", result);
     }
 
-    @Order(6)
+    @Order(11)
     @Test
     public void shouldAddTask() {
         String result = null;
@@ -273,7 +275,7 @@ public class HTTPTaskServerTest {
                 "\"time\":{\"hour\":3,\"minute\":30,\"second\":0,\"nano\":0}}}}", result);
     }
 
-    @Order(7)
+    @Order(12)
     @Test
     public void shouldUpdateTask() {
         try {
@@ -330,7 +332,7 @@ public class HTTPTaskServerTest {
                 "\"duration\":18,\"startTime\":{\"value\":{\"date\":{\"year\":1,\"month\":1,\"day\":1}," +
                 "\"time\":{\"hour\":3,\"minute\":30,\"second\":0,\"nano\":0}}}}", result);
     }
-    @Order(18)
+    @Order(17)
     @Test
     public void shouldDeleteTaskbyID() {
         try {
@@ -389,7 +391,7 @@ public class HTTPTaskServerTest {
                 "\"duration\":30,\"startTime\":{\"value\":{\"date\":{\"year\":1,\"month\":1,\"day\":1}," +
                 "\"time\":{\"hour\":1,\"minute\":15,\"second\":0,\"nano\":0}}}}]", result);
     }
-    @Order(19)
+    @Order(18)
     @Test
     public void shouldDeleteAllTask() {
         uri = URI.create(uri + "/tasks/task");
@@ -429,7 +431,7 @@ public class HTTPTaskServerTest {
         assertEquals(200, code);
         Assertions.assertEquals("[]", result);
     }
-    @Order(8)
+    @Order(6)
     @Test
     public void shouldGetAllSubTask() {
         String result = null;
@@ -459,7 +461,7 @@ public class HTTPTaskServerTest {
                 "\"minute\":50,\"second\":0,\"nano\":0}}}}]", result);
     }
 
-    @Order(9)
+    @Order(7)
     @Test
     public void shouldGetSubTaskByID() {
         String result = null;
@@ -603,7 +605,7 @@ public class HTTPTaskServerTest {
                 "\"day\":1},\"time\":{\"hour\":3,\"minute\":49,\"second\":0,\"nano\":0}}}}", result);
     }
 
-    @Order(20)
+    @Order(19)
     @Test
     public void shouldDeleteSubTaskbyID() {
         try {
@@ -666,7 +668,7 @@ public class HTTPTaskServerTest {
                 "\"minute\":50,\"second\":0,\"nano\":0}}}}]", result);
     }
 
-    @Order(21)
+    @Order(20)
     @Test
     public void shouldDeleteAllSubTask() {
         uri = URI.create(uri + "/tasks/subtask");
@@ -705,7 +707,7 @@ public class HTTPTaskServerTest {
         assertEquals(200, code);
         Assertions.assertEquals("[]", result);
     }
-    @Order(10)
+    @Order(5)
     @Test
     public void shouldGetAllEpic() {
         String result = null;
@@ -734,7 +736,7 @@ public class HTTPTaskServerTest {
                 "\"nano\":0}}}}]", result);
     }
 
-    @Order(11)
+    @Order(9)
     @Test
     public void shouldGetEpicByID() {
         String result = null;
@@ -762,7 +764,7 @@ public class HTTPTaskServerTest {
                 "{\"date\":{\"year\":1,\"month\":1,\"day\":1},\"time\":{\"hour\":2,\"minute\":30,\"second\":0," +
                 "\"nano\":0}}}}", result);
     }
-    @Order(12)
+    @Order(13)
     @Test
     public void shouldAddEpic() {
         String result = null;
@@ -819,7 +821,7 @@ public class HTTPTaskServerTest {
         Assertions.assertEquals("{\"listSubtask\":[],\"endTime\":{},\"name\":\"Р2\",\"description\":\"Р2\"," +
                 "\"id\":"+id+",\"status\":\"NEW\",\"duration\":0,\"startTime\":{}}", result);
     }
-    @Order(13)
+    @Order(14)
     @Test
     public void shouldUpdateEpic() {
         try {
@@ -874,7 +876,7 @@ public class HTTPTaskServerTest {
         Assertions.assertEquals("{\"listSubtask\":[],\"endTime\":{},\"name\":\"Р2\"," +
                 "\"description\":\"Р2-1\",\"id\":"+id+",\"status\":\"NEW\",\"duration\":0,\"startTime\":{}}", result);
     }
-    @Order(22)
+    @Order(21)
     @Test
     public void shouldDeleteEpicbyID() {
         try {
@@ -932,7 +934,7 @@ public class HTTPTaskServerTest {
         Assertions.assertEquals("[{\"listSubtask\":[],\"endTime\":{},\"name\":\"Р\",\"description\":\"Р\"," +
                 "\"id\":2,\"status\":\"NEW\",\"duration\":0,\"startTime\":{}}]", result);
     }
-    @Order(23)
+    @Order(22)
     @Test
     public void shouldDeleteAllEpic() {
         uri = URI.create(uri + "/tasks/epic");

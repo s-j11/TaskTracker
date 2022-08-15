@@ -38,7 +38,7 @@ public class HTTPTaskServer {
 
         public void getStopServer(){
             System.out.println("HTTP-сервер будет остановлен на " + PORT + " порту, через 1 секунд");
-        httpServer.stop(1);
+        httpServer.stop(0);
 
         }
     }

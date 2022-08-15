@@ -53,6 +53,7 @@ public class EpicTaskEP implements HttpHandler {
             if (fileBackedTasksManager.getEpicTaskMap().containsKey(id)) {
                 switch (method) {
                     case "GET":
+                        fileBackedTasksManager.getEpicTaskById(id);
                         task = fileBackedTasksManager.getEpicTaskMap().get(id);
                         String taskString = gson.toJson(task);
                         response = taskString;

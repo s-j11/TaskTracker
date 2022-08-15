@@ -56,6 +56,7 @@ public class TaskEP implements HttpHandler {
             if (fileBackedTasksManager.getTaskMap().containsKey(id)) {
                 switch (method) {
                     case "GET":
+                        fileBackedTasksManager.getTaskById(id);
                         task = fileBackedTasksManager.getTaskMap().get(id);
                         String taskString = gson.toJson(task);
                         response = taskString;
