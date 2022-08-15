@@ -19,7 +19,6 @@ public class InMemoryTaskManager implements TaskManager{
     public InMemoryTaskManager() {
     }
 
-
     //Получение значение счетчика
     public Integer getCounterID() {
         return counterID;
@@ -129,7 +128,6 @@ public class InMemoryTaskManager implements TaskManager{
         }
         epicTaskMap.clear();
         subTaskMap.clear();
-
     }
 
     //Удаление всех подзадач subTask.
@@ -167,7 +165,6 @@ public class InMemoryTaskManager implements TaskManager{
             historyManager.add(taskMap.get(key));
         }
     }
-
 
     //Получение задачи model.EpicTask по идентификатору.
     @Override
@@ -337,7 +334,8 @@ public class InMemoryTaskManager implements TaskManager{
         Node<Task> taskNode = new Node<>(epicTaskMap.get(key));
         if(!historyManager.getHistory().isEmpty()) {
         historyManager.remove(taskNode);
-    }}
+        }
+    }
 
     //Удаление задачи model.SubTask по идентификатору.
     @Override

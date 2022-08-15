@@ -892,7 +892,6 @@ public class HTTPTaskServerTest {
             id = entry.getKey();
         }
         uri = URI.create(uri +"/tasks/epic/"+id);
-
         String result = null;
 
         int code = 0;

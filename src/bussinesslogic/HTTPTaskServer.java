@@ -9,14 +9,9 @@ import java.net.InetSocketAddress;
 
 public class HTTPTaskServer {
     private static final int PORT = 8080;
-//    Gson gson = new Gson();
-//    private FileBackedTasksManager fileBackedTasksManager = new Managers()
-//            .getDefaultFileBackedManager("src/store/store2.csv");
-
     HttpServer httpServer;
 
     public void getStartServer(){
-
 
             try {
                 httpServer = HttpServer.create();

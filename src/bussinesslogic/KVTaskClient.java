@@ -53,7 +53,7 @@ public class KVTaskClient {
         }catch (IOException | InterruptedException e) { // обрабатываем ошибки отправки запроса
             System.out.println("Во время выполнения запроса возникла ошибка.\n" +
                     "Проверьте, пожалуйста, адрес и повторите попытку.");
-    }
+        }
     }
 
 
@@ -61,7 +61,6 @@ public class KVTaskClient {
         String value = null;
 
         url = URI.create(getPath()+"/load"+"/"+key+"?API_TOKEN="+getToken());
-//        String jsonFromJson = gson.toJson(json);
         HttpRequest request = HttpRequest.newBuilder().uri(url).GET().build();
         HttpResponse.BodyHandler<String> handler = HttpResponse.BodyHandlers.ofString();
         try {

@@ -104,7 +104,8 @@ public class HTTPTaskManager extends FileBackedTasksManager{
     }
 
     @Override
-    public SubTask makeSubTask(String name, String description, int id, Optional<LocalDateTime> startTime, int duration) {
+    public SubTask makeSubTask(String name, String description, int id, Optional<LocalDateTime> startTime, int duration)
+    {
         return super.makeSubTask(name, description, id, startTime, duration);
     }
 
@@ -184,9 +185,8 @@ public class HTTPTaskManager extends FileBackedTasksManager{
         Map<Integer, SubTask> subTaskMap = getSubTaskMap();
         HistoryManager historyManager = getHistoryManager();
 
-try {
+    try {
         String str = kvTaskClient.load(getToken());
-
 
             JsonElement jsonElement = JsonParser.parseString(str);
             JsonArray jsonArray = jsonElement.getAsJsonArray();
@@ -195,7 +195,6 @@ try {
             JsonArray jsonArrayEpicTask = jsonArray.get(1).getAsJsonArray();
             JsonArray jsonArraySubTask = jsonArray.get(2).getAsJsonArray();
             JsonArray jsonArrayHistory = jsonArray.get(3).getAsJsonArray();
-
 
             for (JsonElement element : jsonArrayTask) {
                 Task task = gson.fromJson(element, Task.class);

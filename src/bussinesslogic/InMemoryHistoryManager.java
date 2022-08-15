@@ -109,7 +109,8 @@ import java.util.*;
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             InMemoryHistoryManager that = (InMemoryHistoryManager) o;
-            return Objects.equals(historyList, that.historyList) && Objects.equals(indexMap, that.indexMap) && Objects.equals(head, that.head) && Objects.equals(tail, that.tail);
+            return Objects.equals(historyList, that.historyList) && Objects.equals(indexMap, that.indexMap)
+                    && Objects.equals(head, that.head) && Objects.equals(tail, that.tail);
         }
         @Override
         public int hashCode() {

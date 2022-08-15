@@ -204,7 +204,6 @@ public class Menu {
             } else {
                 System.out.println("Извините, такой команды нет.");
             }
-
         }
     }
 }
