@@ -3,7 +3,7 @@ package bussinesslogic;
 import maketbussinesslogic.HistoryManager;
 import maketbussinesslogic.TaskManager;
 
-public class Managers {
+public class ManagersProvider {
     String path;
     public static TaskManager getDefault(){
         TaskManager inMemoryTaskManager = new InMemoryTaskManager();

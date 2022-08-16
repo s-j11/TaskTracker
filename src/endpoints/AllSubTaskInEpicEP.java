@@ -12,8 +12,8 @@ import java.util.Collection;
 
 public class AllSubTaskInEpicEP implements HttpHandler {
 
-    Gson gson = new Gson();
-    FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("src/store/store2.csv");
+    private final Gson gson = new Gson();
+    private final FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("src/store/store2.csv");
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
@@ -26,10 +26,10 @@ public class AllSubTaskInEpicEP implements HttpHandler {
         String idFromRequest = path.split("/")[3];
         id =Integer.parseInt(idFromRequest);
 
-        if(fileBackedTasksManager.getEpicTaskMap().containsKey(id)) {
+        if(fileBackedTasksManager.getEpicTasks().containsKey(id)) {
 
-            Collection list = fileBackedTasksManager.getEpicTaskMap().get(id).getListSubtask();
-            response = gson.toJson(list);
+            Collection subtaskCatalogue = fileBackedTasksManager.getEpicTasks().get(id).getSubtaskCatalogue();
+            response = gson.toJson(subtaskCatalogue);
             exchange.sendResponseHeaders(200, 0);
         }else{
             exchange.sendResponseHeaders(404, 0);

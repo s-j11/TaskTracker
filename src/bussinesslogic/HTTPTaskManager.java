@@ -12,8 +12,8 @@ import java.util.*;
 
 public class HTTPTaskManager extends FileBackedTasksManager{
 
-    Gson gson = new Gson();
-    KVTaskClient kvTaskClient = new KVTaskClient();
+   private final Gson gson = new Gson();
+   private final KVTaskClient kvTaskClient = new KVTaskClient();
 
 
     public HTTPTaskManager(String path) {
@@ -28,34 +28,34 @@ public class HTTPTaskManager extends FileBackedTasksManager{
     }
 
     @Override
-    public Map<Integer, Task> getTaskMap() {
+    public Map<Integer, Task> getTasks() {
 
-        return super.getTaskMap();
+        return super.getTasks();
     }
 
     @Override
-    public Map<Integer, EpicTask> getEpicTaskMap() {
-        return super.getEpicTaskMap();
+    public Map<Integer, EpicTask> getEpicTasks() {
+        return super.getEpicTasks();
     }
 
     @Override
-    public Map<Integer, SubTask> getSubTaskMap() {
-        return super.getSubTaskMap();
+    public Map<Integer, SubTask> getSubTasks() {
+        return super.getSubTasks();
     }
 
     @Override
-    public Collection getListTasks(Map<Integer, Task> mapTask) {
-        return super.getListTasks(mapTask);
+    public Collection getTasksСatalogue(Map<Integer, Task> tasks) {
+        return super.getTasksСatalogue(tasks);
     }
 
     @Override
-    public Collection getListEpicTasks(Map<Integer, EpicTask> mapEpicTask) {
-        return super.getListEpicTasks(mapEpicTask);
+    public Collection getEpicTasksСatalogue(Map<Integer, EpicTask> epicTasks) {
+        return super.getEpicTasksСatalogue(epicTasks);
     }
 
     @Override
-    public List<SubTask> getListSubTasks(Map<Integer, SubTask> mapSubTask) {
-        return super.getListSubTasks(mapSubTask);
+    public List<SubTask> getSubTasksСatalogue(Map<Integer, SubTask> subTasks) {
+        return super.getSubTasksСatalogue(subTasks);
     }
 
     @Override
@@ -64,18 +64,18 @@ public class HTTPTaskManager extends FileBackedTasksManager{
     }
 
     @Override
-    public void deleteAllTask() {
-        super.deleteAllTask();
+    public void deleteAllTasks() {
+        super.deleteAllTasks();
     }
 
     @Override
-    public void deleteAllEpic() {
-        super.deleteAllEpic();
+    public void deleteAllEpicTasks() {
+        super.deleteAllEpicTasks();
     }
 
     @Override
-    public void deleteAllSubTask() {
-        super.deleteAllSubTask();
+    public void deleteAllSubTasks() {
+        super.deleteAllSubTasks();
     }
 
     @Override
@@ -145,8 +145,8 @@ public class HTTPTaskManager extends FileBackedTasksManager{
     }
 
     @Override
-    public String toString(Task task) {
-        return super.toString(task);
+    public String ConvertToString(Task task) {
+        return super.ConvertToString(task);
     }
 
     @Override
@@ -158,9 +158,9 @@ public class HTTPTaskManager extends FileBackedTasksManager{
     @Override
     public void saveToFile() {
 
-        Collection listTask = getListTasks(getTaskMap());
-        Collection listEpicTask = getListEpicTasks(getEpicTaskMap());
-        Collection listSubTask = getListSubTasks(getSubTaskMap());
+        Collection listTask = this.getTasksСatalogue(this.getTasks());
+        Collection listEpicTask = this.getEpicTasksСatalogue(this.getEpicTasks());
+        Collection listSubTask = getSubTasksСatalogue(this.getSubTasks());
         Collection listHistoryManager = getHistoryManager().getHistory();
         String task = gson.toJson(listTask);
         String epicTask = gson.toJson(listEpicTask);
@@ -180,9 +180,9 @@ public class HTTPTaskManager extends FileBackedTasksManager{
     @Override
     public void fromFile() throws IOException {
 
-        Map<Integer, Task> taskMap = getTaskMap();
-        Map<Integer, EpicTask> epicTaskMap = getEpicTaskMap();
-        Map<Integer, SubTask> subTaskMap = getSubTaskMap();
+        Map<Integer, Task> tasks = this.getTasks();
+        Map<Integer, EpicTask> epicTasks = this.getEpicTasks();
+        Map<Integer, SubTask> subTasks = this.getSubTasks();
         HistoryManager historyManager = getHistoryManager();
 
     try {
@@ -198,17 +198,17 @@ public class HTTPTaskManager extends FileBackedTasksManager{
 
             for (JsonElement element : jsonArrayTask) {
                 Task task = gson.fromJson(element, Task.class);
-                taskMap.put(task.getId(), task);
+                tasks.put(task.getId(), task);
             }
 
             for (JsonElement element : jsonArrayEpicTask) {
                 EpicTask task = gson.fromJson(element, EpicTask.class);
-                epicTaskMap.put(task.getId(), task);
+                epicTasks.put(task.getId(), task);
             }
 
             for (JsonElement element : jsonArraySubTask) {
                 SubTask task = gson.fromJson(element, SubTask.class);
-                subTaskMap.put(task.getId(), task);
+                subTasks.put(task.getId(), task);
             }
 
             for (JsonElement element : jsonArrayHistory) {

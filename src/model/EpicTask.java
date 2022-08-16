@@ -7,20 +7,20 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class EpicTask extends Task{
-        private List<Integer> listSubtask = new ArrayList<>();
+        private List<Integer> subTaskСatalogue = new ArrayList<>();
 
         private Optional<LocalDateTime> endTime = Optional.empty();
 
         public void addSubTask(int subTask){
-                listSubtask.add(subTask);
+                subTaskСatalogue.add(subTask);
         }
 
-        public List<Integer> getListSubtask() {
-                return listSubtask;
+        public List<Integer> getSubtaskCatalogue() {
+                return subTaskСatalogue;
         }
 
-        public void setListSubtask(List<Integer> listSubtask) {
-                this.listSubtask = listSubtask;
+        public void setSubTaskСatalogue(List<Integer> subTaskСatalogue) {
+                this.subTaskСatalogue = subTaskСatalogue;
         }
 
         @Override
@@ -38,12 +38,12 @@ public class EpicTask extends Task{
                 if (o == null || getClass() != o.getClass()) return false;
                 if (!super.equals(o)) return false;
                 EpicTask epicTask = (EpicTask) o;
-                return Objects.equals(listSubtask, epicTask.listSubtask);
+                return Objects.equals(subTaskСatalogue, epicTask.subTaskСatalogue);
         }
 
         @Override
         public int hashCode() {
-                return Objects.hash(super.hashCode(), listSubtask);
+                return Objects.hash(super.hashCode(), subTaskСatalogue);
         }
 
         public EpicTask() {
@@ -54,9 +54,9 @@ public class EpicTask extends Task{
 
         }
 
-        public EpicTask(String name, String description, int id, Status status, List<Integer> listSubtask) {
+        public EpicTask(String name, String description, int id, Status status, List<Integer> subTaskСatalogue) {
                 super(name, description, id, status);
-                this.listSubtask = listSubtask;
+                this.subTaskСatalogue = subTaskСatalogue;
         }
 
         public EpicTask(String name, String description, int id, Status status, Optional<LocalDateTime> startTime,
@@ -65,15 +65,15 @@ public class EpicTask extends Task{
         }
 
         public EpicTask(String name, String description, int id, Status status, Optional<LocalDateTime> startTime,
-                        int duration, List<Integer> listSubtask) {
+                        int duration, List<Integer> subTaskСatalogue) {
                 super(name, description, id, status, startTime, duration);
-                this.listSubtask = listSubtask;
+                this.subTaskСatalogue = subTaskСatalogue;
         }
 
         public EpicTask(String name, String description, int id, Status status, Optional<LocalDateTime> startTime,
-                        int duration, List<Integer> listSubtask, Optional<LocalDateTime> endTime) {
+                        int duration, List<Integer> subTaskСatalogue, Optional<LocalDateTime> endTime) {
                 super(name, description, id, status, startTime, duration);
-                this.listSubtask = listSubtask;
+                this.subTaskСatalogue = subTaskСatalogue;
                 this.endTime = endTime;
         }
 
@@ -81,6 +81,7 @@ public class EpicTask extends Task{
                 super(name, description, id);
         }
 
+        @Override
         public String toString() {
                 String result = "{name= " + getName();
                 if (getDescription() != null) {
@@ -89,7 +90,7 @@ public class EpicTask extends Task{
                         result = result + ", description= null ";
                 }
                 result = result + ", id= " + getId() + ", ListSubTaskNumber= "
-                        + listSubtask + ", status= " + getStatus();
+                        + subTaskСatalogue + ", status= " + getStatus();
                 if(getStartTime().isEmpty()) {
                         result = result +", start time = Нет данных";
                 }else {

@@ -10,9 +10,9 @@ import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager{
     private Integer counterID = 1;
-    private Map<Integer, Task> taskMap = new HashMap<>();
-    private Map<Integer, EpicTask> epicTaskMap = new HashMap<>();
-    private Map<Integer, SubTask> subTaskMap = new HashMap<>();
+    private Map<Integer, Task> tasks = new HashMap<>();
+    private Map<Integer, EpicTask> epicTasks = new HashMap<>();
+    private Map<Integer, SubTask> subTasks = new HashMap<>();
     private HistoryManager historyManager = new InMemoryHistoryManager();
 
     private TreeSet<Task> prioritizedTasks = new TreeSet<>();
@@ -40,19 +40,19 @@ public class InMemoryTaskManager implements TaskManager{
 
     //Получение map Tasks
     @Override
-    public Map<Integer, Task> getTaskMap() {
-        return taskMap;
+    public Map<Integer, Task> getTasks() {
+        return tasks;
     }
 
     //Получение map EpicTasks
     @Override
-    public Map<Integer, EpicTask> getEpicTaskMap() {
-        return epicTaskMap;
+    public Map<Integer, EpicTask> getEpicTasks() {
+        return epicTasks;
     }
     //Получение map SubTasks
     @Override
-    public Map<Integer, SubTask> getSubTaskMap() {
-        return subTaskMap;
+    public Map<Integer, SubTask> getSubTasks() {
+        return subTasks;
     }
 
     @Override
@@ -62,133 +62,133 @@ public class InMemoryTaskManager implements TaskManager{
 
     //Получение списка всех задач model.Task.
     @Override
-    public Collection getListTasks(Map<Integer, Task> mapTask) {
-        Collection listTask = new ArrayList<>();
-        Set<Integer> setKeys = mapTask.keySet();
+    public Collection getTasksСatalogue(Map<Integer, Task> tasks) {
+        Collection tasksСatalogue = new ArrayList<>();
+        Set<Integer> setKeys = tasks.keySet();
         for (int i : setKeys) {
-            Task task = mapTask.get(i);
-            listTask.add(task);
+            Task task = tasks.get(i);
+            tasksСatalogue.add(task);
         }
-        return listTask;
+        return tasksСatalogue;
     }
 
     //Получение списка всех Эпик задач model.EpicTask.
     @Override
-    public Collection getListEpicTasks(Map<Integer, EpicTask> mapEpicTask) {
-        Collection listEpicTask = new ArrayList<>();
-        Set<Integer> setKeys = mapEpicTask.keySet();
+    public Collection getEpicTasksСatalogue(Map<Integer, EpicTask> epicTasks) {
+        Collection epicTaskСatalogue = new ArrayList<>();
+        Set<Integer> setKeys = epicTasks.keySet();
         for (int i : setKeys) {
-            EpicTask epicTask = mapEpicTask.get(i);
-            listEpicTask.add(epicTask);
+            EpicTask epicTask = epicTasks.get(i);
+            epicTaskСatalogue.add(epicTask);
         }
-        return listEpicTask;
+        return epicTaskСatalogue;
     }
 
     //Получение списка всех подзадач model.SubTask.
     @Override
-    public List<SubTask> getListSubTasks(Map<Integer, SubTask> mapSubTask) {
-        List<SubTask> listSubTask = new ArrayList<>();
-        Set<Integer> setKeys = mapSubTask.keySet();
+    public List<SubTask> getSubTasksСatalogue(Map<Integer, SubTask> subTasks) {
+        List<SubTask> subTaskСatalogue = new ArrayList<>();
+        Set<Integer> setKeys = subTasks.keySet();
         for (int i : setKeys) {
-            SubTask subTask = mapSubTask.get(i);
-            listSubTask.add(subTask);
+            SubTask subTask = subTasks.get(i);
+            subTaskСatalogue.add(subTask);
         }
-        return listSubTask;
+        return subTaskСatalogue;
     }
 
     //Удаление всех задач model.Task.
     @Override
-    public void deleteAllTask() {
-        for (Map.Entry<Integer,Task> entry: taskMap.entrySet()) {
+    public void deleteAllTasks() {
+        for (Map.Entry<Integer,Task> entry: tasks.entrySet()) {
             Node task = new Node(entry.getValue());
             if(!historyManager.getHistory().isEmpty()){
             historyManager.remove(task);
         }}
-        for (Map.Entry<Integer,Task> entry : taskMap.entrySet()) {
+        for (Map.Entry<Integer,Task> entry : tasks.entrySet()) {
             prioritizedTasks.remove(entry.getValue());
         }
-        taskMap.clear();
+        tasks.clear();
     }
 
     //Удаление всех эпик задач model.EpicTask.
     @Override
-    public void deleteAllEpic() {
-        for (Map.Entry<Integer,EpicTask> entry: epicTaskMap.entrySet()) {
+    public void deleteAllEpicTasks() {
+        for (Map.Entry<Integer,EpicTask> entry: epicTasks.entrySet()) {
             Node task = new Node(entry.getValue());
             if(!historyManager.getHistory().isEmpty() && historyManager.getHistory().contains(task)){
-                List<Integer> numberSubtask = entry.getValue().getListSubtask();
+                List<Integer> numberSubtask = entry.getValue().getSubtaskCatalogue();
                 for(int number : numberSubtask){
-                    Node subTask = new Node(subTaskMap.get(number));
+                    Node subTask = new Node(subTasks.get(number));
                     historyManager.remove(subTask);
                 }
             historyManager.remove(task);
         }}
-        for (Map.Entry<Integer,SubTask> entry : subTaskMap.entrySet()) {
+        for (Map.Entry<Integer,SubTask> entry : subTasks.entrySet()) {
             prioritizedTasks.remove(entry.getValue());
         }
-        epicTaskMap.clear();
-        subTaskMap.clear();
+        epicTasks.clear();
+        subTasks.clear();
     }
 
     //Удаление всех подзадач subTask.
     @Override
-    public void deleteAllSubTask() {
-        for (Map.Entry<Integer,SubTask> entry: subTaskMap.entrySet()) {
+    public void deleteAllSubTasks() {
+        for (Map.Entry<Integer,SubTask> entry: subTasks.entrySet()) {
             Node task = new Node(entry.getValue());
             if(!historyManager.getHistory().isEmpty() && historyManager.getHistory().contains(task)) {
                 historyManager.remove(task);
             }
         }
-        Set<Integer> setKeys = epicTaskMap.keySet();
-        for (int i : setKeys) {
-            EpicTask epicTask = epicTaskMap.get(i);
-            epicTask.getListSubtask().clear();
+        Set<Integer> keysEpicTask = epicTasks.keySet();
+        for (int i : keysEpicTask) {
+            EpicTask epicTask = epicTasks.get(i);
+            epicTask.getSubtaskCatalogue().clear();
             epicTask.setStartTime(Optional.empty());
             epicTask.setEndTime(Optional.empty());
             epicTask.setDuration(0);
         }
-        for (Map.Entry<Integer,SubTask> entry : subTaskMap.entrySet()) {
+        for (Map.Entry<Integer,SubTask> entry : subTasks.entrySet()) {
             prioritizedTasks.remove(entry.getValue());
         }
-        subTaskMap.clear();
+        subTasks.clear();
     }
 
     //Получение задачи model.Task по идентификатору.
     @Override
     public void getTaskById(int key) {
-        if (taskMap.isEmpty()) {
+        if (tasks.isEmpty()) {
             System.out.println("Tакого id в списке задач - нет");
-        } else if (!taskMap.containsKey(key)) {
+        } else if (!tasks.containsKey(key)) {
             System.out.println("Tакого id в списке задач - нет");
         } else {
-            System.out.println(taskMap.get(key));
-            historyManager.add(taskMap.get(key));
+            System.out.println(tasks.get(key));
+            historyManager.add(tasks.get(key));
         }
     }
 
     //Получение задачи model.EpicTask по идентификатору.
     @Override
     public void getEpicTaskById(int key) {
-        if (epicTaskMap.isEmpty()) {
+        if (epicTasks.isEmpty()) {
             System.out.println("Tакого id в списке эпик задач - нет");
-        } else if (!epicTaskMap.containsKey(key)) {
+        } else if (!epicTasks.containsKey(key)) {
             System.out.println("Tакого id в списке эпик задач - нет");
         } else {
-            System.out.println(epicTaskMap.get(key));
-            historyManager.add(epicTaskMap.get(key));
+            System.out.println(epicTasks.get(key));
+            historyManager.add(epicTasks.get(key));
         }
     }
 
     //Получение задачи model.SubTask по идентификатору.
     @Override
     public void getSubTaskById(int key) {
-        if (subTaskMap.isEmpty()) {
+        if (subTasks.isEmpty()) {
             System.out.println("Tакого id в списке подзадач задач - нет");
-        } else if (!subTaskMap.containsKey(key)) {
+        } else if (!subTasks.containsKey(key)) {
             System.out.println("Tакого id в списке подзадач задач - нет");
         } else {
-            System.out.println(subTaskMap.get(key));
-            historyManager.add(subTaskMap.get(key));
+            System.out.println(subTasks.get(key));
+            historyManager.add(subTasks.get(key));
         }
     }
 
@@ -202,13 +202,13 @@ public class InMemoryTaskManager implements TaskManager{
         task.setStatus(Status.NEW);
         task.setStartTime(startTime);
         task.setDuration(duration);
-        TreeSet<Task> treeSet = getPrioritizedTasks();
-        int result = freeTime(treeSet,task);
+        TreeSet<Task> taskPrioritized = getPrioritizedTasks();
+        int result = freeTime(taskPrioritized,task);
         if ( result != 0) {
             System.out.println("Задача пересекается по времени с другими задачами и не будет добавлена");
         } else {
-            taskMap.put(task.getId(), task);
-            treeSet.add(task);
+            tasks.put(task.getId(), task);
+            taskPrioritized.add(task);
             System.out.println("Номер вашей задачи " + task.getId() + "\n");
             return task;
         }
@@ -223,7 +223,7 @@ public class InMemoryTaskManager implements TaskManager{
         epicTask.setDescription(description);
         epicTask.setId(counterID++);
         epicTask.setStatus(Status.NEW);
-        epicTaskMap.put(epicTask.getId(), epicTask);
+        epicTasks.put(epicTask.getId(), epicTask);
         System.out.println("Номер вашей Эпик задачи " + epicTask.getId() + "\n");
         return epicTask;
     }
@@ -239,30 +239,30 @@ public class InMemoryTaskManager implements TaskManager{
         subTask.setStatus(Status.NEW);
         subTask.setDuration(duration);
         subTask.setStartTime(startTime);
-        Set<Integer> setKeysTask = epicTaskMap.keySet();
+        Set<Integer> keysTask = epicTasks.keySet();
         TreeSet<Task> treeSet = getPrioritizedTasks();
         if (freeTime(treeSet,subTask) == 0) {
         Optional<LocalDateTime> start = null;
         Optional<LocalDateTime> end = null;
         int time; 
-        if (setKeysTask.size() == 0) {
+        if (keysTask.size() == 0) {
             System.out.println("Tакого id в списке Эпик задач - нет");
         } else {
-            for (int i : setKeysTask) {
-                EpicTask epicTask = epicTaskMap.get(i);
+            for (int i : keysTask) {
+                EpicTask epicTask = epicTasks.get(i);
                 if (id != epicTask.getId()) {
                     System.out.println("Tакого id в списке Эпик задач - нет");
                 } else {
                     subTask.setId(counterID++);
                     epicTask.setDuration(epicTask.getDuration() + subTask.getDuration());
-                    if (epicTask.getListSubtask().isEmpty()) {
+                    if (epicTask.getSubtaskCatalogue().isEmpty()) {
                         epicTask.setStartTime(subTask.getStartTime());
                         epicTask.setEndTime(subTask.getEndTime());
                     } else {
                         start = epicTask.getStartTime();
                         end = epicTask.getEndTime();
-                        for (int j : epicTask.getListSubtask()) {
-                            SubTask subTaskBuffer = subTaskMap.get(j);
+                        for (int j : epicTask.getSubtaskCatalogue()) {
+                            SubTask subTaskBuffer = subTasks.get(j);
                             if (subTask.getStartTime().get().isBefore(start.get()) &&
                                     subTask.getStartTime().get().isBefore(subTaskBuffer.getStartTime().get())) {
                                 epicTask.setStartTime(subTask.getStartTime());
@@ -278,7 +278,7 @@ public class InMemoryTaskManager implements TaskManager{
                         }
                     }
                     epicTask.addSubTask(subTask.getId());
-                    subTaskMap.put(subTask.getId(), subTask);
+                    subTasks.put(subTask.getId(), subTask);
                     treeSet.add(subTask);
                     System.out.println("Номер вашей подзадачи " + subTask.getId() + "\n"
                             + "Она входит в Эпик задачу " + subTask.getEpicTaskNumber() + "\n");
@@ -294,16 +294,16 @@ public class InMemoryTaskManager implements TaskManager{
     //Удаление задачи model.Task по идентификатору.
     @Override
     public void deleteTaskById(int key) {
-        if (taskMap.isEmpty()) {
+        if (tasks.isEmpty()) {
             System.out.println("Tакого id в списке задач - нет");
-        } else if (!taskMap.containsKey(key)) {
+        } else if (!tasks.containsKey(key)) {
             System.out.println("Tакого id в списке задач - нет");
         } else {
-            prioritizedTasks.remove(taskMap.get(key));
-            taskMap.remove(key);
+            prioritizedTasks.remove(tasks.get(key));
+            tasks.remove(key);
             System.out.println("Задача удалена");
         }
-        Node<Task> taskNode = new Node<>(taskMap.get(key));
+        Node<Task> taskNode = new Node<>(tasks.get(key));
         if(!historyManager.getHistory().isEmpty()) {
         historyManager.remove(taskNode);
     }
@@ -312,26 +312,26 @@ public class InMemoryTaskManager implements TaskManager{
     //Удаление задачи model.EpicTask по идентификатору.
     @Override
     public void deleteEpicTaskById(int key) {
-        if (epicTaskMap.isEmpty()) {
+        if (epicTasks.isEmpty()) {
             System.out.println("Tакого id в списке эпик задач - нет");
-        } else if (!epicTaskMap.containsKey(key)) {
+        } else if (!epicTasks.containsKey(key)) {
             System.out.println("Tакого id в списке эпик задач - нет");
         } else {
-            EpicTask epicTask = epicTaskMap.get(key);
-            Collection listSubTask = epicTask.getListSubtask();
-            if(!listSubTask.isEmpty()){
-            for (Object i : listSubTask) {
-                prioritizedTasks.remove(subTaskMap.get(i));
-                subTaskMap.remove(i);
-                Node<Task> taskNode = new Node<>(subTaskMap.get(i));
+            EpicTask epicTask = epicTasks.get(key);
+            Collection subTasks = epicTask.getSubtaskCatalogue();
+            if(!subTasks.isEmpty()){
+            for (Object i : subTasks) {
+                prioritizedTasks.remove(this.subTasks.get(i));
+                this.subTasks.remove(i);
+                Node<Task> taskNode = new Node<>(this.subTasks.get(i));
                 if(!historyManager.getHistory().isEmpty()&&historyManager.getHistory().contains(taskNode)) {
                     historyManager.remove(taskNode);
                 } }
             }
-            epicTaskMap.remove(key);
+            epicTasks.remove(key);
             System.out.println("Эпик задача удалена вмести с подзадачами");
         }
-        Node<Task> taskNode = new Node<>(epicTaskMap.get(key));
+        Node<Task> taskNode = new Node<>(epicTasks.get(key));
         if(!historyManager.getHistory().isEmpty()) {
         historyManager.remove(taskNode);
         }
@@ -340,23 +340,23 @@ public class InMemoryTaskManager implements TaskManager{
     //Удаление задачи model.SubTask по идентификатору.
     @Override
     public void deleteSubTaskById(int key) {
-        Node<Task> taskNode = new Node<>(subTaskMap.get(key));
+        Node<Task> taskNode = new Node<>(subTasks.get(key));
         if(!historyManager.getHistory().isEmpty()) {
             historyManager.remove(taskNode);
         }
-        if (subTaskMap.isEmpty()) {
+        if (subTasks.isEmpty()) {
             System.out.println("Tакого id в списке подзадач задач - нет");
-        } else if (!subTaskMap.containsKey(key)) {
+        } else if (!subTasks.containsKey(key)) {
             System.out.println("Tакого id в списке подзадач задач - нет");
         } else {
-            prioritizedTasks.remove(subTaskMap.get(key));
-            subTaskMap.remove(key);
+            prioritizedTasks.remove(subTasks.get(key));
+            subTasks.remove(key);
             System.out.println("Подзадача удалена");
             List<Integer> idSubTasks;
-            Set<Integer> setKeys = epicTaskMap.keySet();
+            Set<Integer> setKeys = epicTasks.keySet();
             for (int k : setKeys) {
-                EpicTask epicTask = epicTaskMap.get(k);
-                idSubTasks = epicTask.getListSubtask();
+                EpicTask epicTask = epicTasks.get(k);
+                idSubTasks = epicTask.getSubtaskCatalogue();
                 if (idSubTasks.size() == 0) {
                     continue;
                 } else {
@@ -364,7 +364,7 @@ public class InMemoryTaskManager implements TaskManager{
                         int idSubTask = idSubTasks.get(j);
                         if (key == idSubTask) {
                             idSubTasks.remove(j);
-                            epicTask.setListSubtask(idSubTasks);
+                            epicTask.setSubTaskСatalogue(idSubTasks);
                             break;
                         }
                     }
@@ -376,41 +376,41 @@ public class InMemoryTaskManager implements TaskManager{
     //Обнавление задачи model.Task
     @Override
     public Map<Integer, Task> updateTaskById(Task taskUpdate) {
-        if (taskMap.isEmpty()) {
+        if (tasks.isEmpty()) {
             System.out.println("Tакого id в списке задач - нет");
-        } else if (!taskMap.containsKey(taskUpdate.getId())) {
+        } else if (!tasks.containsKey(taskUpdate.getId())) {
             System.out.println("Tакого id в списке задач - нет");
         } else {
             TreeSet<Task> treeSet = getPrioritizedTasks();
-            treeSet.remove(taskMap.get(taskUpdate.getId()));
+            treeSet.remove(tasks.get(taskUpdate.getId()));
             if (freeTime(treeSet,taskUpdate) == 0 ) {
-                taskMap.put(taskUpdate.getId(), taskUpdate);
+                tasks.put(taskUpdate.getId(), taskUpdate);
                 treeSet.add(taskUpdate);
                 System.out.println("Номер вашей задачи " + taskUpdate.getId() + "\n");
                 System.out.println("Задача обновлена");
-                return taskMap;
+                return tasks;
             } else {
                 System.out.println("Задача пересекается по времени с другими задачами и не будет добавлена");
             }
         }
-        return taskMap;
+        return tasks;
     }
 
     //Обнавление задачи model.EpicTask
     @Override
     public void updateEpicTaskById(EpicTask taskUpdate) {
-        if (epicTaskMap.isEmpty()) {
+        if (epicTasks.isEmpty()) {
             System.out.println("Tакого id в списке эпик задач - нет");
-        } else if (!epicTaskMap.containsKey(taskUpdate.getId())) {
+        } else if (!epicTasks.containsKey(taskUpdate.getId())) {
             System.out.println("Tакого id в списке эпик задач - нет");
         } else {
-            EpicTask epicTask = epicTaskMap.get(taskUpdate.getId());
-            taskUpdate.setListSubtask(epicTask.getListSubtask());
+            EpicTask epicTask = epicTasks.get(taskUpdate.getId());
+            taskUpdate.setSubTaskСatalogue(epicTask.getSubtaskCatalogue());
             taskUpdate.setStatus(epicTask.getStatus());
             taskUpdate.setStartTime(epicTask.getStartTime());
             taskUpdate.setEndTime(epicTask.getEndTime());
             taskUpdate.setDuration(epicTask.getDuration());
-            epicTaskMap.put(taskUpdate.getId(), taskUpdate);
+            epicTasks.put(taskUpdate.getId(), taskUpdate);
             System.out.println("Задача обновлена");
         }
     }
@@ -419,29 +419,29 @@ public class InMemoryTaskManager implements TaskManager{
     //Обнавление задачи model.SubTask
     @Override
     public void updateSubTaskById(SubTask taskUpdate) {
-        if (subTaskMap.isEmpty()) {
+        if (subTasks.isEmpty()) {
             System.out.println("Tакого id в списке подзадач задач - нет");
-        } else if (!subTaskMap.containsKey(taskUpdate.getId())) {
+        } else if (!subTasks.containsKey(taskUpdate.getId())) {
             System.out.println("Tакого id в списке подзадач задач - нет");
         } else {
-            TreeSet<Task> treeSet = (TreeSet<Task>) this.getPrioritizedTasks();
-            treeSet.remove(subTaskMap.get(taskUpdate.getId()));
-            if (freeTime(treeSet,taskUpdate) == 0 ) {
-            SubTask subTask = subTaskMap.get(taskUpdate.getId());
+            TreeSet<Task> tasksPrioritized = (TreeSet<Task>) this.getPrioritizedTasks();
+            tasksPrioritized.remove(subTasks.get(taskUpdate.getId()));
+            if (freeTime(tasksPrioritized,taskUpdate) == 0 ) {
+            SubTask subTask = subTasks.get(taskUpdate.getId());
             taskUpdate.setEpicTaskNumber(subTask.getEpicTaskNumber());
-            subTaskMap.put(taskUpdate.getId(), taskUpdate);
-            treeSet.add(taskUpdate);
+            subTasks.put(taskUpdate.getId(), taskUpdate);
+            tasksPrioritized.add(taskUpdate);
             int numberOfEpicTask = subTask.getEpicTaskNumber();
             int counterNew = 0;
             int counterInProcess = 0;
             int counterDone = 0;
             int duration = 0;
-            EpicTask epicTask = epicTaskMap.get(numberOfEpicTask);
-            List<Integer> listSubTask = epicTask.getListSubtask();
+            EpicTask epicTask = epicTasks.get(numberOfEpicTask);
+            List<Integer> SubTasksCatalogue = epicTask.getSubtaskCatalogue();
             Optional<LocalDateTime> start = epicTask.getStartTime();
             Optional<LocalDateTime> end = epicTask.getEndTime();
-            for (int j : listSubTask) {
-                SubTask subTask1 = subTaskMap.get(j);
+            for (int j : SubTasksCatalogue) {
+                SubTask subTask1 = subTasks.get(j);
                 Status status = subTask1.getStatus();
                 if (status == Status.NEW) {
                     counterNew++;
@@ -466,10 +466,10 @@ public class InMemoryTaskManager implements TaskManager{
             epicTask.setDuration(duration);
             epicTask.setEndTime(end);
 
-            if (counterNew == epicTask.getListSubtask().size()) {
+            if (counterNew == epicTask.getSubtaskCatalogue().size()) {
             } else if (counterInProcess > 0) {
                 epicTask.setStatus(Status.IN_PROGRESS);
-            } else if (counterDone == epicTask.getListSubtask().size()) {
+            } else if (counterDone == epicTask.getSubtaskCatalogue().size()) {
                 epicTask.setStatus(Status.DONE);
             }
             System.out.println("Подзадача обновлена");
@@ -482,13 +482,13 @@ public class InMemoryTaskManager implements TaskManager{
     //Получение всех задач Эпик задачи
     @Override
     public void getAllSubTaskInEpic(int key) {
-        if (epicTaskMap.isEmpty()) {
+        if (epicTasks.isEmpty()) {
             System.out.println("Tакого id в списке эпик задач - нет");
-        } else if (!epicTaskMap.containsKey(key)) {
+        } else if (!epicTasks.containsKey(key)) {
             System.out.println("Tакого id в списке эпик задач - нет");
         } else {
-            EpicTask epicTask = epicTaskMap.get(key);
-            Collection listSubTask = epicTask.getListSubtask();
+            EpicTask epicTask = epicTasks.get(key);
+            Collection listSubTask = epicTask.getSubtaskCatalogue();
             if (listSubTask.size() == 0) {
                 System.out.println("У Эпик задачи нет подзадач");
             } else {
@@ -497,9 +497,9 @@ public class InMemoryTaskManager implements TaskManager{
         }
     }
 
-    public int freeTime(TreeSet<Task> treeSet, Task task){
+    public int freeTime(TreeSet<Task> tasksPrioritized, Task task){
         int count = 0;
-        for (Task task1 : treeSet) {
+        for (Task task1 : tasksPrioritized) {
             if (task.getStartTime().get().isBefore(task1.getStartTime().get()) && task.getEndTime().get()
                     .isAfter(task1.getEndTime().get())) {
                 count++;

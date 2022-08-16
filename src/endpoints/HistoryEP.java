@@ -11,17 +11,17 @@ import java.io.OutputStream;
 import java.util.Collection;
 
 public class HistoryEP implements HttpHandler {
-    Gson gson = new Gson();
-    FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("src/store/store2.csv");
+    private final Gson gson = new Gson();
+    private final FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("src/store/store2.csv");
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         fileBackedTasksManager.fromFile();
         Headers headers = exchange.getResponseHeaders();
         headers.add("application","json");
-        Collection list = fileBackedTasksManager.getHistoryManager().getHistory();
+        Collection history = fileBackedTasksManager.getHistoryManager().getHistory();
 
-       String response = gson.toJson(list);
+       String response = gson.toJson(history);
 
         exchange.sendResponseHeaders(200, 0);
 

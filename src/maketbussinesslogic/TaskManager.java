@@ -14,34 +14,34 @@ import java.util.Optional;
 public interface TaskManager {
 
     //Получение map Tasks
-    Map<Integer, Task> getTaskMap();
+    Map<Integer, Task> getTasks();
 
     //Получение map EpicTasks
-    Map<Integer, EpicTask> getEpicTaskMap();
+    Map<Integer, EpicTask> getEpicTasks();
 
     //Получение map SubTasks
-    Map<Integer, SubTask> getSubTaskMap();
+    Map<Integer, SubTask> getSubTasks();
 
     //Получение списка всех задач model.Task.
-    Collection getListTasks(Map<Integer, Task> mapTask);
+    Collection getTasksСatalogue(Map<Integer, Task> mapTask);
 
     //Получение списка всех Эпик задач model.EpicTask.
-    Collection getListEpicTasks(Map<Integer, EpicTask> mapEpicTask);
+    Collection getEpicTasksСatalogue(Map<Integer, EpicTask> mapEpicTask);
 
     //Получение списка всех подзадач model.SubTask.
-    List<SubTask> getListSubTasks(Map<Integer, SubTask> mapSubTask);
+    List<SubTask> getSubTasksСatalogue(Map<Integer, SubTask> mapSubTask);
 
     //Получение historyManagera
     HistoryManager getHistoryManager();
 
     //Удаление всех задач model.Task.
-    void deleteAllTask();
+    void deleteAllTasks();
 
     //Удаление всех эпик задач model.EpicTask.
-    void deleteAllEpic();
+    void deleteAllEpicTasks();
 
     //Удаление всех подзадач subTask.
-    void deleteAllSubTask();
+    void deleteAllSubTasks();
 
     //Получение задачи model.Task по идентификатору.
     void getTaskById(int key);

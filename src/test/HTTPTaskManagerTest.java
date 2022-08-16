@@ -249,9 +249,9 @@ public class HTTPTaskManagerTest extends TaskManagerTest{
         }
 
         assertAll(
-                ()->assertEquals(httpTaskManager2.getTaskMap(),taskManager.getTaskMap()),
-                ()->assertEquals(httpTaskManager2.getEpicTaskMap(),taskManager.getEpicTaskMap()),
-                ()->assertEquals(httpTaskManager2.getSubTaskMap(),taskManager.getSubTaskMap()),
+                ()->assertEquals(httpTaskManager2.getTasks(),taskManager.getTasks()),
+                ()->assertEquals(httpTaskManager2.getEpicTasks(),taskManager.getEpicTasks()),
+                ()->assertEquals(httpTaskManager2.getSubTasks(),taskManager.getSubTasks()),
                 ()->assertEquals(httpTaskManager2.getHistoryManager().getHistory(),
                         taskManager.getHistoryManager().getHistory()));
     }
@@ -300,9 +300,9 @@ public class HTTPTaskManagerTest extends TaskManagerTest{
         }
     }
         assertAll(
-                ()->assertEquals(httpTaskManager2.getTaskMap(),taskManager.getTaskMap()),
-                ()->assertEquals(httpTaskManager2.getEpicTaskMap(),taskManager.getEpicTaskMap()),
-                ()->assertEquals(httpTaskManager2.getSubTaskMap(),taskManager.getSubTaskMap()),
+                ()->assertEquals(httpTaskManager2.getTasks(),taskManager.getTasks()),
+                ()->assertEquals(httpTaskManager2.getEpicTasks(),taskManager.getEpicTasks()),
+                ()->assertEquals(httpTaskManager2.getSubTasks(),taskManager.getSubTasks()),
                 ()->assertEquals(httpTaskManager2.getHistoryManager().getHistory(),
                         taskManager.getHistoryManager().getHistory()));
     }

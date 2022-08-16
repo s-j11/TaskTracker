@@ -2,7 +2,7 @@ package interactive_menu;
 
 import bussinesslogic.HTTPTaskServer;
 import bussinesslogic.KVTaskClient;
-import bussinesslogic.Managers;
+import bussinesslogic.ManagersProvider;
 import maketbussinesslogic.TaskManager;
 import model.*;
 
@@ -12,13 +12,13 @@ import java.util.*;
 
 public class Menu {
     private Scanner scanner = new Scanner(System.in);
-    private Managers managers = new Managers();
-    private TaskManager httpTaskManager = managers.getDefaultHTTPTaskManager("http://localhost:8078");
-    private Map<Integer, Task> taskMap = httpTaskManager.getTaskMap();
-    private Map<Integer, EpicTask> epicTaskMap = httpTaskManager.getEpicTaskMap();
-    private Map<Integer, SubTask> subTaskMap = httpTaskManager.getSubTaskMap();
+    private ManagersProvider managersProvider = new ManagersProvider();
+    private TaskManager httpTaskManager = managersProvider.getDefaultHTTPTaskManager("http://localhost:8078");
+    private Map<Integer, Task> tasks = httpTaskManager.getTasks();
+    private Map<Integer, EpicTask> epicTasks = httpTaskManager.getEpicTasks();
+    private Map<Integer, SubTask> subTasks = httpTaskManager.getSubTasks();
 
-    private HTTPTaskServer httpTaskServer = managers.getDefaultHTTPTaskServer();
+    private HTTPTaskServer httpTaskServer = managersProvider.getDefaultHTTPTaskServer();
 
     private KVTaskClient kvTaskClient =new KVTaskClient();
 
@@ -27,9 +27,9 @@ public class Menu {
     @Override
     public String toString() {
         return "{"
-                + "taskMap=" + taskMap
-                + ", epicTaskMap=" + epicTaskMap
-                + ", subTaskMap=" + subTaskMap + '}';
+                + "taskMap=" + tasks
+                + ", epicTaskMap=" + epicTasks
+                + ", subTaskMap=" + subTasks + '}';
     }
 
     public void prinMenu() throws IOException {
@@ -54,9 +54,9 @@ public class Menu {
             int command = scanner.nextInt();
             if (command == 1) {
                 System.out.println("Список всех задач: ");
-                System.out.println("Список задач: " + httpTaskManager.getListTasks(taskMap));
-                System.out.println("Список Эпик задач: " + httpTaskManager.getListEpicTasks(epicTaskMap));
-                System.out.println("Список подзадач: " + httpTaskManager.getListSubTasks(subTaskMap));
+                System.out.println("Список задач: " + httpTaskManager.getTasksСatalogue(tasks));
+                System.out.println("Список Эпик задач: " + httpTaskManager.getEpicTasksСatalogue(epicTasks));
+                System.out.println("Список подзадач: " + httpTaskManager.getSubTasksСatalogue(subTasks));
                 System.out.println();
             } else if (command == 2) {
                 System.out.println("Введите номер списка задач, который хотите удалить:\n"
@@ -66,15 +66,15 @@ public class Menu {
                 int button = scanner.nextInt();
                 switch (button) {
                     case 1:
-                        httpTaskManager.deleteAllTask();
+                        httpTaskManager.deleteAllTasks();
                         System.out.println("Список задач удален");
                         break;
                     case 2:
-                        httpTaskManager.deleteAllEpic();
+                        httpTaskManager.deleteAllEpicTasks();
                         System.out.println("Список Эпик задач удален и связыанные с ними подзадачи");
                         break;
                     case 3:
-                        httpTaskManager.deleteAllSubTask();
+                        httpTaskManager.deleteAllSubTasks();
                         System.out.println("Список подзадач удален");
                         break;
                     default:
@@ -188,9 +188,9 @@ public class Menu {
             } else if (command == 9) {
                 System.out.println(httpTaskManager.getHistoryManager().getHistory());
             }else if(command == 10) {
-                taskMap.clear();
-                epicTaskMap.clear();
-                subTaskMap.clear();
+                tasks.clear();
+                epicTasks.clear();
+                subTasks.clear();
             httpTaskManager.fromFile();
             }else if(command == 11) {
                 httpTaskServer.getStartServer();

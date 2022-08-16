@@ -9,7 +9,7 @@ import java.net.InetSocketAddress;
 
 public class HTTPTaskServer {
     private static final int PORT = 8080;
-    HttpServer httpServer;
+    private  HttpServer httpServer;
 
     public void getStartServer(){
 

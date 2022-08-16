@@ -12,13 +12,13 @@ import java.io.OutputStream;
 import java.util.Collection;
 
 public class EpicTaskEP implements HttpHandler {
-    Gson gson = new Gson();
-    FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("src/store/store2.csv");
+    private final Gson gson = new Gson();
+    private final FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("src/store/store2.csv");
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         fileBackedTasksManager.fromFile();
-        Collection listEpicTask = fileBackedTasksManager.getListEpicTasks(fileBackedTasksManager.getEpicTaskMap());
+        Collection listEpicTask = fileBackedTasksManager.getEpicTasksСatalogue(fileBackedTasksManager.getEpicTasks());
         InputStream inputStream = exchange.getRequestBody();
         String body = new String(inputStream.readAllBytes());
         Headers headers = exchange.getResponseHeaders();
@@ -39,7 +39,7 @@ public class EpicTaskEP implements HttpHandler {
                     fileBackedTasksManager.makeEpic(task.getName(),task.getDescription());
                     break;
                 case "DELETE":
-                    fileBackedTasksManager.deleteAllEpic();
+                    fileBackedTasksManager.deleteAllEpicTasks();
                     break;
                 default:
                     response = "Некорректный метод!";
@@ -49,11 +49,11 @@ public class EpicTaskEP implements HttpHandler {
         } else {
             String idFromRequest = path.split("/")[3];
             id = Integer.parseInt(idFromRequest);
-            if (fileBackedTasksManager.getEpicTaskMap().containsKey(id)) {
+            if (fileBackedTasksManager.getEpicTasks().containsKey(id)) {
                 switch (method) {
                     case "GET":
                         fileBackedTasksManager.getEpicTaskById(id);
-                        task = fileBackedTasksManager.getEpicTaskMap().get(id);
+                        task = fileBackedTasksManager.getEpicTasks().get(id);
                         String taskString = gson.toJson(task);
                         response = taskString;
                         break;

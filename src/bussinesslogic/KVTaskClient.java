@@ -11,10 +11,10 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class KVTaskClient {
-    Gson gson = new Gson();
-   HttpClient client = HttpClient.newHttpClient();
+    private final Gson gson = new Gson();
+    private final HttpClient client = HttpClient.newHttpClient();
 
-   String path;
+    private String path;
     private URI url;
 
     private String token;

@@ -6,12 +6,12 @@ import model.Task;
 import java.util.*;
 
     public class InMemoryHistoryManager implements HistoryManager {
-    private  List<Node> historyList = new ArrayList<>();
-    private  Map<Integer, Node> indexMap = new HashMap<Integer, Node>();
+    private  List<Node> history = new ArrayList<>();
+    private  Map<Integer, Node> index = new HashMap<Integer, Node>();
     private  Node<Task> head = null;
     private  Node<Task> tail = null;
-        public Map<Integer, Node> getIndexMap() {
-            return indexMap;
+        public Map<Integer, Node> getIndex() {
+            return index;
         }
         public Node<Task> linkLast(Task task){
          Node<Task> lastNode = tail;
@@ -21,12 +21,12 @@ import java.util.*;
             tail = newNode;
             newNode.prev = null;
             newNode.next = null;
-            historyList.add(newNode);
+            history.add(newNode);
         }else{
             lastNode.next = newNode;
             newNode.prev = lastNode;
             tail = newNode;
-            historyList.add(newNode);
+            history.add(newNode);
         }return newNode;
     }
 
@@ -34,73 +34,73 @@ import java.util.*;
     @Override
     public void add(Task task) {
         Node node = new Node(task);
-        if (indexMap.isEmpty()) {
+        if (index.isEmpty()) {
             node = linkLast(task);
-            indexMap.put(task.getId(),node);
-        }else if(!indexMap.containsKey(task.getId())){
-            indexMap.put(task.getId(),linkLast(task));
+            index.put(task.getId(),node);
+        }else if(!index.containsKey(task.getId())){
+            index.put(task.getId(),linkLast(task));
         }else{
-            remove(indexMap.get(task.getId()));
-            indexMap.put(task.getId(),linkLast(task));
+            remove(index.get(task.getId()));
+            index.put(task.getId(),linkLast(task));
         }
     }
 
     //Удаление объекта
     @Override
     public Node<Task> remove(Node node) {
-        node = indexMap.get(((Task) node.data).getId());
+        node = index.get(((Task) node.data).getId());
         if (node.prev == null && node.next == null) {
-            historyList.remove(indexMap.get(((Task) node.data).getId()));
-            indexMap.remove(((Task) node.data).getId());
+            history.remove(index.get(((Task) node.data).getId()));
+            index.remove(((Task) node.data).getId());
             head = null;
         }else if (node.prev == null && node.next != null) {
                 Node nextNode = node.next;
                 nextNode.prev = null;
                 head = nextNode;
-                historyList.remove(indexMap.get(((Task) node.data).getId()));
-                indexMap.remove(((Task) node.data).getId());
+                history.remove(index.get(((Task) node.data).getId()));
+                index.remove(((Task) node.data).getId());
             } else if (node.prev != null && node.next != null) {
                 Node prevNode = node.prev;
                 Node nextNode = node.next;
                 prevNode.next = nextNode;
                 nextNode.prev = prevNode;
-                historyList.remove(indexMap.get(((Task) node.data).getId()));
-                indexMap.remove(((Task) node.data).getId());
+                history.remove(index.get(((Task) node.data).getId()));
+                index.remove(((Task) node.data).getId());
             } else if (node.prev != null & node.next == null) {
                 Node prevNode = node.prev;
                 node.prev = node.prev.prev;
                 prevNode.next = null;
                 tail = prevNode;
-                historyList.remove(indexMap.get(((Task) node.data).getId()));
-                indexMap.remove(((Task) node.data).getId());
+                history.remove(index.get(((Task) node.data).getId()));
+                index.remove(((Task) node.data).getId());
             } return node;
         }
 
     //История
     @Override
     public List<Task> getHistory() {
-        List<Task> listHistory = new ArrayList<>();
+        List<Task> history = new ArrayList<>();
         Node<Task> node = this.head;
         while (head != null){
-            listHistory.add(node.data);
+            history.add(node.data);
             if(node.next != null) {
                 node = node.next;
             }else break;
-        } return listHistory;
+        } return history;
     }
 
     //Очистка списка истории.
     @Override
     public void clearHistory() {
-        historyList.clear();
+        history.clear();
     }
     @Override
     public void removeAllNode(){
-       Collection<Node> list = this.historyList;
-       for (int i =0; i < historyList.size(); i++){
-        Node node = historyList.get(i);
+       Collection<Node> historyToRemove = this.history;
+       for (int i = 0; i < history.size(); i++){
+        Node node = history.get(i);
         remove(node);
-        list.remove(node);
+        historyToRemove.remove(node);
         i--;
        }
         }
@@ -109,12 +109,12 @@ import java.util.*;
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             InMemoryHistoryManager that = (InMemoryHistoryManager) o;
-            return Objects.equals(historyList, that.historyList) && Objects.equals(indexMap, that.indexMap)
+            return Objects.equals(history, that.history) && Objects.equals(index, that.index)
                     && Objects.equals(head, that.head) && Objects.equals(tail, that.tail);
         }
         @Override
         public int hashCode() {
-            return Objects.hash(historyList, indexMap, head, tail);
+            return Objects.hash(history, index, head, tail);
         }
     }
 

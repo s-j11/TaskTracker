@@ -11,8 +11,8 @@ import java.io.OutputStream;
 import java.util.Set;
 
 public class PrioritizedTasksEP implements HttpHandler {
-    Gson gson = new Gson();
-    FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("src/store/store2.csv");
+    private final Gson gson = new Gson();
+    private final FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("src/store/store2.csv");
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {

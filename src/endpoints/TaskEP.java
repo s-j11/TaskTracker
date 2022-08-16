@@ -13,13 +13,13 @@ import java.io.OutputStream;
 import java.util.Collection;
 
 public class TaskEP implements HttpHandler {
-    Gson gson = new Gson();
-    FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("src/store/store2.csv");
+    private final Gson gson = new Gson();
+    private final FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("src/store/store2.csv");
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         fileBackedTasksManager.fromFile();
-        Collection listTask = fileBackedTasksManager.getListTasks(fileBackedTasksManager.getTaskMap());
+        Collection tasksСatalogue = fileBackedTasksManager.getTasksСatalogue(fileBackedTasksManager.getTasks());
         InputStream inputStream = exchange.getRequestBody();
         String body = new String(inputStream.readAllBytes());
         Headers headers = exchange.getResponseHeaders();
@@ -33,7 +33,7 @@ public class TaskEP implements HttpHandler {
         if (path.equals("/tasks/task")) {
             switch (method) {
                 case "GET":
-                    String allTasks = gson.toJson(listTask);
+                    String allTasks = gson.toJson(tasksСatalogue);
                      response = allTasks;
                     break;
                 case "POST":
@@ -42,7 +42,7 @@ public class TaskEP implements HttpHandler {
                             task.getDuration());
                     break;
                 case "DELETE":
-                    fileBackedTasksManager.deleteAllTask();
+                    fileBackedTasksManager.deleteAllTasks();
                     break;
                 default:
                     response = "Некорректный метод!";
@@ -52,11 +52,11 @@ public class TaskEP implements HttpHandler {
         }else {
             String idFromRequest = path.split("/")[3];
             id = Integer.parseInt(idFromRequest);
-            if (fileBackedTasksManager.getTaskMap().containsKey(id)) {
+            if (fileBackedTasksManager.getTasks().containsKey(id)) {
                 switch (method) {
                     case "GET":
                         fileBackedTasksManager.getTaskById(id);
-                        task = fileBackedTasksManager.getTaskMap().get(id);
+                        task = fileBackedTasksManager.getTasks().get(id);
                         String taskString = gson.toJson(task);
                         response = taskString;
                         break;

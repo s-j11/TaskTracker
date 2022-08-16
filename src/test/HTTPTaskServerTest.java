@@ -61,7 +61,7 @@ public class HTTPTaskServerTest {
         Assertions.assertEquals("[[{\"name\":\"П\",\"description\":\"П\",\"id\":1,\"status\":\"NEW\"," +
                 "\"duration\":30,\"startTime\":{\"value\":{\"date\":{\"year\":1,\"month\":1,\"day\":1}," +
                 "\"time\":{\"hour\":1,\"minute\":15,\"second\":0,\"nano\":0}}}}]," +
-                " [{\"listSubtask\":[3,4],\"endTime\":{\"value\":{\"date\":{\"year\":1,\"month\":1,\"day\":1}," +
+                " [{\"subTaskСatalogue\":[3,4],\"endTime\":{\"value\":{\"date\":{\"year\":1,\"month\":1,\"day\":1}," +
                 "\"time\":{\"hour\":3,\"minute\":5,\"second\":0,\"nano\":0}}},\"name\":\"Р\",\"description\":\"Р\"" +
                 ",\"id\":2,\"status\":\"NEW\",\"duration\":25,\"startTime\":{\"value\":{\"date\":{\"year\":1," +
                 "\"month\":1,\"day\":1},\"time\":{\"hour\":2,\"minute\":30,\"second\":0,\"nano\":0}}}}]," +
@@ -155,7 +155,7 @@ public class HTTPTaskServerTest {
                 "\"day\":1},\"time\":{\"hour\":2,\"minute\":30,\"second\":0,\"nano\":0}}}},{\"name\":\"П\"," +
                 "\"description\":\"П\",\"id\":1,\"status\":\"NEW\",\"duration\":30,\"startTime\":{\"value\":" +
                 "{\"date\":{\"year\":1,\"month\":1,\"day\":1},\"time\":{\"hour\":1,\"minute\":15,\"second\":0," +
-                "\"nano\":0}}}},{\"listSubtask\":[3,4],\"endTime\":{\"value\":{\"date\":{\"year\":1,\"month\":1," +
+                "\"nano\":0}}}},{\"subTaskСatalogue\":[3,4],\"endTime\":{\"value\":{\"date\":{\"year\":1,\"month\":1," +
                 "\"day\":1},\"time\":{\"hour\":3,\"minute\":5,\"second\":0,\"nano\":0}}},\"name\":\"Р\"," +
                 "\"description\":\"Р\",\"id\":2,\"status\":\"NEW\",\"duration\":25,\"startTime\":{\"value\":" +
                 "{\"date\":{\"year\":1,\"month\":1,\"day\":1},\"time\":{\"hour\":2,\"minute\":30,\"second\":0," +
@@ -243,7 +243,7 @@ public class HTTPTaskServerTest {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        Map<Integer, Task> map = fileBackedTasksManager.getTaskMap();
+        Map<Integer, Task> map = fileBackedTasksManager.getTasks();
         int id = 0;
 
         Task task;
@@ -283,7 +283,7 @@ public class HTTPTaskServerTest {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        Map<Integer, Task> map = fileBackedTasksManager.getTaskMap();
+        Map<Integer, Task> map = fileBackedTasksManager.getTasks();
         int id = 0;
 
         Task task;
@@ -340,7 +340,7 @@ public class HTTPTaskServerTest {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        Map<Integer, Task> map = fileBackedTasksManager.getTaskMap();
+        Map<Integer, Task> map = fileBackedTasksManager.getTasks();
         int id = 0;
 
         Task task;
@@ -516,7 +516,7 @@ public class HTTPTaskServerTest {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        Map<Integer, SubTask> map = fileBackedTasksManager.getSubTaskMap();
+        Map<Integer, SubTask> map = fileBackedTasksManager.getSubTasks();
         int id = 0;
 
         Task task;
@@ -555,7 +555,7 @@ public class HTTPTaskServerTest {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        Map<Integer, SubTask> map = fileBackedTasksManager.getSubTaskMap();
+        Map<Integer, SubTask> map = fileBackedTasksManager.getSubTasks();
         int id = 0;
 
         Task task;
@@ -613,7 +613,7 @@ public class HTTPTaskServerTest {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        Map<Integer, SubTask> map = fileBackedTasksManager.getSubTaskMap();
+        Map<Integer, SubTask> map = fileBackedTasksManager.getSubTasks();
         int id = 0;
 
         Task task;
@@ -729,7 +729,7 @@ public class HTTPTaskServerTest {
                     "Проверьте, пожалуйста, адрес и повторите попытку.");
         }
         Assertions.assertEquals(200, code);
-        Assertions.assertEquals("[{\"listSubtask\":[3,4],\"endTime\":{\"value\":{\"date\":{\"year\":1," +
+        Assertions.assertEquals("[{\"subTaskСatalogue\":[3,4],\"endTime\":{\"value\":{\"date\":{\"year\":1," +
                 "\"month\":1,\"day\":1},\"time\":{\"hour\":3,\"minute\":5,\"second\":0,\"nano\":0}}},\"name\":\"Р\"," +
                 "\"description\":\"Р\",\"id\":2,\"status\":\"NEW\",\"duration\":25,\"startTime\":{\"value\":{\"date\"" +
                 ":{\"year\":1,\"month\":1,\"day\":1},\"time\":{\"hour\":2,\"minute\":30,\"second\":0," +
@@ -758,7 +758,7 @@ public class HTTPTaskServerTest {
                     "Проверьте, пожалуйста, адрес и повторите попытку.");
         }
         Assertions.assertEquals(200, code);
-        Assertions.assertEquals("{\"listSubtask\":[3,4],\"endTime\":{\"value\":{\"date\":{\"year\":1," +
+        Assertions.assertEquals("{\"subTaskСatalogue\":[3,4],\"endTime\":{\"value\":{\"date\":{\"year\":1," +
                 "\"month\":1,\"day\":1},\"time\":{\"hour\":3,\"minute\":5,\"second\":0,\"nano\":0}}},\"name\":\"Р\"," +
                 "\"description\":\"Р\",\"id\":2,\"status\":\"NEW\",\"duration\":25,\"startTime\":{\"value\":" +
                 "{\"date\":{\"year\":1,\"month\":1,\"day\":1},\"time\":{\"hour\":2,\"minute\":30,\"second\":0," +
@@ -768,7 +768,7 @@ public class HTTPTaskServerTest {
     @Test
     public void shouldAddEpic() {
         String result = null;
-        body = HttpRequest.BodyPublishers.ofString("{\"listSubtask\": [],\"endTime\": {},\"name\": \"Р2\"," +
+        body = HttpRequest.BodyPublishers.ofString("{\"subTaskСatalogue\": [],\"endTime\": {},\"name\": \"Р2\"," +
                 "\"description\": \"Р2\",\"id\": 6,\"status\": \"NEW\",\"duration\": 0,\"startTime\": {}}");
         uri = URI.create(uri + "/tasks/epic");
         int code = 0;
@@ -791,7 +791,7 @@ public class HTTPTaskServerTest {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        Map<Integer, EpicTask> map = fileBackedTasksManager.getEpicTaskMap();
+        Map<Integer, EpicTask> map = fileBackedTasksManager.getEpicTasks();
         int id = 0;
 
         Task task;
@@ -818,7 +818,7 @@ public class HTTPTaskServerTest {
         }
         assertEquals(200, code);
 
-        Assertions.assertEquals("{\"listSubtask\":[],\"endTime\":{},\"name\":\"Р2\",\"description\":\"Р2\"," +
+        Assertions.assertEquals("{\"subTaskСatalogue\":[],\"endTime\":{},\"name\":\"Р2\",\"description\":\"Р2\"," +
                 "\"id\":"+id+",\"status\":\"NEW\",\"duration\":0,\"startTime\":{}}", result);
     }
     @Order(14)
@@ -829,7 +829,7 @@ public class HTTPTaskServerTest {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        Map<Integer, EpicTask> map = fileBackedTasksManager.getEpicTaskMap();
+        Map<Integer, EpicTask> map = fileBackedTasksManager.getEpicTasks();
         int id = 0;
 
         Task task;
@@ -838,7 +838,7 @@ public class HTTPTaskServerTest {
         }
         uri = URI.create(uri +"/tasks/epic/"+id);
         String result = null;
-        body = HttpRequest.BodyPublishers.ofString("{\"listSubtask\":[],\"endTime\":{},\"name\":\"Р2\"," +
+        body = HttpRequest.BodyPublishers.ofString("{\"subTaskСatalogue\":[],\"endTime\":{},\"name\":\"Р2\"," +
                 "\"description\": \"Р2-1\",\"id\":"+id+",\"status\": \"NEW\",\"duration\": 0,\"startTime\": {}}");
         int code = 0;
         HttpRequest request = HttpRequest.newBuilder().uri(uri).POST(body).build();
@@ -873,7 +873,7 @@ public class HTTPTaskServerTest {
         }
         assertEquals(200, code);
 
-        Assertions.assertEquals("{\"listSubtask\":[],\"endTime\":{},\"name\":\"Р2\"," +
+        Assertions.assertEquals("{\"subTaskСatalogue\":[],\"endTime\":{},\"name\":\"Р2\"," +
                 "\"description\":\"Р2-1\",\"id\":"+id+",\"status\":\"NEW\",\"duration\":0,\"startTime\":{}}", result);
     }
     @Order(21)
@@ -884,7 +884,7 @@ public class HTTPTaskServerTest {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        Map<Integer, EpicTask> map = fileBackedTasksManager.getEpicTaskMap();
+        Map<Integer, EpicTask> map = fileBackedTasksManager.getEpicTasks();
         int id = 0;
 
         Task task;
@@ -930,7 +930,7 @@ public class HTTPTaskServerTest {
         }
         assertEquals(200, code);
 
-        Assertions.assertEquals("[{\"listSubtask\":[],\"endTime\":{},\"name\":\"Р\",\"description\":\"Р\"," +
+        Assertions.assertEquals("[{\"subTaskСatalogue\":[],\"endTime\":{},\"name\":\"Р\",\"description\":\"Р\"," +
                 "\"id\":2,\"status\":\"NEW\",\"duration\":0,\"startTime\":{}}]", result);
     }
     @Order(22)

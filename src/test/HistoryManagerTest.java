@@ -1,8 +1,7 @@
 package test;
 
 import bussinesslogic.InMemoryHistoryManager;
-import bussinesslogic.InMemoryTaskManager;
-import bussinesslogic.Managers;
+import bussinesslogic.ManagersProvider;
 import maketbussinesslogic.HistoryManager;
 import maketbussinesslogic.TaskManager;
 import model.*;
@@ -16,10 +15,10 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class HistoryManagerTest {
-    private Managers managers = new Managers();
-    private TaskManager inMemoryTaskManager = managers.getDefault();
+    private ManagersProvider managersProvider = new ManagersProvider();
+    private TaskManager inMemoryTaskManager = managersProvider.getDefault();
     private  HistoryManager historyManager =  new InMemoryHistoryManager();
-    private List<Node> historyList = new ArrayList<>();
+    private List<Node> history = new ArrayList<>();
     private  Node<Task> node;
 
     @BeforeEach
@@ -86,13 +85,13 @@ class HistoryManagerTest {
     @Test
     public void shouldClearHistory() {
         Task task = new Task("Проектирование", "Проектирование ПО", 1, Status.NEW);
-        Map<Integer, EpicTask> map = new HashMap<>();
-        List<Integer> list = new ArrayList<>();
-        list.add(3);
-        list.add(4);
-        list.add(5);
+        Map<Integer, EpicTask> epicTasks = new HashMap<>();
+        List<Integer> catalogue = new ArrayList<>();
+        catalogue.add(3);
+        catalogue.add(4);
+        catalogue.add(5);
         EpicTask epicTask = new EpicTask("Тестирование", "Разработка тестирования", 2, Status.NEW,
-                list);
+                catalogue);
         Assertions.assertEquals(historyManager.getHistory(), inMemoryTaskManager.getHistoryManager().getHistory());
         historyManager.add(task);
         Assertions.assertNotEquals(historyManager.getHistory(), inMemoryTaskManager.getHistoryManager().getHistory());
@@ -113,12 +112,12 @@ class HistoryManagerTest {
     @Test
     public void shouldRemoveAllNode() {
         Task task = new Task("Проектирование", "Проектирование ПО", 1, Status.NEW);
-        List<Integer> list = new ArrayList<>();
-        list.add(3);
-        list.add(4);
-        list.add(5);
+        List<Integer> catalogue = new ArrayList<>();
+        catalogue.add(3);
+        catalogue.add(4);
+        catalogue.add(5);
         EpicTask epicTask = new EpicTask("Тестирование", "Разработка тестирования", 2, Status.NEW,
-                list);
+                catalogue);
         Assertions.assertEquals(historyManager.getHistory(), inMemoryTaskManager.getHistoryManager().getHistory());
         historyManager.add(task);
         Assertions.assertNotEquals(historyManager.getHistory(), inMemoryTaskManager.getHistoryManager().getHistory());
@@ -145,12 +144,12 @@ class HistoryManagerTest {
     public void shouldDuplicate(){
         Task task = new Task("Проектирование", "Проектирование ПО", 1, Status.NEW);
         Assertions.assertEquals(historyManager.getHistory(), inMemoryTaskManager.getHistoryManager().getHistory());
-        List<Integer> list = new ArrayList<>();
-        list.add(3);
-        list.add(4);
-        list.add(5);
+        List<Integer> catalogue = new ArrayList<>();
+        catalogue.add(3);
+        catalogue.add(4);
+        catalogue.add(5);
         EpicTask epicTask = new EpicTask("Тестирование", "Разработка тестирования", 2, Status.NEW,
-                list);
+                catalogue);
         historyManager.add(task);
         historyManager.add(epicTask);
         inMemoryTaskManager.getTaskById(1);
@@ -167,12 +166,12 @@ class HistoryManagerTest {
     public void shouldDeleteBeginMiddleEnd(){
         Task task = new Task("Проектирование", "Проектирование ПО", 1, Status.NEW);
         Assertions.assertEquals(historyManager.getHistory(), inMemoryTaskManager.getHistoryManager().getHistory());
-        List<Integer> list = new ArrayList<>();
-        list.add(3);
-        list.add(4);
-        list.add(5);
+        List<Integer> catalogue = new ArrayList<>();
+        catalogue.add(3);
+        catalogue.add(4);
+        catalogue.add(5);
         EpicTask epicTask = new EpicTask("Тестирование", "Разработка тестирования", 2, Status.NEW,
-                list);
+                catalogue);
         SubTask subTask = new SubTask("Разработка меню", "Разработка класса меню", 3, Status.NEW,
                 2);
         SubTask subTask1 = new SubTask("Разработка логики", "Разработка класса логики", 4,

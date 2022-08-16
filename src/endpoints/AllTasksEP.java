@@ -11,20 +11,20 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class AllTasksEP implements HttpHandler {
-    Gson gson = new Gson();
-    FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("src/store/store2.csv");
+    private final Gson gson = new Gson();
+    private final FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("src/store/store2.csv");
 
     @Override
     public void handle(HttpExchange exchange)  throws IOException{
 
         fileBackedTasksManager.fromFile();
-        Collection listTask = fileBackedTasksManager.getListTasks(fileBackedTasksManager.getTaskMap());
-        Collection listEpicTask = fileBackedTasksManager.getListEpicTasks(fileBackedTasksManager.getEpicTaskMap());
-        Collection listSubTask = fileBackedTasksManager.getListSubTasks(fileBackedTasksManager.getSubTaskMap());
+        Collection tasks = fileBackedTasksManager.getTasksСatalogue(fileBackedTasksManager.getTasks());
+        Collection epicTasks = fileBackedTasksManager.getEpicTasksСatalogue(fileBackedTasksManager.getEpicTasks());
+        Collection subTasks = fileBackedTasksManager.getSubTasksСatalogue(fileBackedTasksManager.getSubTasks());
 
-        String task = gson.toJson(listTask);
-        String epicTask = gson.toJson(listEpicTask);
-        String subTask = gson.toJson(listSubTask);
+        String task = gson.toJson(tasks);
+        String epicTask = gson.toJson(epicTasks);
+        String subTask = gson.toJson(subTasks);
         Collection allTasks = new ArrayList<>();
         allTasks.add(task);
         allTasks.add(epicTask);
